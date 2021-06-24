@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "587214306270",
+    "project_id": "kiolah-ef927",
+    "storage_bucket": "kiolah-ef927.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587214306270:android:5cc0ac0653cffc21e07b4f",
+        "android_client_info": {
+          "package_name": "com.example.kiolah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587214306270-tk08u426epd8d351o8fp3b3j27rkr87f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXs5-llbxClPf4UnQ7Mtp1KcNhrccWG1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587214306270-tk08u426epd8d351o8fp3b3j27rkr87f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
