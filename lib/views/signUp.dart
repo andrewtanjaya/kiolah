@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kiolah/helper/constant.dart';
+import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/services/auth.dart';
+import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/chatList.dart';
 import 'package:kiolah/widgets/widget.dart';
 
@@ -17,6 +20,7 @@ class _SignUpState extends State<SignUp> {
   final formKey = GlobalKey<FormState>();
 
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   TextEditingController userNameController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
@@ -24,14 +28,30 @@ class _SignUpState extends State<SignUp> {
 
   signMeUp(){
     if(formKey.currentState!.validate()){
-      setState(() {
-        isLoading = true;
-      });
+      
       authMethods.signUpWithEmailAndPassword(emailController.text, passwordController.text)
       .then((value){
-        print("${value.email}");
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatList()));
+          Map<String, String> userInfoMap = {
+            "email" : value.email.toString(),
+            "paymentType" : value.paymentType.toString(), 
+            "phoneNumber" : value.phoneNumber.toString(), 
+            "photoUrl" : value.photoUrl.toString(), 
+            "userId" : value.userId.toString(),
+            "username" : userNameController.text
+          };
+          // save shared pref
+          HelperFunction.saveUserLoggedInSP(true);
+          HelperFunction.saveUsernameSP(userNameController.text);
+          HelperFunction.saveEmailSP(emailController.text);
+          setState(() {
+            isLoading = true;
+          });
 
+          databaseMethods.uploadUserInfo(userInfoMap);
+          HelperFunction.getUsernameSP().then((username){
+            Constant.myName = username.toString();
+          });
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatList()));
       });
     }
   }
@@ -72,7 +92,7 @@ class _SignUpState extends State<SignUp> {
                       TextFormField(
                         obscureText: true,
                         validator: (val){
-                          return val!.isEmpty ? "Password must be filled" : null;
+                          return val!.isEmpty || val.length < 6 ? "Password should be at least 6 characters" : null;
                         },
                         controller: passwordController,
                         decoration: textFieldInputDecoration("password")
@@ -121,28 +141,28 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(height: 16,),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 20,
-                        offset: Offset(0, 10),
-                      )
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25)
-                  ),
-                  child: Text("Sign Up With Google",
-                  style: TextStyle(
-                    fontSize: 17
-                  ),),
-                ),
-                SizedBox(height: 16,),
+                // Container(
+                //   alignment: Alignment.center,
+                //   width: MediaQuery.of(context).size.width,
+                //   padding: EdgeInsets.symmetric(vertical: 20),
+                //   decoration: BoxDecoration(
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.grey.withOpacity(0.3),
+                //         spreadRadius: 2,
+                //         blurRadius: 20,
+                //         offset: Offset(0, 10),
+                //       )
+                //     ],
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(25)
+                //   ),
+                //   child: Text("Sign Up With Google",
+                //   style: TextStyle(
+                //     fontSize: 17
+                //   ),),
+                // ),
+                // SizedBox(height: 16,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

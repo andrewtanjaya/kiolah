@@ -1,5 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
+import 'package:kiolah/views/chatList.dart';
 
 class AuthMethods{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -49,12 +54,37 @@ class AuthMethods{
 
   Future signOut() async{
     try{
-      
+      HelperFunction.saveEmailSP("");
+      HelperFunction.saveUserLoggedInSP(false);
+      HelperFunction.saveUsernameSP("");
       return await _auth.signOut();
+      
+
 
     }catch(e){
       print(e.toString());
     }
+  }
+
+  Future<User?>signInWithGoogle(BuildContext context) async{
+    final GoogleSignIn _googleSignIn = new GoogleSignIn();
+    final GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await _googleSignInAccount!.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      idToken: googleSignInAuthentication.idToken,
+      accessToken: googleSignInAuthentication.accessToken
+    );
+    UserCredential result = await _auth.signInWithCredential(credential);
+    
+    User? userDetail = result.user;
+
+    if(result != null){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatList()));
+    }
+
+    return userDetail;
+
   }
 
 }
