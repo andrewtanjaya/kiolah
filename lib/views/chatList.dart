@@ -37,7 +37,7 @@ class _ChatListState extends State<ChatList> {
           itemBuilder: (context,index){
             return ChatRoomItem(
               username: snapshot.data!.docs[index]["chatRoomId"].toString()
-              .replaceAll("_", "").replaceAll(Constant.myName, ""), chatRoomId: 
+              .replaceAll("_", ","), chatRoomId: 
               snapshot.data!.docs[index]["chatRoomId"],
             );
           }) : Container();
@@ -59,12 +59,16 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
-        title: Text("Chat List"),
+        title: Text("Hi "+ Constant.myName),
         actions: [
           GestureDetector(
             onTap: (){
               _authMethods.signOut();
+              HelperFunction.saveEmailSP("");
+              HelperFunction.saveUserLoggedInSP(false);
+              HelperFunction.saveUsernameSP("");
               Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context)=>Authenticate()
                 ));
@@ -82,7 +86,8 @@ class _ChatListState extends State<ChatList> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen()));
         },
       ),
-      body: ChatRoomList(),
+      body: 
+          ChatRoomList()
     );
   }
 }

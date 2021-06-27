@@ -35,7 +35,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   sendMessage(){
     if(messageController.text != ""){
-      print(messageController.text);
       Map<String, dynamic> messageMap = {
         "message" : messageController.text,
         "sendBy" : Constant.myName,
@@ -81,7 +80,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   ),
                   GestureDetector(
                     onTap: (){
-                      print("auuuu");
                       sendMessage();
                     },
                     child: Container(

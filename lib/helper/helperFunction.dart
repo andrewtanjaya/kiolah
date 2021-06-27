@@ -35,4 +35,5 @@ class HelperFunction{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getString(SP_EMAIL_KEY);
   }
+
 }

@@ -17,6 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
 
   QuerySnapshot? searchSnapshot;
+  List<String> users = [Constant.myName];
 
   initiateSearch(){
     databaseMethods.getUserByUsername(searchController.text).then((val){
@@ -29,8 +30,12 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  createChatRoom({required String username}){
-    List<String> users = [username, Constant.myName];
+  addMember(String username){
+    users.add(username);
+    print(users);
+  }
+
+  createChatRoom(){
     String chatRoomId = getChatRoomId(users);
     Map<String, dynamic> chatRoomMap = {
       "users" : users,
@@ -64,7 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: (){
-              createChatRoom(username: username);
+              addMember(username);
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -119,7 +124,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               ),
             ),
-            searchList()
+            searchList(),
+            GestureDetector(
+              onTap: (){
+                createChatRoom();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: Text("Create Group")
+              ),
+            )
           ],
         ),
       ),
