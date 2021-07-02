@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/login_header.dart';
 import 'package:kiolah/components/password_input_field.dart';
 import 'package:kiolah/components/round_button.dart';
@@ -66,8 +70,37 @@ class _BodyState extends State<Body> {
     return val!.isEmpty ? "Username must be filled" : null;
   }
 
+  showSuccessPopUp() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return CustomDialog(
+          title: 'Yay !',
+          description: 'Your account have been successfuly made !',
+          imageUrl: 'assets/emoji/paper_popper.png',
+          textButton: 'OK',
+        );
+      },
+    );
+  }
+
+  showFailedPopUp() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return CustomDialog(
+          title: 'Oops',
+          description: 'Account with the inputted information already exists !',
+          imageUrl: 'assets/emoji/slightly_frowning_face.png',
+          textButton: 'OK',
+        );
+      },
+    );
+  }
+
   signMeUp() {
     if (formKey.currentState!.validate()) {
+      // try {
       authMethods
           .signUpWithEmailAndPassword(
               emailController.text, passwordController.text)
@@ -90,12 +123,17 @@ class _BodyState extends State<Body> {
         });
 
         databaseMethods.uploadUserInfo(userInfoMap);
-        HelperFunction.getUsernameSP().then((username) {
-          Constant.myName = username.toString();
+        HelperFunction.getUsernameSP().then(
+          (username) {
+            Constant.myName = username.toString();
+          },
+        );
+        Timer.run(() {
+          showSuccessPopUp();
         });
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ChatList()));
-      });
+      }).onError((error, stackTrace) => showFailedPopUp());
     }
   }
 
@@ -180,4 +218,46 @@ class _BodyState extends State<Body> {
       },
     );
   }
+
+  // BuildContext oldDialogContext;
+
+  // onDismiss() {
+  //   if (oldDialogContext != null) {
+  //     Navigator.of(oldDialogContext).pop();
+  //   }
+  //   this.oldDialogContext = null;
+  // }
+
 }
+
+// Future<String> showYesNoAlertDialog({
+//   @required BuildContext context,
+//   @required String titleText,
+//   @required String messageText,
+// }) async {
+//   // set up the buttons
+//   final Widget yesButton = FlatButton(
+//     onPressed: () => Navigator.pop(context, 'yes'),
+//     child: const Text('Yes'),
+//   );
+//   final Widget noButton = FlatButton(
+//     onPressed: () => Navigator.pop(context, 'no'),
+//     child: const Text('No'),
+//   );
+
+//   // set up the AlertDialog
+//   final alert = AlertDialog(
+//     title: Text(titleText),
+//     content: Text(messageText),
+//     actions: [
+//       yesButton,
+//       noButton,
+//     ],
+//   );
+
+//   // show the dialog
+//   return showDialog(
+//     context: context,
+//     builder: (context) => alert,
+//   );
+// }

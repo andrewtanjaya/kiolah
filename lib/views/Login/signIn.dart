@@ -17,7 +17,6 @@ class _SignInState extends State<SignIn> {
       backgroundColor: Colors.white,
     );
     double height = appBar.preferredSize.height;
-    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

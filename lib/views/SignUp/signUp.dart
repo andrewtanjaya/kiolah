@@ -1,17 +1,21 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/login_header.dart';
 import 'package:kiolah/components/password_input_field.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/round_outlined_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
+import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/services/auth.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/chatList.dart';
 import 'package:kiolah/widgets/widget.dart';
-
 import 'components/background.dart';
 import 'components/body.dart';
 
@@ -100,6 +104,7 @@ class _SignUpState extends State<SignUp> {
     AppBar appBar = AppBar(
       backgroundColor: Colors.white,
     );
+
     double height = appBar.preferredSize.height;
     return Scaffold(
       appBar: appBar,

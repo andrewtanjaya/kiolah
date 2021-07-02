@@ -24,6 +24,7 @@ class RoundButton extends StatelessWidget {
           alignment: Alignment.center,
           shape: StadiumBorder(),
           primary: colorMainBlue,
+          padding: EdgeInsets.symmetric(vertical: 12),
         ),
         onPressed: onPressed,
         child: Text(
