@@ -5,8 +5,11 @@ import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/views/chatList.dart';
 import 'package:kiolah/views/signIn.dart';
 import 'package:kiolah/views/signUp.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-void main() async{
+import 'etc/constants.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -19,7 +22,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   bool? isLoggedIn = false;
 
   @override
@@ -28,8 +30,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  checkLoggedIn() async{
-    await HelperFunction.getUserLoggedInSP().then((value){
+  checkLoggedIn() async {
+    await HelperFunction.getUserLoggedInSP().then((value) {
       setState(() {
         isLoggedIn = value;
       });
@@ -42,8 +44,11 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        
-        primarySwatch: Colors.yellow,
+        primaryColor: colorMainBlue,
+        scaffoldBackgroundColor: colorMainWhite,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
       home: isLoggedIn == true ? ChatList() : Authenticate(),
     );
@@ -51,7 +56,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class BlankScreen extends StatefulWidget {
-  const BlankScreen({ Key? key }) : super(key: key);
+  const BlankScreen({Key? key}) : super(key: key);
 
   @override
   _BlankScreenState createState() => _BlankScreenState();
@@ -60,8 +65,6 @@ class BlankScreen extends StatefulWidget {
 class _BlankScreenState extends State<BlankScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }

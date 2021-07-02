@@ -1,4 +1,4 @@
-class Account{
+class Account {
   String? userId;
   String? email;
   String? paymentType;
@@ -6,6 +6,11 @@ class Account{
   String? photoUrl;
   String? username;
 
-  Account({this.userId,this.email,this.paymentType,this.phoneNumber,this.photoUrl,this.username});
-
+  Account(
+      {this.userId,
+      this.email,
+      this.paymentType,
+      this.phoneNumber,
+      this.photoUrl,
+      this.username});
 }
