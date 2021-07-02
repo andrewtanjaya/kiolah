@@ -32,6 +32,7 @@ class RoundOutlinedButton extends StatelessWidget {
           ),
           style: OutlinedButton.styleFrom(
             shape: StadiumBorder(),
+            primary: colorMainBlue,
           ),
         ),
       ),

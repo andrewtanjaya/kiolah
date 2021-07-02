@@ -1,22 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:kiolah/components/login_header.dart';
-import 'package:kiolah/components/password_input_field.dart';
-import 'package:kiolah/components/round_button.dart';
-import 'package:kiolah/components/round_outlined_button.dart';
-import 'package:kiolah/components/text_input_container.dart';
-import 'package:kiolah/components/text_input_field.dart';
-import 'package:kiolah/etc/constants.dart';
-import 'package:kiolah/helper/constant.dart';
-import 'package:kiolah/helper/helperFunction.dart';
-import 'package:kiolah/services/auth.dart';
-import 'package:kiolah/services/database.dart';
-import 'package:kiolah/views/chatList.dart';
-import 'package:kiolah/views/signUp.dart';
-import 'package:kiolah/widgets/widget.dart';
-// import 'package:kiolah/widgets/widget.dart';
+import 'package:kiolah/views/Login/components/body.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -26,134 +10,21 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final formKey = GlobalKey<FormState>();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-
-  AuthMethods authMethods = new AuthMethods();
-  DatabaseMethods databaseMethods = new DatabaseMethods();
-  bool isLoading = false;
-  QuerySnapshot? snapUserInfo;
-
-  signIn() {
-    HelperFunction.saveEmailSP(emailController.text);
-    if (formKey.currentState!.validate()) {
-      databaseMethods.getUserByEmail(emailController.text).then(
-        (value) {
-          snapUserInfo = value;
-          HelperFunction.saveUsernameSP(
-              snapUserInfo!.docs[0]["username"].toString());
-        },
-      );
-
-      String email = emailController.text;
-      String pass = passwordController.text;
-
-      setState(() {
-        isLoading = true;
-      });
-
-      authMethods.signInWithEmailAndPassword(email, pass).then(
-        (value) {
-          if (value != null) {
-            HelperFunction.saveUserLoggedInSP(true);
-            HelperFunction.getUsernameSP().then((username) {
-              Constant.myName = username.toString();
-            });
-
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => ChatList()));
-          }
-        },
-      );
-    }
-  }
-
-  String? emailValidator(val) {
-    return RegExp(
-                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-            .hasMatch(val!)
-        ? null
-        : "Please provide valid email";
-  }
-
-  String? passwordValidator(val) {
-    return val!.isEmpty || val.length < 6
-        ? "Password should be at least 6 characters"
-        : null;
-  }
-
   @override
   Widget build(BuildContext context) {
     // get screen size
-    Size size = MediaQuery.of(context).size;
+    AppBar appBar = AppBar(
+      backgroundColor: Colors.white,
+    );
+    double height = appBar.preferredSize.height;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        // color: Colors.pink,
-        width: double.infinity,
-        height: size.height,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              LoginHeader(
-                title: "Welcome Back!",
-                description: "Enter your credential to continue",
-              ),
-              Expanded(child: Container()),
-
-              // SizedBox(height: size.height * .1),
-              Container(
-                width: size.width,
-                // color: Colors.cyan,
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      TextInputContainer(
-                        child: TextInputField(
-                          controller: emailController,
-                          validator: emailValidator,
-                          icon: Icons.person_outline_rounded,
-                          hintText: 'Username',
-                          onChanged: (value) => {},
-                        ),
-                      ),
-                      TextInputContainer(
-                        child: PasswordInputField(
-                          controller: passwordController,
-                          validator: passwordValidator,
-                        ),
-                      ),
-                      RoundButton(
-                        text: 'LOGIN',
-                        onPressed: () => signIn(),
-                      ),
-                      // SizedBox(height: size.height * .26),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(child: Container()),
-              RoundOutlinedButton(
-                text: "DONT\'T HAVE AN ACCOUNT YET ?",
-                onPressed: () {
-                  widget.toggle();
-                  // print('hello');
-                  // Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  //     builder: (BuildContext context) =>
-                  //         new SignUp(widget.toggle)));
-                },
-              ),
-            ],
-          ),
-        ),
+      body: Body(
+        toggle: widget.toggle,
+        height: height,
       ),
     );
     // return Scaffold(

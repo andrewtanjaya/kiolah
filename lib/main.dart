@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kiolah/helper/authenticate.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/views/chatList.dart';
-import 'package:kiolah/views/signIn.dart';
-import 'package:kiolah/views/signUp.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'etc/constants.dart';
 
 void main() async {
@@ -49,6 +46,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.poppinsTextTheme(
           Theme.of(context).textTheme,
         ),
+        errorColor: colorError,
       ),
       home: isLoggedIn == true ? ChatList() : Authenticate(),
     );

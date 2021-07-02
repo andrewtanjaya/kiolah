@@ -25,7 +25,7 @@ class TextInputField extends StatelessWidget {
       cursorColor: colorMainBlack,
       decoration: InputDecoration(
         icon: Icon(
-          Icons.person_outline_rounded,
+          icon,
           color: colorMainBlack,
         ),
         hintText: hintText,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/etc/constants.dart';
 
 class RoundButton extends StatelessWidget {
   final String text;
@@ -22,6 +23,7 @@ class RoundButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           alignment: Alignment.center,
           shape: StadiumBorder(),
+          primary: colorMainBlue,
         ),
         onPressed: onPressed,
         child: Text(

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:kiolah/views/signIn.dart';
-import 'package:kiolah/views/signUp.dart';
+import 'package:kiolah/views/Login/signIn.dart';
+import 'package:kiolah/views/SignUp/signUp.dart';
 
 class Authenticate extends StatefulWidget {
-  const Authenticate({ Key? key }) : super(key: key);
+  const Authenticate({Key? key}) : super(key: key);
 
   @override
   _AuthenticateState createState() => _AuthenticateState();
 }
 
 class _AuthenticateState extends State<Authenticate> {
-
   bool showSignIn = true;
 
-  void toggleView(){
+  void toggleView() {
     setState(() {
       showSignIn = !showSignIn;
     });
@@ -21,9 +20,9 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-    if(showSignIn){
+    if (showSignIn) {
       return SignIn(toggleView);
-    }else{
+    } else {
       return SignUp(toggleView);
     }
   }
