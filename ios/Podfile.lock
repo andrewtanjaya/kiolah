@@ -46,6 +46,8 @@ PODS:
   - FirebaseFirestore/WithLeveldb (8.0.0):
     - FirebaseFirestore/Base
   - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
@@ -81,6 +83,8 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - path_provider (0.0.1):
+    - Flutter
   - PromisesObjC (1.2.12)
   - shared_preferences (0.0.1):
     - Flutter
@@ -91,7 +95,9 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.0.0`)
   - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 SPEC REPOS:
@@ -121,8 +127,12 @@ EXTERNAL SOURCES:
     :tag: 8.0.0
   Flutter:
     :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
@@ -142,6 +152,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 61384f54989065b15c36b5922b65112e86811d3c
   FirebaseFirestore: 0d1548ab6085002d87c173ce3f881129f39b3565
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
@@ -149,6 +160,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 
