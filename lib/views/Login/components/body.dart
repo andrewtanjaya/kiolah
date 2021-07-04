@@ -47,6 +47,8 @@ class _BodyState extends State<Body> {
           snapUserInfo = value;
           HelperFunction.saveUsernameSP(
               snapUserInfo!.docs[0]["username"].toString());
+          HelperFunction.saveUserIdSP(
+              snapUserInfo!.docs[0]["userId"].toString());
         },
       );
 
@@ -63,6 +65,12 @@ class _BodyState extends State<Body> {
             HelperFunction.saveUserLoggedInSP(true);
             HelperFunction.getUsernameSP().then((username) {
               Constant.myName = username.toString();
+            });
+            HelperFunction.getUserIDSP().then((userid) {
+              Constant.myId = userid.toString();
+            });
+            HelperFunction.getEmailSP().then((email) {
+              Constant.myEmail = email.toString();
             });
 
             Navigator.pushReplacement(

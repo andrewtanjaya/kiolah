@@ -100,11 +100,13 @@ class _BodyState extends State<Body> {
 
   signMeUp() {
     if (formKey.currentState!.validate()) {
+      String userId;
       // try {
       authMethods
           .signUpWithEmailAndPassword(
               emailController.text, passwordController.text)
           .then((value) {
+        userId = value.userId.toString();
         Map<String, String> userInfoMap = {
           "email": value.email.toString(),
           "paymentType": value.paymentType.toString(),
@@ -118,14 +120,25 @@ class _BodyState extends State<Body> {
         HelperFunction.saveUserLoggedInSP(true);
         HelperFunction.saveUsernameSP(userNameController.text);
         HelperFunction.saveEmailSP(emailController.text);
+        HelperFunction.saveUserIdSP(userId);
         setState(() {
           SignUp.isLoading = true;
         });
 
-        databaseMethods.uploadUserInfo(userInfoMap);
+        databaseMethods.uploadUserInfo(userInfoMap, userId);
         HelperFunction.getUsernameSP().then(
           (username) {
             Constant.myName = username.toString();
+          },
+        );
+        HelperFunction.getEmailSP().then(
+          (email) {
+            Constant.myEmail = email.toString();
+          },
+        );
+        HelperFunction.getUserIDSP().then(
+          (userid) {
+            Constant.myId = userid.toString();
           },
         );
         Timer.run(() {
