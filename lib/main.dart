@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kiolah/helper/authenticate.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/views/chatList.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'etc/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,12 +40,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: colorMainBlue,
-        scaffoldBackgroundColor: colorMainWhite,
-        textTheme: GoogleFonts.poppinsTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        errorColor: colorError,
+        primarySwatch: Colors.yellow,
       ),
       home: isLoggedIn == true ? ChatList() : Authenticate(),
     );
