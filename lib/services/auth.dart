@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
+import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/chatList.dart';
 
 class AuthMethods {
@@ -55,6 +56,8 @@ class AuthMethods {
       HelperFunction.saveEmailSP("");
       HelperFunction.saveUserLoggedInSP(false);
       HelperFunction.saveUsernameSP("");
+      HelperFunction.saveUserIdSP("");
+
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());

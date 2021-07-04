@@ -26,8 +26,17 @@ class _ChatListState extends State<ChatList> {
 
   getToken() {
     _firebaseMessaging.getToken().then((token) {
-      print('--- Firebase token here ---' + Constant.myId);
+      print('--- Firebase token here ---');
       databaseMethods.addToken(token, Constant.myId);
+      print(token);
+    });
+  }
+
+  deleteToken() {
+    _firebaseMessaging.getToken().then((token) {
+      print('--- Firebase token here ---');
+      List<dynamic> tokens = [token];
+      databaseMethods.deleteToken(tokens, Constant.myId);
       print(token);
     });
   }
@@ -131,6 +140,7 @@ class _ChatListState extends State<ChatList> {
           actions: [
             GestureDetector(
               onTap: () {
+                deleteToken();
                 _authMethods.signOut();
                 HelperFunction.saveEmailSP("");
                 HelperFunction.saveUserLoggedInSP(false);

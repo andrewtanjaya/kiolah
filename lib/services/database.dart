@@ -58,4 +58,11 @@ class DatabaseMethods {
       'token': FieldValue.arrayUnion([token])
     });
   }
+
+  deleteToken(List<dynamic> token, String userId) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .update({'token': FieldValue.arrayRemove(token)});
+  }
 }
