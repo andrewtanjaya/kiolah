@@ -33,15 +33,14 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  Future<bool> callOnFcmApiSendPushNotifications(
-      List<dynamic> userToken) async {
+  Future<bool> sendNotif(List<dynamic> userToken) async {
     final postUrl = 'https://fcm.googleapis.com/fcm/send';
     final data = {
       "registration_ids": userToken,
       "collapse_key": "type_a",
       "notification": {
-        "title": 'NewTextTitle',
-        "body": 'NewTextBody',
+        "title": 'Title nihh',
+        "body": 'body nihh',
       }
     };
 
@@ -133,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
           GestureDetector(
             onTap: () {
               print(userToken);
-              callOnFcmApiSendPushNotifications(userToken);
+              sendNotif(userToken);
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
