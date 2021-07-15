@@ -64,16 +64,9 @@ class _MyAppState extends State<MyApp> {
 
   checkToken() async {
     try {
-      if (Platform.isAndroid) {
-        var build = await deviceInfoPlugin.androidInfo;
-        identifier = build.id.toString();
-      } else if (Platform.isIOS) {
-        var data = await deviceInfoPlugin.iosInfo;
-        identifier = data.identifierForVendor; //UUID for iOS
-      }
-    } on PlatformException {
-      print('Failed to get platform version');
-    }
+      var build = await deviceInfoPlugin.androidInfo;
+      identifier = build.id.toString();
+    } catch (e) {}
   }
 
   checkLoggedIn() async {
