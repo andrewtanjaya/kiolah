@@ -1,7 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/authenticate.dart';
 import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/views/Home/home.dart';
 import 'package:kiolah/views/chatList.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'etc/constants.dart';
@@ -48,7 +53,8 @@ class _MyAppState extends State<MyApp> {
         ),
         errorColor: colorError,
       ),
-      home: isLoggedIn == true ? ChatList() : Authenticate(),
+      home: Home(),
+      // home: isLoggedIn == true ? ChatList() : Authenticate(),
     );
   }
 }

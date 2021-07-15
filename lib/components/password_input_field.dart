@@ -40,7 +40,9 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
           color: colorMainBlack,
         ),
         suffixIcon: IconButton(
-          icon: Icon(Icons.visibility),
+          icon: _obscureText
+              ? Icon(Icons.visibility_rounded)
+              : Icon(Icons.visibility_off_rounded),
           color: colorMainBlack,
           onPressed: _toggle,
         ),

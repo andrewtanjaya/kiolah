@@ -33,6 +33,7 @@ class RoundButton extends StatelessWidget {
             letterSpacing: 1.5,
             fontWeight: FontWeight.w500,
             fontSize: 12,
+            color: colorMainWhite,
           ),
         ),
       ),
