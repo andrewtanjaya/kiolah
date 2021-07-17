@@ -104,8 +104,8 @@ class _MyAppState extends State<MyApp> {
         ),
         errorColor: colorError,
       ),
-      home: Home(),
-      // home: isLoggedIn == true ? ChatList() : Authenticate(),
+      // home: Home(),
+      home: isLoggedIn == true ? Home() : Authenticate(),
     );
   }
 }

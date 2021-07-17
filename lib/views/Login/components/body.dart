@@ -10,6 +10,7 @@ import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/services/auth.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/Home/home.dart';
 import 'package:kiolah/views/chatList.dart';
 
 import 'background.dart';
@@ -74,7 +75,7 @@ class _BodyState extends State<Body> {
             });
 
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => ChatList()));
+                context, MaterialPageRoute(builder: (context) => Home()));
           }
         },
       );
