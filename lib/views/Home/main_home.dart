@@ -15,7 +15,9 @@ import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/AddGroup/addGroup.dart';
 import 'package:kiolah/views/AddOrder/addOrder.dart';
+import '../search.dart';
 import 'components/body.dart';
 import 'components/header.dart';
 
@@ -360,33 +362,65 @@ class _MainHomeState extends State<MainHome> {
           width: 80,
           child: Drawer(
             elevation: 0,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: ListView.separated(
-                controller: _scrollController,
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: 12.0,
-                    height: 48.0,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.0),
-                      color: colorWarning,
-                    ),
-                    child: Text(
-                      'W',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        color: colorMainWhite,
-                        fontSize: 12.0,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                    child: Expanded(
+                      child: SizedBox(
+                        height: 5 * 66.0,
+                        child: ListView.separated(
+                          controller: _scrollController,
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              width: 12.0,
+                              height: 48.0,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.0),
+                                color: colorMainWhite,
+                              ),
+                              child: Text(
+                                'W',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  color: colorMainGray,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            );
+                          },
+                          physics: new NeverScrollableScrollPhysics(),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const SizedBox(height: 16.0),
+                          // physics: const NeverScrollableScrollPhysics(),
+                        ),
                       ),
                     ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(height: 16.0),
-                // physics: const NeverScrollableScrollPhysics(),
+                  ),
+                  Container(
+                    width: 48.0,
+                    height: 48.0,
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(48.0),
+                      color: colorMainGray,
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.add_rounded),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchScreen()));
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -401,7 +435,7 @@ class _MainHomeState extends State<MainHome> {
       floatingActionButton: isFAB
           ? FAB(icon: Icons.edit_rounded, onPressed: () {})
           : FABExtended(
-              text: 'Add preorder',
+              text: 'Add Preorder',
               onPressed: () {},
               icon: Icons.edit_rounded,
             ),
