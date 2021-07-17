@@ -68,10 +68,9 @@ class DatabaseMethods {
         .update({'token': FieldValue.arrayRemove(token)});
   }
 
-  getListPreorder(String namauser) async {
+  getListPreorder(String username) async {
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("owner", isEqualTo: "Andrew")
-        .get();
+        .where("users", arrayContains: {"username": username}).get();
   }
 }

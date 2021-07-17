@@ -14,12 +14,9 @@ import 'package:kiolah/model/group.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
-<<<<<<< HEAD
 import 'package:kiolah/services/database.dart';
-=======
 import 'package:kiolah/views/AddOrder/addOrder.dart';
 import 'components/body.dart';
->>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
 import 'components/header.dart';
 
 class MainHome extends StatefulWidget {
@@ -34,17 +31,17 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-<<<<<<< HEAD
   DatabaseMethods db = new DatabaseMethods();
+  var username;
   var preOrderData;
 
-  List<PreOrder>? mainData;
-
-  getUserInfo() async {
+  getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
-      Constant.myName = username.toString();
+      username = username.toString();
     });
   }
+
+  List<PreOrder>? mainData;
 
   getAllData() {
     db.getListPreorder(username).then((val) {
@@ -245,64 +242,60 @@ class _MainHomeState extends State<MainHome> {
   // ),
 
   List<PreOrder> data = <PreOrder>[];
-  List<Group> groups = [
-    Group(
-      '1',
-      'ganteng ganteng club',
-      'para cogan',
-      [
-        '1',
-        '2',
-        '3',
-      ],
-      '0xFFEDB95E',
-    ),
-    Group(
-      '2',
-      'cantik cantik club',
-      'para cantik girl',
-      [
-        '3',
-        '4',
-        '5',
-      ],
-      '0xFFED2C5B',
-    ),
-    Group(
-      '3',
-      'sultan club',
-      'para sultan',
-      [
-        '1',
-        '2',
-        '3',
-      ],
-      '0xFF4EDBB0',
-    ),
-  ];
+  // List<Group> groups = [
+  //   Group(
+  //     '1',
+  //     'ganteng ganteng club',
+  //     'para cogan',
+  //     [
+  //       '1',
+  //       '2',
+  //       '3',
+  //     ],
+  //     '0xFFEDB95E',
+  //   ),
+  //   Group(
+  //     '2',
+  //     'cantik cantik club',
+  //     'para cantik girl',
+  //     [
+  //       '3',
+  //       '4',
+  //       '5',
+  //     ],
+  //     '0xFFED2C5B',
+  //   ),
+  //   Group(
+  //     '3',
+  //     'sultan club',
+  //     'para sultan',
+  //     [
+  //       '1',
+  //       '2',
+  //       '3',
+  //     ],
+  //     '0xFF4EDBB0',
+  //   ),
+  // ];
 
   // informasi header
-  var username = 'andrew';
+
   var totalPreorder = 3;
   var imageUrl = 'assets/user/2.png';
 
-  ScrollController _scrollController = ScrollController();
-=======
   // informasi header
   late ScrollController _scrollController;
->>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
 
   var isFAB = false;
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
     getAllData();
+    getUserName();
 
     _scrollController = widget.scrollController;
     // data = mainData!.where((element) => element.status != 'Completed').toList();
     // widget.scrollController = ScrollController();
-=======
     _scrollController = widget.scrollController;
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -320,7 +313,6 @@ class _MainHomeState extends State<MainHome> {
         });
       }
     });
->>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
   }
 
   @override
@@ -330,7 +322,6 @@ class _MainHomeState extends State<MainHome> {
     super.dispose();
   }
 
-<<<<<<< HEAD
   var _currentButtonBarIndex = 0;
   void _onButtonBarTapped(int index) {
     setState(() {
@@ -343,13 +334,12 @@ class _MainHomeState extends State<MainHome> {
         data = mainData!
             .where((element) => element.status == 'Completed')
             .toList();
-      ;
     });
-=======
+  }
+
   showAddOrderPage() {
     // Navigator.push(
     //     context, MaterialPageRoute(builder: (context) => AddOrder()));
->>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
   }
 
   @override
