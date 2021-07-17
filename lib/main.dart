@@ -6,11 +6,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-<<<<<<< HEAD
-=======
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/etc/constants.dart';
->>>>>>> dz_ui
 import 'package:kiolah/helper/authenticate.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/views/Home/home.dart';
@@ -96,9 +93,6 @@ class _MyAppState extends State<MyApp> {
       title: 'Kiolah',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-<<<<<<< HEAD
-        primarySwatch: Colors.yellow,
-=======
         primaryColor: colorMainBlue,
         scaffoldBackgroundColor: colorMainWhite,
         textTheme: GoogleFonts.poppinsTextTheme(
@@ -108,7 +102,6 @@ class _MyAppState extends State<MyApp> {
           color: colorMainBlack,
         ),
         errorColor: colorError,
->>>>>>> dz_ui
       ),
       home: Home(),
       // home: isLoggedIn == true ? ChatList() : Authenticate(),

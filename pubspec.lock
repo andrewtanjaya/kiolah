@@ -170,7 +170,7 @@ packages:
     source: hosted
     version: "4.0.1"
   firebase_core_web:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_core_web
       url: "https://pub.dartlang.org"
@@ -182,35 +182,21 @@ packages:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "10.0.3"
-=======
     version: "10.0.4"
->>>>>>> dz_ui
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
       name: firebase_messaging_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "3.0.2"
-  firebase_messaging_web:
-    dependency: "direct main"
-=======
     version: "3.0.3"
   firebase_messaging_web:
     dependency: transitive
->>>>>>> dz_ui
     description:
       name: firebase_messaging_web
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "2.0.2"
-=======
     version: "2.0.3"
->>>>>>> dz_ui
   flutter:
     dependency: "direct main"
     description: flutter
