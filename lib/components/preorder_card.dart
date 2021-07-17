@@ -51,6 +51,7 @@ class _PreorderCardState extends State<PreorderCard> {
           );
         },
         child: Container(
+          height: 230,
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.0),

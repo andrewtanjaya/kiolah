@@ -9,6 +9,7 @@ import 'package:kiolah/model/group.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/views/AddOrder/addOrder.dart';
 import 'package:kiolah/views/Home/main_home.dart';
 import 'package:kiolah/views/Login/signIn.dart';
 import 'components/header.dart';
@@ -33,22 +34,24 @@ class HomeState extends State<Home> {
     super.initState();
     _pages = [
       MainHome(scrollController: _scrollController),
-      Container(
-        child: ListView(
-          controller: _scrollController,
-          children: [
-            Center(child: Text('Second Page')),
-          ],
-        ),
-      ),
-      Container(
-        child: ListView(
-          controller: _scrollController,
-          children: [
-            Center(child: Text('Third Page')),
-          ],
-        ),
-      ),
+      AddOrder(),
+      MainHome(scrollController: _scrollController),
+      // Container(
+      //   child: ListView(
+      //     controller: _scrollController,
+      //     children: [
+      //       Center(child: Text('Second Page')),
+      //     ],
+      //   ),
+      // ),
+      // Container(
+      //   child: ListView(
+      //     controller: _scrollController,
+      //     children: [
+      //       Center(child: Text('Third Page')),
+      //     ],
+      //   ),
+      // ),
     ];
   }
 
@@ -86,7 +89,7 @@ class HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.explore_rounded),
-              title: Text('Home'),
+              title: Text('Explore'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
