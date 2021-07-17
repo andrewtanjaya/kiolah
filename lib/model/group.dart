@@ -3,13 +3,9 @@ import 'package:kiolah/model/account.dart';
 class Group {
   String groupId;
   String name;
-  // String description;
+  String description;
   List<String> users;
-  // String colorTheme;
+  String colorTheme;
 
-  Group(
-    this.groupId,
-    this.name,
-    this.users,
-  );
+  Group(this.groupId, this.name, this.description, this.users, this.colorTheme);
 }

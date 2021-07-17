@@ -10,7 +10,7 @@ class Account {
   String? username;
   List<String>? groups;
 
-  Account({
+  Account(
     this.userId,
     this.email,
     this.paymentType,
@@ -18,5 +18,5 @@ class Account {
     this.photoUrl,
     this.username,
     this.groups,
-  });
+  );
 }

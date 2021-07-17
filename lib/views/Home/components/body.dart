@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/preorder_card.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
 import 'package:kiolah/model/group.dart';
 import 'package:kiolah/model/item.dart';
@@ -63,11 +64,18 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
+    getUserName();
     _scrollController = widget.scrollController;
-    data = mainData!.where((element) => element.status != 'Completed').toList();
+    // data = mainData!.where((element) => element.status != 'Completed').toList();
   }
 
-  var username = 'Adrian !';
+  var username;
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((uname) {
+      username = uname.toString();
+    });
+  }
+
   var totalPreorder = 3;
   var imageUrl = 'assets/user/2.png';
 
