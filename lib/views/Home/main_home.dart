@@ -313,7 +313,7 @@ class _MainHomeState extends State<MainHome> {
         body: Container(
           color: colorMainWhite,
           width: size.width,
-          height: size.height - 24.0,
+          height: size.height,
           child: Column(
             children: [
               // header
@@ -392,6 +392,9 @@ class _MainHomeState extends State<MainHome> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 16.0,
+              )
             ],
           ),
         ),
