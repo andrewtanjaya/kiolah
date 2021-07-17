@@ -74,7 +74,19 @@ class DatabaseMethods {
     ];
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("users", arrayContains: sets)
+        .where("owner", isEqualTo: "andi")
         .get();
+  }
+
+  addPreorder(Map<String, dynamic> orderMap) async {
+    String id = await FirebaseFirestore.instance
+        .collection("preorders")
+        .doc()
+        .id
+        .toString();
+    orderMap["preOrderId"] = id;
+
+    print(orderMap);
+    FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
   }
 }

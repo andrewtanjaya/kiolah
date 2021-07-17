@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/row_rounded_bordered_image.dart';
 import 'package:kiolah/components/status_button.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/etc/generate_color.dart';
+import 'package:kiolah/model/account.dart';
 import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/DetailPreorder/detailPreorder.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'colored_outlined_text.dart';
@@ -31,6 +34,73 @@ class PreorderCard extends StatefulWidget {
 }
 
 class _PreorderCardState extends State<PreorderCard> {
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  QuerySnapshot? searchSnapshot;
+  late List<Account> users;
+  late QuerySnapshot owner;
+
+  @override
+  void initState() {
+    super.initState();
+    print('!!!!!!!!!!!!!!!!!!!!!');
+    print('!!!!!!!!!!!!!!!!!!!!!');
+    print(widget.data.duration); // initiateSearch();
+    print(widget.data.title); // initiateSearch();
+    print(widget.data.group); // initiateSearch();
+    print(widget.data.location); // initiateSearch();
+    print(widget.data.owner); // initiateSearch();
+    print(widget.data.users); // initiateSearch();
+    print(widget.data.preOrderId); // initiateSearch();
+    print(widget.data.status); // initiateSearch();
+    // print(widget.data.duration); // initiateSearch();
+    // print(widget.data.duration); // initiateSearch();
+    print('!!!!!!!!!!!!!!!!!!!!!');
+    print('!!!!!!!!!!!!!!!!!!!!!');
+    users = <Account>[];
+    initiateSearch();
+  }
+
+  initiateSearch() {
+    widget.data.users.forEach((element) {
+      print('!!!!!!!!!!!!!!!!!!!!!');
+      print(element);
+      print('!!!!!!!!!!!!!!!!!!!!!');
+
+      databaseMethods.getUserByUsername(element).then((val) {
+        setState(() {
+          print('!!!!!!!!!!!!!!!!!!!!!');
+          print(val.docs[0]["paymentType"]);
+          users.add(
+            new Account(
+              val.docs[0]["userId"],
+              val.docs[0]["email"],
+              (val.docs[0]["paymentType"]).toList().cast<String>(),
+              val.docs[0]["phoneNumber"],
+              val.docs[0]["photoUrl"],
+              val.docs[0]["username"],
+            ),
+          );
+          print('!!!!!!!!!!!!!!!!!!!!!');
+          // users.add(val);
+          // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
+          //   searchSnapshot = null;
+          // }
+        });
+      });
+    });
+    print(users);
+  }
+
+  //   // databaseMethods.getUserByUsername(widget.data.owner).then((val) {
+  //   //   setState(() {
+  //   //     owner = val;
+  //   //     // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
+  //   //     //   searchSnapshot = null;
+  //   //     // }
+  //   //   });
+  //   // });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -51,6 +121,7 @@ class _PreorderCardState extends State<PreorderCard> {
           );
         },
         child: Container(
+          width: 350,
           height: 230,
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
@@ -115,7 +186,7 @@ class _PreorderCardState extends State<PreorderCard> {
                 children: [
                   IconText(
                     icon: Icons.restaurant_rounded,
-                    text: widget.data.items[0].name,
+                    text: 'items',
                     color: colorMainGray,
                   ),
                   SizedBox(
@@ -140,13 +211,13 @@ class _PreorderCardState extends State<PreorderCard> {
                       RowBorderedImage(
                         borderColor: colorMainWhite,
                         firstImageUrl: widget.data.users.length > 0
-                            ? widget.data.users[0].photoUrl.toString()
+                            ? users[0].photoUrl.toString()
                             : '',
                         secondImageUrl: widget.data.users.length > 1
-                            ? widget.data.users[1].photoUrl.toString()
+                            ? users[1].photoUrl.toString()
                             : '',
                         thirdImageUrl: widget.data.users.length > 2
-                            ? widget.data.users[2].photoUrl.toString()
+                            ? users[2].photoUrl.toString()
                             : '',
                         count: widget.data.users.length,
                       ),

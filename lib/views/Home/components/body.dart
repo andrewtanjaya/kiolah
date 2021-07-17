@@ -53,24 +53,27 @@ class _BodyState extends State<Body> {
                 .cast<Item>(),
             DateTime.fromMillisecondsSinceEpoch(
                 entry["duration"].seconds * 1000),
-            entry["users"]
-                .map((v) => Account(
-                    v["userId"],
-                    v["email"],
-                    PaymentType(
-                        v["paymentType"]["ovo"], v["paymentType"]["bca"]),
-                    v["phoneNumber"],
-                    v["photoUrl"],
-                    v["username"],
-                    v["groups"].toList().cast<String>()))
-                .toList()
-                .cast<Account>(),
+            entry["users"].toList().cast<String>(),
+            // .map((v) => Account(
+            //     v["userId"],
+            //     v["email"],
+            //     PaymentType(
+            //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
+            //     v["phoneNumber"],
+            //     v["photoUrl"],
+            //     v["username"],
+            //     v["groups"].toList().cast<String>()))
+            // .toList()
+            // .cast<Account>(),
             entry["status"]));
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        print(data.length);
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       });
     });
   }
@@ -205,9 +208,10 @@ class _BodyState extends State<Body> {
               ),
             ),
             Container(
-              alignment: Alignment.center,
+              // alignment: Alignment.center,
               // color: Colors.green,
-              width: size.width,
+              // width: size.width,
+              width: 350,
               height: (246.0 * data.length),
               // padding: EdgeInsets.symmetric(horizontal: 24.0),
               margin: EdgeInsets.all(0),
@@ -223,6 +227,7 @@ class _BodyState extends State<Body> {
                         data: data[index],
                       );
                     },
+                    shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(height: 16.0),

@@ -60,18 +60,18 @@ class _MainHomeState extends State<MainHome> {
                 .cast<Item>(),
             DateTime.fromMillisecondsSinceEpoch(
                 entry["duration"].seconds * 1000),
-            entry["users"]
-                .map((v) => Account(
-                    v["userId"],
-                    v["email"],
-                    PaymentType(
-                        v["paymentType"]["ovo"], v["paymentType"]["bca"]),
-                    v["phoneNumber"],
-                    v["photoUrl"],
-                    v["username"],
-                    v["groups"].toList().cast<String>()))
-                .toList()
-                .cast<Account>(),
+            entry["users"].toList().cast<String>(),
+            // .map((v) => Account(
+            //     v["userId"],
+            //     v["email"],
+            //     PaymentType(
+            //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
+            //     v["phoneNumber"],
+            //     v["photoUrl"],
+            //     v["username"],
+            //     v["groups"].toList().cast<String>()))
+            // .toList()
+            // .cast<Account>(),
             entry["status"]));
         mainData = preOrderData.toList().cast<PreOrder>();
 

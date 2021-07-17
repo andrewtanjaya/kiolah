@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/item.dart';
+import 'package:kiolah/services/database.dart';
 
 import 'components/form_item.dart';
 import 'components/user_form_item.dart';
@@ -23,6 +26,10 @@ class AddOrder extends StatefulWidget {
 class _AddOrderState extends State<AddOrder> {
   List<UserFormItem> userItems = <UserFormItem>[];
   List<ItemForm> itemForms = <ItemForm>[];
+
+  DatabaseMethods db = new DatabaseMethods();
+  var uname;
+
   // controller
   final formKey = GlobalKey<FormState>();
   TextEditingController titleController = new TextEditingController();
@@ -67,14 +74,35 @@ class _AddOrderState extends State<AddOrder> {
   void initState() {
     super.initState();
     itemForms.add(createNewItem());
+    getUserName() async {
+      await HelperFunction.getUsernameSP().then((username) {
+        uname = username.toString();
+      });
+    }
   }
 
   createPreOrder() {
     if (formKey.currentState!.validate()) {
-      var title = titleController.value.toString().trim();
-      var location = locationController.value.toString().trim();
-      var group = groupController.value.toString().trim();
-      var maxPeople = int.parse(maxPeopleController.value.toString().trim());
+      var title = titleController.text.toString().trim();
+      var location = locationController.text.toString().trim();
+      var group = groupController.text.toString().trim();
+      var maxPeople = int.parse(maxPeopleController.text.toString().trim());
+      print(
+          'title : $title; location $location; group : $group;maxPeople : $maxPeople');
+      Map<String, dynamic> newPreorder = {
+        "preOrderId": "-",
+        "title": title,
+        "location": location,
+        "group": group,
+        "maxPeople": maxPeople,
+        "status": "Ongoing",
+        "duration": Timestamp.now(),
+        "owner": uname,
+        "items": [],
+        "users": [uname]
+      };
+
+      db.addPreorder(newPreorder);
       // List<Item> items = [];
       // // List<String> names = [];
       // // List<String> names = [];
@@ -301,7 +329,7 @@ class _AddOrderState extends State<AddOrder> {
                 child: RoundButton(
                   text: 'CREATE',
                   onPressed: () {
-                    // createPreOrder();
+                    createPreOrder();
                   },
                 ),
               ),

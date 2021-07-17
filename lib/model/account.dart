@@ -4,11 +4,11 @@ import 'package:kiolah/model/group.dart';
 class Account {
   String? userId;
   String? email;
-  PaymentType? paymentType;
+  List<String>? paymentType;
   String? phoneNumber;
   String? photoUrl;
   String? username;
-  List<String>? groups;
+  // List<String>? groups;
 
   Account(
     this.userId,
@@ -17,6 +17,6 @@ class Account {
     this.phoneNumber,
     this.photoUrl,
     this.username,
-    this.groups,
+    // this.groups,
   );
 }
