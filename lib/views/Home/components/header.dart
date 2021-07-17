@@ -26,7 +26,7 @@ class _HeaderState extends State<Header> {
       // color: Colors.pink,
       width: size.width,
       // color: Colors.pink,
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,7 +43,7 @@ class _HeaderState extends State<Header> {
                   'Hey ${widget.username}',
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
-                    fontSize: 22,
+                    fontSize: 24,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
