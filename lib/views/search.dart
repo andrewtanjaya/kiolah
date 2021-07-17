@@ -2,7 +2,9 @@ import 'dart:convert';
 
 // import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/round_bordered_image.dart';
 import 'package:kiolah/components/round_button.dart';
@@ -10,6 +12,7 @@ import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/constant.dart';
+import 'package:kiolah/main.dart';
 import 'package:kiolah/model/account.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/conversationScreen.dart';
@@ -25,15 +28,65 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = new TextEditingController();
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   QuerySnapshot? searchSnapshot;
   List<String> users = [Constant.myName];
   List<Account> addedUsers = [];
   Account? user;
 
+  getToken() {
+    _firebaseMessaging.getToken().then((token) {
+      print('--- Firebase token here ---');
+      databaseMethods.addToken(token, Constant.myId);
+      print(token);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title.toString()),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body.toString())],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+    getToken();
   }
 
   initiateSearch() {
@@ -42,18 +95,6 @@ class _SearchScreenState extends State<SearchScreen> {
         searchSnapshot = val;
         if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
           searchSnapshot = null;
-        } else {
-          user = new Account(
-            val.docs[0]["userId"],
-            val.docs[0]["email"],
-            (val.docs[0]["paymentType"]).toList().cast<String>(),
-            val.docs[0]["phoneNumber"],
-            val.docs[0]["photoUrl"],
-            val.docs[0]["username"],
-          );
-          print('!!!!!!!!!!!!!!!!!!!!!');
-          print(user!.photoUrl);
-          print('!!!!!!!!!!!!!!!!!!!!!');
         }
       });
     });
@@ -187,19 +228,22 @@ class _SearchScreenState extends State<SearchScreen> {
     // searchAddedUsers();
     return addedUsers.length != 0
         ? Container(
-            child: ListView.builder(
-              itemCount: addedUsers.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return SearchItem(
-                  username: addedUsers[index].username.toString(),
-                  email: addedUsers[index].email.toString(),
-                  // userToken: searchSnapshot!.docs[0]["token"],
-                  photoUrl: addedUsers[index].photoUrl.toString(),
-                  isAddedItem: true,
-                );
-              },
-              physics: NeverScrollableScrollPhysics(),
+            child: SizedBox(
+              height: addedUsers.length * 70,
+              child: ListView.builder(
+                itemCount: addedUsers.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return SearchItem(
+                    username: addedUsers[index].username.toString(),
+                    email: addedUsers[index].email.toString(),
+                    // userToken: searchSnapshot!.docs[0]["token"],
+                    photoUrl: addedUsers[index].photoUrl.toString(),
+                    isAddedItem: true,
+                  );
+                },
+                physics: NeverScrollableScrollPhysics(),
+              ),
             ),
           )
         : Container();

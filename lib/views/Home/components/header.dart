@@ -1,6 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/authenticate.dart';
+import 'package:kiolah/helper/constant.dart';
+import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/services/auth.dart';
+import 'package:kiolah/services/database.dart';
 
 class Header extends StatefulWidget {
   const Header({
@@ -19,6 +25,19 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
+  AuthMethods _authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  deleteToken() {
+    _firebaseMessaging.getToken().then((token) {
+      print('--- Firebase token here ---');
+      List<dynamic> tokens = [token];
+      databaseMethods.deleteToken(tokens, Constant.myId);
+      print(token);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -70,7 +89,13 @@ class _HeaderState extends State<Header> {
           ),
           InkWell(
             onTap: () {
-              print('Mantap');
+              deleteToken();
+              _authMethods.signOut();
+              HelperFunction.saveEmailSP("");
+              HelperFunction.saveUserLoggedInSP(false);
+              HelperFunction.saveUsernameSP("");
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Authenticate()));
             },
             child: Container(
               width: 48,

@@ -19,7 +19,7 @@ class DatabaseMethods {
         .get();
   }
 
-  uploadUserInfo(Map<String, String> userMap, String userId) {
+  uploadUserInfo(Map<String, dynamic> userMap, String userId) {
     FirebaseFirestore.instance.collection("users").doc(userId).set(userMap);
   }
 

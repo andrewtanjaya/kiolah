@@ -108,9 +108,18 @@ class _BodyState extends State<Body> {
               emailController.text, passwordController.text)
           .then((value) {
         userId = value.userId.toString();
-        Map<String, String> userInfoMap = {
+        print("************************");
+        print(value.phoneNumber);
+        print(value.photoUrl);
+        print(value.userId.toString());
+        print(value.email.toString());
+        print(value.paymentType);
+        print(userNameController.text);
+
+        print("************************");
+        Map<String, dynamic> userInfoMap = {
           "email": value.email.toString(),
-          "paymentType": value.paymentType.toString(),
+          "paymentType": value.paymentType,
           "phoneNumber": value.phoneNumber.toString(),
           "photoUrl": value.photoUrl.toString(),
           "userId": value.userId.toString(),
