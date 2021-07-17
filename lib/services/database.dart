@@ -46,6 +46,18 @@ class DatabaseMethods {
         .add(messageMap);
   }
 
+  addPreorder(Map<String, dynamic> orderMap) async {
+    String id = await FirebaseFirestore.instance
+        .collection("preorders")
+        .doc()
+        .id
+        .toString();
+    orderMap["preOrderId"] = id;
+
+    print(orderMap);
+    FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
+  }
+
   getConversationMessages(String chatRoomId) async {
     return await FirebaseFirestore.instance
         .collection("chatRooms")
@@ -69,12 +81,10 @@ class DatabaseMethods {
   }
 
   getListPreorder(String username) async {
-    List<dynamic> sets = [
-      {"username": username},
-    ];
+    Map<String, String> sets = {"username": username};
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("users", arrayContains: sets)
+        .where("owner", isEqualTo: "andi")
         .get();
   }
 }
