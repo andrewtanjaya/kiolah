@@ -151,7 +151,7 @@ class _BodyState extends State<Body> {
           children: [
             // header
             Header(
-              username: uname,
+              username: uname == null ? "loading" : uname,
               totalPreorder: totalPreorder,
               imageUrl: imageUrl,
             ),

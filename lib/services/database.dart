@@ -69,9 +69,12 @@ class DatabaseMethods {
   }
 
   getListPreorder(String username) async {
+    List<dynamic> sets = [
+      {"username": username},
+    ];
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("owner", isEqualTo: "Andrew")
+        .where("users", arrayContains: sets)
         .get();
   }
 }
