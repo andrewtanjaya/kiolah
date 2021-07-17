@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/model/account.dart';
 
 class DatabaseMethods {
   getUserByUsername(String username) async {
@@ -64,5 +66,12 @@ class DatabaseMethods {
         .collection("users")
         .doc(userId)
         .update({'token': FieldValue.arrayRemove(token)});
+  }
+
+  getListPreorder(String namauser) async {
+    return await FirebaseFirestore.instance
+        .collection("preorders")
+        .where("owner", isEqualTo: "Andrew")
+        .get();
   }
 }
