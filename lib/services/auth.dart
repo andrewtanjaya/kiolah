@@ -11,8 +11,13 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Account? _userFromFirebaseUser(User? user) {
     return user != null
-        ? Account(user.uid, user.email, null, null, user.photoURL,
-            user.displayName, null)
+        ? Account(
+            userId: user.uid,
+            email: user.email,
+            paymentType: null,
+            phoneNumber: null,
+            photoUrl: user.photoURL,
+            username: user.displayName)
         : null;
   }
 

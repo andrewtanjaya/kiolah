@@ -63,7 +63,6 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: AnimatedBuilder(
         animation: _scrollController,
