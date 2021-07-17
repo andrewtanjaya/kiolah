@@ -39,8 +39,6 @@ class _MainHomeState extends State<MainHome> {
   }
 
   getAllData() {
-    print(
-        "!!!!!!!!!!!!!!CEKKKKKKKKAKDKAKSDADHKASDHKASDHASKDJSAHDK!!!!!!!!!!!!!!!!!!!!");
     db.getListPreorder(username).then((val) {
       setState(() {
         preOrderData = val.docs.map((entry) => PreOrder(
@@ -71,8 +69,6 @@ class _MainHomeState extends State<MainHome> {
             entry["status"]));
 
         mainData = preOrderData.toList().cast<PreOrder>();
-        print("!!!!!!!!!!!!!!!!!!!!!!!!");
-        print(mainData);
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
