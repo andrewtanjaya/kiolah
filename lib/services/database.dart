@@ -71,6 +71,7 @@ class DatabaseMethods {
   getListPreorder(String username) async {
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("users", arrayContains: {"username": "andrew"}).get();
+        .where("owner", isEqualTo: "Andrew")
+        .get();
   }
 }

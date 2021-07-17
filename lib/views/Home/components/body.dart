@@ -8,6 +8,7 @@ import 'package:kiolah/model/group.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/Home/components/header.dart';
 
 class Body extends StatefulWidget {
@@ -25,6 +26,55 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   List<PreOrder>? mainData;
   List<PreOrder> data = <PreOrder>[];
+  DatabaseMethods db = new DatabaseMethods();
+  var uname;
+  var preOrderData;
+
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((username) {
+      uname = username.toString();
+      getAllData();
+    });
+  }
+
+  getAllData() {
+    db.getListPreorder(uname).then((val) {
+      setState(() {
+        preOrderData = val.docs.map((entry) => PreOrder(
+            entry["preOrderId"],
+            entry["title"],
+            entry["owner"],
+            entry["group"],
+            entry["location"],
+            entry["items"]
+                .map((v) => Item(v["foodId"], v["name"], v["description"],
+                    v["count"], double.parse(v["price"])))
+                .toList()
+                .cast<Item>(),
+            DateTime.fromMillisecondsSinceEpoch(
+                entry["duration"].seconds * 1000),
+            entry["users"]
+                .map((v) => Account(
+                    v["userId"],
+                    v["email"],
+                    PaymentType(
+                        v["paymentType"]["ovo"], v["paymentType"]["bca"]),
+                    v["phoneNumber"],
+                    v["photoUrl"],
+                    v["username"],
+                    v["groups"].toList().cast<String>()))
+                .toList()
+                .cast<Account>(),
+            entry["status"]));
+        mainData = preOrderData.toList().cast<PreOrder>();
+
+        data = mainData!
+            .where((element) => element.status != 'Completed')
+            .toList();
+      });
+    });
+  }
+
   // List<Group> groups = [
   //   Group(
   //     '1',
@@ -69,12 +119,7 @@ class _BodyState extends State<Body> {
     // data = mainData!.where((element) => element.status != 'Completed').toList();
   }
 
-  var username;
-  getUserName() async {
-    await HelperFunction.getUsernameSP().then((uname) {
-      username = uname.toString();
-    });
-  }
+  // var username;
 
   var totalPreorder = 3;
   var imageUrl = 'assets/user/2.png';
@@ -106,7 +151,7 @@ class _BodyState extends State<Body> {
           children: [
             // header
             Header(
-              username: username,
+              username: uname,
               totalPreorder: totalPreorder,
               imageUrl: imageUrl,
             ),
