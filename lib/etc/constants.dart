@@ -9,3 +9,4 @@ const colorMainWhite = Color(0xFFF3F5FA);
 // color form
 const colorError = Color(0xFFED2C5B);
 const colorSuccess = Color(0xFF4EDBB0);
+const colorWarning = Color(0xFFEDB95E);

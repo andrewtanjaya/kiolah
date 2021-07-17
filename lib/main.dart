@@ -6,8 +6,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+<<<<<<< HEAD
+=======
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/etc/constants.dart';
+>>>>>>> dz_ui
 import 'package:kiolah/helper/authenticate.dart';
 import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/views/Home/home.dart';
 import 'package:kiolah/views/chatList.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -87,12 +93,25 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Kiolah',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+<<<<<<< HEAD
         primarySwatch: Colors.yellow,
+=======
+        primaryColor: colorMainBlue,
+        scaffoldBackgroundColor: colorMainWhite,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        iconTheme: IconThemeData(
+          color: colorMainBlack,
+        ),
+        errorColor: colorError,
+>>>>>>> dz_ui
       ),
-      home: isLoggedIn == true ? ChatList() : Authenticate(),
+      home: Home(),
+      // home: isLoggedIn == true ? ChatList() : Authenticate(),
     );
   }
 }

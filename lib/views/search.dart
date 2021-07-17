@@ -1,5 +1,9 @@
 import 'dart:convert';
+<<<<<<< HEAD
 
+=======
+// import 'dart:ffi';
+>>>>>>> dz_ui
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kiolah/helper/constant.dart';
@@ -32,6 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+<<<<<<< HEAD
   Future<bool> sendNotif(List<dynamic> userToken) async {
     final postUrl = 'https://fcm.googleapis.com/fcm/send';
     final data = {
@@ -65,6 +70,8 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+=======
+>>>>>>> dz_ui
   addMember(String username) {
     users.add(username);
     print(users);
@@ -92,17 +99,27 @@ class _SearchScreenState extends State<SearchScreen> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return SearchItem(
+<<<<<<< HEAD
                   username: searchSnapshot!.docs[0]["username"].toString(),
                   email: searchSnapshot!.docs[0]["email"].toString(),
                   userToken: searchSnapshot!.docs[0]["token"]);
+=======
+                username: searchSnapshot!.docs[0]["username"].toString(),
+                email: searchSnapshot!.docs[0]["email"].toString(),
+              );
+>>>>>>> dz_ui
             })
         : Container();
   }
 
+<<<<<<< HEAD
   Widget SearchItem(
       {required String username,
       required String email,
       required List<dynamic> userToken}) {
+=======
+  Widget SearchItem({required String username, required String email}) {
+>>>>>>> dz_ui
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
@@ -125,6 +142,7 @@ class _SearchScreenState extends State<SearchScreen> {
               decoration: BoxDecoration(
                   color: Colors.yellow,
                   borderRadius: BorderRadius.circular(15)),
+<<<<<<< HEAD
             ),
           ),
           Spacer(),
@@ -139,6 +157,8 @@ class _SearchScreenState extends State<SearchScreen> {
               decoration: BoxDecoration(
                   color: Colors.yellow,
                   borderRadius: BorderRadius.circular(15)),
+=======
+>>>>>>> dz_ui
             ),
           )
         ],
@@ -190,11 +210,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 createChatRoom();
               },
               child: Container(
+<<<<<<< HEAD
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   decoration: BoxDecoration(
                       color: Colors.yellow,
                       borderRadius: BorderRadius.circular(20)),
                   child: Text("Create Group")),
+=======
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text("Create Group"),
+              ),
+>>>>>>> dz_ui
             )
           ],
         ),

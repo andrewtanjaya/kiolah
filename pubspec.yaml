@@ -38,8 +38,14 @@ dependencies:
   google_fonts: ^2.1.0
   firebase_messaging: ^10.0.3
   device_info: ^2.0.2
+<<<<<<< HEAD
   firebase_messaging_web: ^2.0.2
   firebase_core_web: ^1.1.0
+=======
+  ffi: ^1.1.2
+  timeago: ^3.1.0
+  flutter_multi_formatter: ^2.3.1
+>>>>>>> dz_ui
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +66,10 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/emoji/
+    - assets/user/
+    - assets/payment/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

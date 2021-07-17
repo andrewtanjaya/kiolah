@@ -4,18 +4,22 @@ import 'package:kiolah/etc/constants.dart';
 
 class RoundButton extends StatelessWidget {
   final String text;
+  final Color color;
   final VoidCallback? onPressed;
+  final double width;
   const RoundButton({
     Key? key,
     required this.text,
     this.onPressed,
+    this.color: colorMainBlue,
+    this.width: 200,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width * .7,
+      width: width,
       margin: EdgeInsets.symmetric(
         vertical: 10,
       ),
@@ -23,7 +27,7 @@ class RoundButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           alignment: Alignment.center,
           shape: StadiumBorder(),
-          primary: colorMainBlue,
+          primary: color,
           padding: EdgeInsets.symmetric(vertical: 12),
         ),
         onPressed: onPressed,
@@ -33,6 +37,7 @@ class RoundButton extends StatelessWidget {
             letterSpacing: 1.5,
             fontWeight: FontWeight.w500,
             fontSize: 12,
+            color: colorMainWhite,
           ),
         ),
       ),
