@@ -19,7 +19,7 @@ class DatabaseMethods {
         .get();
   }
 
-  uploadUserInfo(Map<String, String> userMap, String userId) {
+  uploadUserInfo(Map<String, dynamic> userMap, String userId) {
     FirebaseFirestore.instance.collection("users").doc(userId).set(userMap);
   }
 
@@ -35,7 +35,7 @@ class DatabaseMethods {
     return await FirebaseFirestore.instance
         .collection("chatRooms")
         .where("users", arrayContains: username)
-        .snapshots();
+        .get();
   }
 
   addConversationMessages(String chatRoomId, messageMap) {
@@ -74,7 +74,7 @@ class DatabaseMethods {
     ];
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("owner", isEqualTo: "andi")
+        .where("owner", isEqualTo: "ganz")
         .get();
   }
 

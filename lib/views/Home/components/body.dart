@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/preorder_card.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
 import 'package:kiolah/model/group.dart';
@@ -33,6 +34,17 @@ class _BodyState extends State<Body> {
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
+      DatabaseMethods().getChatRooms(Constant.myName).then((val) {
+        setState(() {
+          totalPreorder = val.docs.length;
+        });
+      });
+      DatabaseMethods().getUserByUsername(uname).then((val) {
+        setState(() {
+          imageUrl = val.docs[0]["photoUrl"];
+          print(val.docs[0]["photoUrl"]);
+        });
+      });
       getAllData();
     });
   }
@@ -71,9 +83,9 @@ class _BodyState extends State<Body> {
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        print('!****************************');
         print(data.length);
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        print('!****************************');
       });
     });
   }
@@ -124,7 +136,7 @@ class _BodyState extends State<Body> {
 
   // var username;
 
-  var totalPreorder = 3;
+  var totalPreorder = 0;
   var imageUrl = 'assets/user/2.png';
 
   var _currentButtonBarIndex = 0;

@@ -15,7 +15,6 @@ import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
-import 'package:kiolah/views/AddGroup/addGroup.dart';
 import 'package:kiolah/views/AddOrder/addOrder.dart';
 import '../search.dart';
 import 'components/body.dart';
@@ -294,6 +293,16 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
     getUserName();
+    HelperFunction.saveUserLoggedInSP(true);
+    HelperFunction.getUsernameSP().then((username) {
+      Constant.myName = username.toString();
+    });
+    HelperFunction.getUserIDSP().then((userid) {
+      Constant.myId = userid.toString();
+    });
+    HelperFunction.getEmailSP().then((email) {
+      Constant.myEmail = email.toString();
+    });
 
     // data = mainData!.where((element) => element.status != 'Completed').toList();
     // widget.scrollController = ScrollController();

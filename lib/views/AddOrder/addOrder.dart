@@ -42,7 +42,6 @@ class _AddOrderState extends State<AddOrder> {
   var descriptions = <TextEditingController>[];
   var prices = <TextEditingController>[];
   var quantities = <TextEditingController>[];
-  var paymentType;
 
   String? titleValidator(value) {
     if (value.toString().length <= 0) {
@@ -75,11 +74,6 @@ class _AddOrderState extends State<AddOrder> {
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
-      DatabaseMethods().getUserByUsername(uname).then((val) {
-        setState(() {
-          paymentType = val.docs[0]["paymentType"];
-        });
-      });
     });
   }
 
@@ -104,7 +98,6 @@ class _AddOrderState extends State<AddOrder> {
         "group": group,
         "maxPeople": maxPeople,
         "status": "Ongoing",
-        "paymentType": paymentType,
         "duration": Timestamp.now(),
         "owner": uname,
         "items": [],

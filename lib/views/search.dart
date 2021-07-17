@@ -42,18 +42,6 @@ class _SearchScreenState extends State<SearchScreen> {
         searchSnapshot = val;
         if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
           searchSnapshot = null;
-        } else {
-          user = new Account(
-            val.docs[0]["userId"],
-            val.docs[0]["email"],
-            (val.docs[0]["paymentType"]).toList().cast<String>(),
-            val.docs[0]["phoneNumber"],
-            val.docs[0]["photoUrl"],
-            val.docs[0]["username"],
-          );
-          print('!!!!!!!!!!!!!!!!!!!!!');
-          print(user!.photoUrl);
-          print('!!!!!!!!!!!!!!!!!!!!!');
         }
       });
     });
@@ -138,12 +126,14 @@ class _SearchScreenState extends State<SearchScreen> {
     print('!!!!!!!!!!!!!!!!!!!!1');
     print('users : $users');
     print('!!!!!!!!!!!!!!!!!!!!1');
-    users.removeAt(0);
+    // users.removeAt(0);
     print('!!!!!!!!!!!!!!!!!!!!1');
     print('users : $users');
     print('!!!!!!!!!!!!!!!!!!!!1');
     String chatRoomId = getChatRoomId(users);
+    var groupName = groupNameController.text.toString().trim();
     Map<String, dynamic> chatRoomMap = {
+      "groupName": groupName,
       "users": users,
       "chatRoomId": chatRoomId
     };
@@ -152,7 +142,6 @@ class _SearchScreenState extends State<SearchScreen> {
     print('!!!!!!!!!!!!!!!!!!!!1');
 
     // name groupName
-    var groupName = groupNameController.text.toString().trim();
 
     databaseMethods.addChatRoom(chatRoomId, chatRoomMap);
     Navigator.push(
@@ -187,19 +176,22 @@ class _SearchScreenState extends State<SearchScreen> {
     // searchAddedUsers();
     return addedUsers.length != 0
         ? Container(
-            child: ListView.builder(
-              itemCount: addedUsers.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return SearchItem(
-                  username: addedUsers[index].username.toString(),
-                  email: addedUsers[index].email.toString(),
-                  // userToken: searchSnapshot!.docs[0]["token"],
-                  photoUrl: addedUsers[index].photoUrl.toString(),
-                  isAddedItem: true,
-                );
-              },
-              physics: NeverScrollableScrollPhysics(),
+            child: SizedBox(
+              height: addedUsers.length * 70,
+              child: ListView.builder(
+                itemCount: addedUsers.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return SearchItem(
+                    username: addedUsers[index].username.toString(),
+                    email: addedUsers[index].email.toString(),
+                    // userToken: searchSnapshot!.docs[0]["token"],
+                    photoUrl: addedUsers[index].photoUrl.toString(),
+                    isAddedItem: true,
+                  );
+                },
+                physics: NeverScrollableScrollPhysics(),
+              ),
             ),
           )
         : Container();

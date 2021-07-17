@@ -10,9 +10,15 @@ import 'package:kiolah/views/chatList.dart';
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Account? _userFromFirebaseUser(User? user) {
+    List<String> pay = ["-", "-"];
     return user != null
         ? Account(
-            user.uid, user.email, null, null, user.photoURL, user.displayName)
+            user.uid,
+            user.email,
+            pay,
+            "-",
+            "https://www.shareicon.net/data/512x512/2016/05/24/770137_man_512x512.png",
+            user.displayName)
         : null;
   }
 

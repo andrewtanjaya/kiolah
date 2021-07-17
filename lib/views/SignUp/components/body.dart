@@ -108,9 +108,17 @@ class _BodyState extends State<Body> {
               emailController.text, passwordController.text)
           .then((value) {
         userId = value.userId.toString();
-        Map<String, String> userInfoMap = {
+        print("***************************");
+        print(value.paymentType);
+        print(value.email);
+        print(value.phoneNumber);
+        print(value.photoUrl);
+        print(value.userId);
+        print(userNameController.text);
+        print("***************************");
+        Map<String, dynamic> userInfoMap = {
           "email": value.email.toString(),
-          "paymentType": value.paymentType.toString(),
+          "paymentType": value.paymentType,
           "phoneNumber": value.phoneNumber.toString(),
           "photoUrl": value.photoUrl.toString(),
           "userId": value.userId.toString(),
@@ -125,23 +133,25 @@ class _BodyState extends State<Body> {
         setState(() {
           SignUp.isLoading = true;
         });
-
+        Constant.myName = userNameController.text;
+        Constant.myEmail = emailController.text;
+        Constant.myId = userId;
         databaseMethods.uploadUserInfo(userInfoMap, userId);
-        HelperFunction.getUsernameSP().then(
-          (username) {
-            Constant.myName = username.toString();
-          },
-        );
-        HelperFunction.getEmailSP().then(
-          (email) {
-            Constant.myEmail = email.toString();
-          },
-        );
-        HelperFunction.getUserIDSP().then(
-          (userid) {
-            Constant.myId = userid.toString();
-          },
-        );
+        // HelperFunction.getUsernameSP().then(
+        //   (username) {
+        //     Constant.myName = username.toString();
+        //   },
+        // );
+        // HelperFunction.getEmailSP().then(
+        //   (email) {
+        //     Constant.myEmail = email.toString();
+        //   },
+        // );
+        // HelperFunction.getUserIDSP().then(
+        //   (userid) {
+        //     Constant.myId = userid.toString();
+        //   },
+        // );
         Timer.run(() {
           showSuccessPopUp();
         });
