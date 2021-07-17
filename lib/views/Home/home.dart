@@ -86,7 +86,7 @@ class HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.explore_rounded),
-              title: Text('Home'),
+              title: Text('Explore'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),

@@ -261,137 +261,139 @@ class _MainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: colorMainWhite,
-        iconTheme: IconThemeData(
-          color: colorMainBlack,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: colorMainWhite,
+          iconTheme: IconThemeData(
+            color: colorMainBlack,
+          ),
         ),
-      ),
-      drawer: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: colorMainBlack,
-        ),
-        child: Container(
-          width: 80,
-          child: Drawer(
-            elevation: 0,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: ListView.separated(
-                // controller: _scrollController,
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: 12.0,
-                    height: 48.0,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.0),
-                      color: colorWarning,
-                    ),
-                    child: Text(
-                      'W',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        color: colorMainWhite,
-                        fontSize: 12.0,
+        drawer: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: colorMainBlack,
+          ),
+          child: Container(
+            width: 80,
+            child: Drawer(
+              elevation: 0,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                child: ListView.separated(
+                  // controller: _scrollController,
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: 12.0,
+                      height: 48.0,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                        color: colorWarning,
                       ),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(height: 16.0),
-                // physics: const NeverScrollableScrollPhysics(),
+                      child: Text(
+                        'W',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          color: colorMainWhite,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(height: 16.0),
+                  // physics: const NeverScrollableScrollPhysics(),
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Container(
-        color: colorMainWhite,
-        width: size.width,
-        height: size.height - 24.0,
-        child: Column(
-          children: [
-            // header
-            Header(
-              username: username,
-              totalPreorder: totalPreorder,
-              imageUrl: imageUrl,
-            ),
+        body: Container(
+          color: colorMainWhite,
+          width: size.width,
+          height: size.height - 24.0,
+          child: Column(
+            children: [
+              // header
+              Header(
+                username: username,
+                totalPreorder: totalPreorder,
+                imageUrl: imageUrl,
+              ),
 
-            // button bar
-            Container(
-              // color: Colors.green,
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              width: size.width,
-              child: ButtonBar(
-                buttonPadding: EdgeInsets.symmetric(vertical: 0.0),
-                alignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    // height: 10.0,
-                    // color: Colors.pink,
-                    child: TextButton(
+              // button bar
+              Container(
+                // color: Colors.green,
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                width: size.width,
+                child: ButtonBar(
+                  buttonPadding: EdgeInsets.symmetric(vertical: 0.0),
+                  alignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      // height: 10.0,
+                      // color: Colors.pink,
+                      child: TextButton(
+                        onPressed: () {
+                          _onButtonBarTapped(0);
+                        },
+                        child: Text(
+                          'Ongoing',
+                          style: GoogleFonts.poppins(
+                            color: _currentButtonBarIndex == 0
+                                ? colorMainBlue
+                                : colorMainGray,
+                            fontWeight: _currentButtonBarIndex == 0
+                                ? FontWeight.bold
+                                : FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextButton(
                       onPressed: () {
-                        _onButtonBarTapped(0);
+                        _onButtonBarTapped(1);
                       },
                       child: Text(
-                        'Ongoing',
+                        'History',
                         style: GoogleFonts.poppins(
-                          color: _currentButtonBarIndex == 0
+                          color: _currentButtonBarIndex == 1
                               ? colorMainBlue
                               : colorMainGray,
-                          fontWeight: _currentButtonBarIndex == 0
+                          fontWeight: _currentButtonBarIndex == 1
                               ? FontWeight.bold
                               : FontWeight.w500,
                         ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      _onButtonBarTapped(1);
-                    },
-                    child: Text(
-                      'History',
-                      style: GoogleFonts.poppins(
-                        color: _currentButtonBarIndex == 1
-                            ? colorMainBlue
-                            : colorMainGray,
-                        fontWeight: _currentButtonBarIndex == 1
-                            ? FontWeight.bold
-                            : FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              // color: Colors.green,
-              child: Expanded(
-                child: SizedBox(
-                  width: 350,
-                  height: size.height - 320,
-                  child: ListView.separated(
-                    controller: _scrollController,
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return PreorderCard(
-                        data: data[index],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(height: 16.0),
-                    // physics: const NeverScrollableScrollPhysics(),
+              Container(
+                // color: Colors.green,
+                child: Expanded(
+                  child: SizedBox(
+                    width: 350,
+                    height: size.height - 320,
+                    child: ListView.separated(
+                      controller: _scrollController,
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PreorderCard(
+                          data: data[index],
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(height: 16.0),
+                      // physics: const NeverScrollableScrollPhysics(),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
