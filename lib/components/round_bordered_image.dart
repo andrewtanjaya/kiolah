@@ -5,12 +5,14 @@ class RoundBorderedImage extends StatelessWidget {
   final String imageUrl;
   final Color colorBorder;
   final double size;
+  final bool? fromInternet;
 
   const RoundBorderedImage({
     Key? key,
     required this.imageUrl,
     this.colorBorder: colorMainWhite,
     this.size: 24.0,
+    this.fromInternet,
   }) : super(key: key);
 
   @override
