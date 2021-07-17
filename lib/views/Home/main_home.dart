@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/components/fab.dart';
+import 'package:kiolah/components/fab_extended.dart';
 import 'package:kiolah/components/preorder_card.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/etc/generate_color.dart';
@@ -12,7 +14,12 @@ import 'package:kiolah/model/group.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
+<<<<<<< HEAD
 import 'package:kiolah/services/database.dart';
+=======
+import 'package:kiolah/views/AddOrder/addOrder.dart';
+import 'components/body.dart';
+>>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
 import 'components/header.dart';
 
 class MainHome extends StatefulWidget {
@@ -27,6 +34,7 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
+<<<<<<< HEAD
   DatabaseMethods db = new DatabaseMethods();
   var preOrderData;
 
@@ -279,15 +287,40 @@ class _MainHomeState extends State<MainHome> {
   var imageUrl = 'assets/user/2.png';
 
   ScrollController _scrollController = ScrollController();
+=======
+  // informasi header
+  late ScrollController _scrollController;
+>>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
 
+  var isFAB = false;
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     getAllData();
 
     _scrollController = widget.scrollController;
     // data = mainData!.where((element) => element.status != 'Completed').toList();
     // widget.scrollController = ScrollController();
+=======
+    _scrollController = widget.scrollController;
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.addListener(() {
+          if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.reverse) {
+            setState(() {
+              isFAB = true;
+            });
+          } else {
+            setState(() {
+              isFAB = false;
+            });
+          }
+        });
+      }
+    });
+>>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
   }
 
   @override
@@ -297,6 +330,7 @@ class _MainHomeState extends State<MainHome> {
     super.dispose();
   }
 
+<<<<<<< HEAD
   var _currentButtonBarIndex = 0;
   void _onButtonBarTapped(int index) {
     setState(() {
@@ -311,6 +345,11 @@ class _MainHomeState extends State<MainHome> {
             .toList();
       ;
     });
+=======
+  showAddOrderPage() {
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => AddOrder()));
+>>>>>>> cc845158217675f436ea3d5012aa3d5e3c2612bb
   }
 
   @override
@@ -335,7 +374,7 @@ class _MainHomeState extends State<MainHome> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: ListView.separated(
-                // controller: _scrollController,
+                controller: _scrollController,
                 itemCount: 10,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
@@ -364,91 +403,19 @@ class _MainHomeState extends State<MainHome> {
           ),
         ),
       ),
-      body: Container(
-        color: colorMainWhite,
-        width: size.width,
-        height: size.height - 24.0,
-        child: Column(
-          children: [
-            // header
-            Header(
-              username: username,
-              totalPreorder: totalPreorder,
-              imageUrl: imageUrl,
-            ),
-
-            // button bar
-            Container(
-              // color: Colors.green,
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              width: size.width,
-              child: ButtonBar(
-                buttonPadding: EdgeInsets.symmetric(vertical: 0.0),
-                alignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    // height: 10.0,
-                    // color: Colors.pink,
-                    child: TextButton(
-                      onPressed: () {
-                        _onButtonBarTapped(0);
-                      },
-                      child: Text(
-                        'Ongoing',
-                        style: GoogleFonts.poppins(
-                          color: _currentButtonBarIndex == 0
-                              ? colorMainBlue
-                              : colorMainGray,
-                          fontWeight: _currentButtonBarIndex == 0
-                              ? FontWeight.bold
-                              : FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      _onButtonBarTapped(1);
-                    },
-                    child: Text(
-                      'History',
-                      style: GoogleFonts.poppins(
-                        color: _currentButtonBarIndex == 1
-                            ? colorMainBlue
-                            : colorMainGray,
-                        fontWeight: _currentButtonBarIndex == 1
-                            ? FontWeight.bold
-                            : FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              // color: Colors.green,
-              child: Expanded(
-                child: SizedBox(
-                  width: 350,
-                  height: size.height - 320,
-                  child: ListView.separated(
-                    controller: _scrollController,
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return PreorderCard(
-                        data: data[index],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(height: 16.0),
-                    // physics: const NeverScrollableScrollPhysics(),
-                  ),
-                ),
-              ),
-            ),
-          ],
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: Body(
+          scrollController: _scrollController,
         ),
       ),
+      floatingActionButton: isFAB
+          ? FAB(icon: Icons.edit_rounded, onPressed: () {})
+          : FABExtended(
+              text: 'Add preorder',
+              onPressed: () {},
+              icon: Icons.edit_rounded,
+            ),
     );
   }
 }
