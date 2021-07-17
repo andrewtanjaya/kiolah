@@ -17,6 +17,7 @@ import 'package:kiolah/etc/generate_color.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/views/Home/components/background.dart';
+import 'package:kiolah/views/conversationScreen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -286,7 +287,14 @@ class _BodyState extends State<Body> {
                   ),
                 ),
               TextButton.icon(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ConversationScreen(
+                                chatRoomId: widget.data.group,
+                              )))
+                },
                 icon: Icon(
                   Icons.chat_rounded,
                   color: colorMainGray,
