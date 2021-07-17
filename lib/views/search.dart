@@ -139,11 +139,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 createChatRoom();
               },
               child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text("Create Group")),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text("Create Group"),
+              ),
             )
           ],
         ),

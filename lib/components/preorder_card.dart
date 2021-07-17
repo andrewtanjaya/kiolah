@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/row_rounded_bordered_image.dart';
+import 'package:kiolah/components/status_button.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/etc/generate_color.dart';
-
+import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/views/DetailPreorder/detailPreorder.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'colored_outlined_text.dart';
 import 'icon_text.dart';
 
 class PreorderCard extends StatefulWidget {
-  final String title;
-  final String owner;
-  final String duration;
-  final String location;
-  final String food;
-  final String group;
-  final List<String> imagesUrl;
-  final String status;
+  final PreOrder data;
 
   PreorderCard({
     Key? key,
-    required this.title,
-    required this.owner,
-    required this.duration,
-    required this.imagesUrl,
-    required this.status,
-    required this.location,
-    required this.food,
-    required this.group,
+    required this.data,
+    // required this.title,
+    // required this.owner,
+    // required this.duration,
+    // required this.imagesUrl,
+    // required this.status,
+    // required this.location,
+    // required this.food,
+    // required this.group,
   }) : super(key: key);
 
   @override
@@ -33,41 +31,36 @@ class PreorderCard extends StatefulWidget {
 }
 
 class _PreorderCardState extends State<PreorderCard> {
-  Color getStatusColor(status) {
-    var color;
-    if (widget.status.toLowerCase() == 'warning') {
-      color = colorWarning;
-    } else if (widget.status.toLowerCase() == 'deadline') {
-      color = colorError;
-    } else {
-      color = colorSuccess;
-    }
-    return color;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card tapped.');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailPreOrder(
+                data: widget.data,
+              ),
+            ),
+          );
         },
         child: Container(
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(16.0),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: colorMainGray,
-                spreadRadius: .5,
-                blurRadius: 5,
-                offset: Offset(0, 4), // changes position of shadow
+                color: lighten(colorMainGray, .2),
+                spreadRadius: .2,
+                blurRadius: 20,
+                offset: Offset(0, 3), // changes position of shadow
               ),
             ],
           ),
@@ -83,7 +76,7 @@ class _PreorderCardState extends State<PreorderCard> {
                     // color: colorMainGray,
                     width: 200,
                     child: Text(
-                      widget.title,
+                      widget.data.title,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
@@ -92,33 +85,9 @@ class _PreorderCardState extends State<PreorderCard> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: 100,
-                    // color: Colors.blue,
-                    // margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: lighten(colorMainGray, .3),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(
-                            color: colorMainGray,
-                            width: 2.0,
-                          ),
-                        ),
-                        elevation: 0,
-                      ),
-                      onPressed: () => {},
-                      child: Text(
-                        'SLC',
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.0,
-                          color: darken(colorMainGray),
-                        ),
-                      ),
-                    ),
+                  ColoredOutlinedText(
+                    text: widget.data.group,
+                    color: colorWarning,
                   )
                   // IconButton(
                   //   icon: Icon(
@@ -131,13 +100,13 @@ class _PreorderCardState extends State<PreorderCard> {
               ),
               IconText(
                 icon: Icons.person_rounded,
-                text: widget.owner,
+                text: widget.data.owner,
                 color: colorMainGray,
                 width: 250,
               ),
               IconText(
                 icon: Icons.location_on_rounded,
-                text: widget.location,
+                text: widget.data.location,
                 color: colorMainGray,
                 width: 250,
               ),
@@ -145,7 +114,7 @@ class _PreorderCardState extends State<PreorderCard> {
                 children: [
                   IconText(
                     icon: Icons.restaurant_rounded,
-                    text: widget.food,
+                    text: widget.data.items[0].name,
                     color: colorMainGray,
                   ),
                   SizedBox(
@@ -157,7 +126,7 @@ class _PreorderCardState extends State<PreorderCard> {
                   ),
                   IconText(
                     icon: Icons.schedule_rounded,
-                    text: widget.duration,
+                    text: timeago.format(widget.data.duration),
                     color: colorMainGray,
                   ),
                 ],
@@ -165,34 +134,24 @@ class _PreorderCardState extends State<PreorderCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RowBorderedImage(
-                    borderColor: colorMainWhite,
-                    firstImageUrl:
-                        widget.imagesUrl.length > 0 ? widget.imagesUrl[0] : '',
-                    secondImageUrl:
-                        widget.imagesUrl.length > 1 ? widget.imagesUrl[1] : '',
-                    thirdImageUrl:
-                        widget.imagesUrl.length > 2 ? widget.imagesUrl[2] : '',
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.0),
-                      color: getStatusColor(widget.status),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
-                    child: Text(
-                      widget.status,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        color: colorMainWhite,
-                        fontSize: 12.0,
+                  Stack(
+                    children: [
+                      RowBorderedImage(
+                        borderColor: colorMainWhite,
+                        firstImageUrl: widget.data.users.length > 0
+                            ? widget.data.users[0].photoUrl.toString()
+                            : '',
+                        secondImageUrl: widget.data.users.length > 1
+                            ? widget.data.users[1].photoUrl.toString()
+                            : '',
+                        thirdImageUrl: widget.data.users.length > 2
+                            ? widget.data.users[2].photoUrl.toString()
+                            : '',
+                        count: widget.data.users.length,
                       ),
-                    ),
+                    ],
                   ),
+                  StatusButton(status: widget.data.status),
                 ],
               )
             ],
