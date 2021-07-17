@@ -26,7 +26,14 @@ class AddOrder extends StatefulWidget {
 class _AddOrderState extends State<AddOrder> {
   List<UserFormItem> userItems = <UserFormItem>[];
   List<ItemForm> itemForms = <ItemForm>[];
+<<<<<<< HEAD
   DatabaseMethods db = new DatabaseMethods();
+=======
+
+  DatabaseMethods db = new DatabaseMethods();
+  var uname;
+
+>>>>>>> 284365424b8ef33ae90d28c1fad6febab65f02f3
   // controller
   final formKey = GlobalKey<FormState>();
   TextEditingController titleController = new TextEditingController();
@@ -78,16 +85,33 @@ class _AddOrderState extends State<AddOrder> {
   void initState() {
     super.initState();
     itemForms.add(createNewItem());
+<<<<<<< HEAD
     getUserName();
+=======
+    getUserName() async {
+      await HelperFunction.getUsernameSP().then((username) {
+        uname = username.toString();
+      });
+    }
+>>>>>>> 284365424b8ef33ae90d28c1fad6febab65f02f3
   }
 
   createPreOrder() {
     if (formKey.currentState!.validate()) {
+<<<<<<< HEAD
       var title = titleController.text.toString();
       var location = locationController.text.toString();
       var group = groupController.text.toString();
       var maxPeople = int.parse(maxPeopleController.text.toString());
       print(title + " " + location + " " + group + " " + maxPeople.toString());
+=======
+      var title = titleController.text.toString().trim();
+      var location = locationController.text.toString().trim();
+      var group = groupController.text.toString().trim();
+      var maxPeople = int.parse(maxPeopleController.text.toString().trim());
+      print(
+          'title : $title; location $location; group : $group;maxPeople : $maxPeople');
+>>>>>>> 284365424b8ef33ae90d28c1fad6febab65f02f3
       Map<String, dynamic> newPreorder = {
         "preOrderId": "-",
         "title": title,
@@ -102,7 +126,10 @@ class _AddOrderState extends State<AddOrder> {
       };
 
       db.addPreorder(newPreorder);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 284365424b8ef33ae90d28c1fad6febab65f02f3
       // List<Item> items = [];
       // // List<String> names = [];
       // // List<String> names = [];

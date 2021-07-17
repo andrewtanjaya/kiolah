@@ -211,19 +211,19 @@ class _BodyState extends State<Body> {
                         child: Container(
                       color: Colors.blue,
                     )),
-                    RowBorderedImage(
-                      borderColor: colorMainWhite,
-                      firstImageUrl: widget.data.users.length > 0
-                          ? widget.data.users[0].photoUrl.toString()
-                          : '',
-                      secondImageUrl: widget.data.users.length > 1
-                          ? widget.data.users[1].photoUrl.toString()
-                          : '',
-                      thirdImageUrl: widget.data.users.length > 2
-                          ? widget.data.users[2].photoUrl.toString()
-                          : '',
-                      count: widget.data.users.length,
-                    ),
+                    // RowBorderedImage(
+                    //   borderColor: colorMainWhite,
+                    //   firstImageUrl: widget.data.users.length > 0
+                    //       ? widget.data.users[0].photoUrl.toString()
+                    //       : '',
+                    //   secondImageUrl: widget.data.users.length > 1
+                    //       ? widget.data.users[1].photoUrl.toString()
+                    //       : '',
+                    //   thirdImageUrl: widget.data.users.length > 2
+                    //       ? widget.data.users[2].photoUrl.toString()
+                    //       : '',
+                    //   count: widget.data.users.length,
+                    // ),
                   ],
                 ),
               ),
@@ -257,24 +257,24 @@ class _BodyState extends State<Body> {
                           ),
                         ],
                       ),
-                      RoundButton(
-                        text: 'Pay',
-                        onPressed: () => {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return PaymentDialog(
-                                bca: widget.data.users[0].paymentType!.bca
-                                    .toInt(),
-                                ovo: widget.data.users[0].paymentType!.ovo
-                                    .toInt(),
-                                total: getTotalPrice(),
-                              );
-                            },
-                          )
-                        },
-                        color: colorSuccess,
-                      ),
+                      // RoundButton(
+                      //   text: 'Pay',
+                      //   onPressed: () => {
+                      //     showDialog(
+                      //       context: context,
+                      //       builder: (BuildContext context) {
+                      //         return PaymentDialog(
+                      //           bca: widget.data.users[0].paymentType!.bca
+                      //               .toInt(),
+                      //           ovo: widget.data.users[0].paymentType!.ovo
+                      //               .toInt(),
+                      //           total: getTotalPrice(),
+                      //         );
+                      //       },
+                      //     )
+                      //   },
+                      //   color: colorSuccess,
+                      // ),
                     ],
                   ),
                 ),

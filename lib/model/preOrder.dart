@@ -9,7 +9,7 @@ class PreOrder {
   String location;
   List<Item> items;
   DateTime duration;
-  List<Account> users;
+  List<String> users;
   String status;
 
   PreOrder(this.preOrderId, this.title, this.owner, this.group, this.location,
