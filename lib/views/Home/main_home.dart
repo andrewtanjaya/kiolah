@@ -36,10 +36,16 @@ class _MainHomeState extends State<MainHome> {
   DatabaseMethods db = new DatabaseMethods();
   var uname;
   var preOrderData;
+  var groups;
 
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
+      DatabaseMethods().getChatRooms(uname).then((val) {
+        setState(() {
+          groups = val.docs;
+        });
+      });
       getAllData();
     });
   }
@@ -402,14 +408,15 @@ class _MainHomeState extends State<MainHome> {
                         height: 5 * 66.0,
                         child: ListView.separated(
                           // controller: _scrollController,
-                          itemCount: 5,
+                          itemCount: groups.length,
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => GroupPage()));
+                                        builder: (context) =>
+                                            GroupPage(group: groups[index])));
                               },
                               child: Container(
                                 width: 12.0,

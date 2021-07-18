@@ -72,6 +72,23 @@ class DatabaseMethods {
         .get();
   }
 
+  deleteChatRoom(String chatRoomId) async {
+    return await FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+      FirebaseFirestore.instance
+          .collection("chatRooms")
+          .doc(chatRoomId)
+          .delete();
+    });
+  }
+
   addConversationMessages(String chatRoomId, messageMap) {
     FirebaseFirestore.instance
         .collection("chatRooms")
@@ -102,16 +119,6 @@ class DatabaseMethods {
         .update({'token': FieldValue.arrayRemove(token)});
   }
 
-  getListPreorder(String username) async {
-    List<dynamic> sets = [
-      {"username": username},
-    ];
-    return await FirebaseFirestore.instance
-        .collection("preorders")
-        .where("users", arrayContains: username)
-        .get();
-  }
-
   addPreorder(Map<String, dynamic> orderMap) async {
     String id = await FirebaseFirestore.instance
         .collection("preorders")
@@ -126,6 +133,20 @@ class DatabaseMethods {
 
   getAllPreorder() async {
     return await FirebaseFirestore.instance.collection("preorders").get();
+  }
+
+  getPreorderGroup(String groupId) async {
+    return await FirebaseFirestore.instance
+        .collection("preorders")
+        .where("group", isEqualTo: groupId)
+        .get();
+  }
+
+  getListPreorder(String username) async {
+    return await FirebaseFirestore.instance
+        .collection("preorders")
+        .where("users", arrayContains: username)
+        .get();
   }
 
   getGroupById(String groupId) {

@@ -16,8 +16,8 @@ import 'package:kiolah/views/DetailJoinPreorder/detailJoinPreoder.dart';
 import 'package:kiolah/views/GroupPage/components/dropdownButton.dart';
 
 class GroupPage extends StatefulWidget {
-  // GroupPage({Key? key}) : super(key: key);
-
+  final dynamic group;
+  GroupPage({Key? key, required this.group}) : super(key: key);
   @override
   _GroupPageState createState() => _GroupPageState();
 }
@@ -33,24 +33,6 @@ class _GroupPageState extends State<GroupPage> {
   void initState() {
     super.initState();
     getUserName();
-    HelperFunction.saveUserLoggedInSP(true);
-    HelperFunction.getUsernameSP().then((username) {
-      Constant.myName = username.toString();
-    });
-    HelperFunction.getUserIDSP().then((userid) {
-      Constant.myId = userid.toString();
-    });
-    HelperFunction.getEmailSP().then((email) {
-      Constant.myEmail = email.toString();
-    });
-
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print(uname);
-    print('!!!!!!!!!!!!!!!!!!!!!');
-
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print(data);
-    print('!!!!!!!!!!!!!!!!!!!!!');
 
     _scrollController = ScrollController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -76,55 +58,13 @@ class _GroupPageState extends State<GroupPage> {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
       getAllData();
-
-      // tes la lu
-      // db.getAvailPreorder(uname).then((val) {
-      //   setState(() {
-      //     preOrderData = val.docs.map((entry) => PreOrder(
-      //           entry["preOrderId"],
-      //           entry["title"],
-      //           entry["owner"],
-      //           entry["group"],
-      //           entry["location"],
-      //           entry["items"]
-      //               .map((v) => Item(v["foodId"], v["name"], v["description"],
-      //                   v["count"], double.parse(v["price"])))
-      //               .toList()
-      //               .cast<Item>(),
-      //           DateTime.fromMillisecondsSinceEpoch(
-      //               entry["duration"].seconds * 1000),
-      //           entry["users"].toList().cast<String>(),
-      //           // .map((v) => Account(
-      //           //     v["userId"],
-      //           //     v["email"],
-      //           //     PaymentType(
-      //           //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
-      //           //     v["phoneNumber"],
-      //           //     v["photoUrl"],
-      //           //     v["username"],
-      //           //     v["groups"].toList().cast<String>()))
-      //           // .toList()
-      //           // .cast<Account>(),
-      //           entry["status"],
-      //           entry["maxPeople"],
-      //         ));
-      //     mainData = preOrderData.toList().cast<PreOrder>();
-
-      //     data = mainData!
-      //         .where((element) => element.status != 'Completed')
-      //         .toList();
-      //     print('!****************************');
-      //     print(data.length);
-      //     print('!****************************');
-      //   });
-      // });
     });
   }
 
   var preOrderData;
   List<PreOrder>? mainData;
   getAllData() {
-    db.getListPreorder(uname).then((val) {
+    db.getPreorderGroup(widget.group["chatRoomId"]).then((val) {
       setState(() {
         preOrderData = val.docs.map((entry) => PreOrder(
               entry["preOrderId"],
@@ -133,24 +73,18 @@ class _GroupPageState extends State<GroupPage> {
               entry["group"],
               entry["location"],
               entry["items"]
-                  .map((v) => Item(v["foodId"], v["name"], v["description"],
-                      v["count"], double.parse(v["price"])))
+                  .map((v) => Item(
+                      v["foodId"],
+                      v["name"],
+                      v["description"],
+                      v["count"],
+                      double.parse(v["price"].toString()).toDouble(),
+                      v["username"]))
                   .toList()
                   .cast<Item>(),
               DateTime.fromMillisecondsSinceEpoch(
                   entry["duration"].seconds * 1000),
               entry["users"].toList().cast<String>(),
-              // .map((v) => Account(
-              //     v["userId"],
-              //     v["email"],
-              //     PaymentType(
-              //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
-              //     v["phoneNumber"],
-              //     v["photoUrl"],
-              //     v["username"],
-              //     v["groups"].toList().cast<String>()))
-              // .toList()
-              // .cast<Account>(),
               entry["status"],
               entry["maxPeople"],
             ));
@@ -207,7 +141,7 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                           Container(
                             child: Text(
-                              'Group Name',
+                              widget.group["groupName"].toString(),
                               style: GoogleFonts.poppins(
                                 fontSize: 32.0,
                                 fontWeight: FontWeight.bold,
@@ -266,7 +200,7 @@ class _GroupPageState extends State<GroupPage> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext dialogContext) {
-                                    return EditGroupDialog();
+                                    return EditGroupDialog(group: widget.group);
                                   },
                                 );
                               },
@@ -287,7 +221,10 @@ class _GroupPageState extends State<GroupPage> {
                                       primaryButtonText: 'DELETE',
                                       primaryButtonFunction: () {
                                         // delete sini bos :)
-                                        print('delet sini bos');
+                                        print(widget.group["chatRoomId"]);
+                                        DatabaseMethods().deleteChatRoom(widget
+                                            .group["chatRoomId"]
+                                            .toString());
                                       },
                                     );
                                   },
@@ -321,9 +258,8 @@ class _GroupPageState extends State<GroupPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailJoinPreOrder(
-                                    // data: widget.data,
-                                    ),
+                                builder: (context) =>
+                                    DetailJoinPreOrder(data: data[index]),
                               ),
                             );
                           },

@@ -4,9 +4,11 @@ import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/services/database.dart';
 
 class EditGroupDialog extends StatefulWidget {
-  const EditGroupDialog({Key? key}) : super(key: key);
+  final dynamic group;
+  const EditGroupDialog({Key? key, required this.group}) : super(key: key);
 
   @override
   _EditGroupDialogState createState() => _EditGroupDialogState();
@@ -114,7 +116,7 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
               ),
               onPressed: () {
                 // function delete sini ya bos :)
-                print('mantap jiwa');
+
                 // addMember(username);
               },
             ),
