@@ -69,16 +69,16 @@ class _BodyState extends State<Body> {
             ));
 
         mainData = preOrderData.toList().cast<PreOrder>();
-        print("ASDASDLHADJAHSJDAHSDJLAHSD");
-        print(uname);
-        print("ASDASDLHADJAHSJDAHSDJLAHSD");
+        // print("ASDASDLHADJAHSJDAHSDJLAHSD");
+        // print(uname);
+        // print("ASDASDLHADJAHSJDAHSDJLAHSD");
         data = mainData!
             .where((element) =>
                 element.status != 'Completed' &&
                 element.group.split("_").contains(uname))
             .toList();
 
-        print(data[0].users.length);
+        // print(data[0].users.length);
       });
     });
   }

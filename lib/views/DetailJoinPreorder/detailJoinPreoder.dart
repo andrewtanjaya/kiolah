@@ -68,8 +68,8 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
       itemsArr.add(itemMap);
     }
 
-    print("############################");
-    print(widget.data.preOrderId);
+    // print("############################");
+    // print(widget.data.preOrderId);
     DatabaseMethods().addPreorderitems(widget.data.preOrderId, itemsArr, uname);
   }
 

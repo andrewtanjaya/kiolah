@@ -66,9 +66,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 val.docs[0]["username"],
               ),
             );
-            print('!!!!!!!!!!!!!!!!!!!!!');
-            print(addedUsers[0].photoUrl);
-            print('!!!!!!!!!!!!!!!!!!!!!');
+            // print('!!!!!!!!!!!!!!!!!!!!!');
+            // print(addedUsers[0].photoUrl);
+            // print('!!!!!!!!!!!!!!!!!!!!!');
           }
         });
       });
@@ -123,13 +123,13 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   createChatRoom() {
-    print('!!!!!!!!!!!!!!!!!!!!1');
-    print('users : $users');
-    print('!!!!!!!!!!!!!!!!!!!!1');
+    // print('!!!!!!!!!!!!!!!!!!!!1');
+    // print('users : $users');
+    // print('!!!!!!!!!!!!!!!!!!!!1');
     // users.removeAt(0);
-    print('!!!!!!!!!!!!!!!!!!!!1');
-    print('users : $users');
-    print('!!!!!!!!!!!!!!!!!!!!1');
+    // print('!!!!!!!!!!!!!!!!!!!!1');
+    // print('users : $users');
+    // print('!!!!!!!!!!!!!!!!!!!!1');
     String chatRoomId = getChatRoomId(users);
     var groupName = groupNameController.text.toString().trim();
     Map<String, dynamic> chatRoomMap = {
@@ -137,9 +137,9 @@ class _SearchScreenState extends State<SearchScreen> {
       "users": users,
       "chatRoomId": chatRoomId
     };
-    print('!!!!!!!!!!!!!!!!!!!!1');
-    print('chatroomMap : $chatRoomMap');
-    print('!!!!!!!!!!!!!!!!!!!!1');
+    // print('!!!!!!!!!!!!!!!!!!!!1');
+    // print('chatroomMap : $chatRoomMap');
+    // print('!!!!!!!!!!!!!!!!!!!!1');
 
     // name groupName
 
@@ -525,8 +525,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
 getChatRoomId(List<String> users) {
   users.sort((a, b) {
-    print(a);
-    print(b);
+    // print(a);
+    // print(b);
     return a
         .substring(0, 1)
         .codeUnitAt(0)
@@ -535,7 +535,7 @@ getChatRoomId(List<String> users) {
   String roomId = "";
   for (var i = 0; i < users.length; i++) {
     roomId += users[i];
-    print(roomId);
+    // print(roomId);
     if ((i + 1) < users.length) {
       roomId += "_";
     }

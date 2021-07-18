@@ -86,9 +86,9 @@ class _MainHomeState extends State<MainHome> {
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
-        print('!****************************');
-        print(data.length);
-        print('!****************************');
+        // print('!****************************');
+        // print(data.length);
+        // print('!****************************');
       });
     });
   }
@@ -293,7 +293,7 @@ class _MainHomeState extends State<MainHome> {
   // informasi header
 
   var totalPreorder = 3;
-  var imageUrl = 'assets/user/2.png';
+  var imageUrl = '';
 
   // informasi header
   late ScrollController _scrollController;

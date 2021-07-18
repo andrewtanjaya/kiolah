@@ -50,10 +50,10 @@ class _PreorderCardState extends State<PreorderCard> {
     databaseMethods
         .getGroupById(widget.data.group)
         .then((DocumentSnapshot val) {
-      print('!!!!!!!!!!!!!!!!!!!!!');
-      print(widget.data.group);
-      groupName = val.get('groupName');
-      print('!!!!!!!!!!!!!!!!!!!!!');
+      // print('!!!!!!!!!!!!!!!!!!!!!');
+      // print(widget.data.group);
+      // groupName = val.get('groupName');
+      // print('!!!!!!!!!!!!!!!!!!!!!');
     });
   }
 
@@ -66,8 +66,8 @@ class _PreorderCardState extends State<PreorderCard> {
   }
 
   initiateSearch() {
-    print("DUARRRRR");
-    print(widget.data.users);
+    // print("DUARRRRR");
+    // print(widget.data.users);
     widget.data.users.forEach((element) {
       databaseMethods.getUserByUsername(element).then((val) {
         setState(() {
@@ -85,7 +85,7 @@ class _PreorderCardState extends State<PreorderCard> {
           // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
           //   searchSnapshot = null;
           // }
-          print(users[0].photoUrl);
+          // print(users[0].photoUrl);
         });
       });
     });

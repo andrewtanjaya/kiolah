@@ -43,7 +43,7 @@ class _BodyState extends State<Body> {
       DatabaseMethods().getUserByUsername(uname).then((val) {
         setState(() {
           imageUrl = val.docs[0]["photoUrl"];
-          print(val.docs[0]["photoUrl"]);
+          // print(val.docs[0]["photoUrl"]);
         });
       });
       getAllData();
@@ -85,17 +85,17 @@ class _BodyState extends State<Body> {
             // .cast<Account>(),
             entry["status"],
             entry["maxPeople"]));
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        print(preOrderData.toString());
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // print(preOrderData.toString());
+        // print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
-        print('!****************************');
-        print(data.length);
-        print('!****************************');
+        // print('!****************************');
+        // print(data.length);
+        // print('!****************************');
       });
     });
   }
@@ -147,7 +147,8 @@ class _BodyState extends State<Body> {
   // var username;
 
   var totalPreorder = 0;
-  var imageUrl = 'assets/user/2.png';
+  var imageUrl =
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-kEMUrjjp-dl3Y1q5b-lNC_m10w_ta96cJA&usqp=CAU';
 
   var _currentButtonBarIndex = 0;
   void _onButtonBarTapped(int index) {
