@@ -35,6 +35,28 @@ class DatabaseMethods {
             }));
   }
 
+  updateUserPhone(String phone, String uname) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .where("username", isEqualTo: uname)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({"phoneNumber": phone});
+            }));
+  }
+
+  updateUserPayment(List<String> pay, String uname) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .where("username", isEqualTo: uname)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({"paymentType": pay});
+            }));
+  }
+
   addChatRoom(String chatRoomId, chatRoomMap) {
     FirebaseFirestore.instance
         .collection("chatRooms")

@@ -5,6 +5,9 @@ import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/model/account.dart';
+import 'package:kiolah/services/database.dart';
 
 class PaymentTypeDialog extends StatefulWidget {
 //  PaymentTypeDialog({Key? key}) : super(key: key);
@@ -30,12 +33,39 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
     }
   }
 
+  var uname;
+  Account? user = null;
+
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((username) {
+      uname = username.toString();
+      DatabaseMethods().getUserByUsername(uname).then((val) {
+        setState(() {
+          user = new Account(
+            val.docs[0]["userId"],
+            val.docs[0]["email"],
+            (val.docs[0]["paymentType"]).toList().cast<String>(),
+            val.docs[0]["phoneNumber"],
+            val.docs[0]["photoUrl"],
+            val.docs[0]["username"],
+          );
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
   submit() {
     if (formKey.currentState!.validate()) {
       var ovo = ovoController.text.toString().trim();
       var bca = bcaController.text.toString().trim();
-      print(ovo);
-      print(bca);
+      List<String> pay = [ovo, bca];
+      DatabaseMethods().updateUserPayment(pay, uname);
     }
   }
 

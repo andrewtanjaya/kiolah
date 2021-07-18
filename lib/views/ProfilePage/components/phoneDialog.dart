@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/model/account.dart';
+import 'package:kiolah/services/database.dart';
 
 class PhoneDialog extends StatefulWidget {
   // const PhoneDialog({Key? key}) : super(key: key);
@@ -16,10 +19,37 @@ class _PhoneDialogState extends State<PhoneDialog> {
 
   TextEditingController phoneNumberController = TextEditingController();
 
+  var uname;
+  Account? user = null;
+
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((username) {
+      uname = username.toString();
+      DatabaseMethods().getUserByUsername(uname).then((val) {
+        setState(() {
+          user = new Account(
+            val.docs[0]["userId"],
+            val.docs[0]["email"],
+            (val.docs[0]["paymentType"]).toList().cast<String>(),
+            val.docs[0]["phoneNumber"],
+            val.docs[0]["photoUrl"],
+            val.docs[0]["username"],
+          );
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
   submit() {
     if (formKey.currentState!.validate()) {
       var phoneNumber = phoneNumberController.text.toString().trim();
-      print(phoneNumber);
+      DatabaseMethods().updateUserPhone(phoneNumber, uname);
     }
   }
 
