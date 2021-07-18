@@ -1,21 +1,67 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/constant.dart';
+import 'package:kiolah/services/database.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentDialog extends StatelessWidget {
   final double total;
+  final List<dynamic> token;
+  final String title;
+  final String poid;
   final String ovo;
   final String bca;
 
-  const PaymentDialog({
-    Key? key,
-    required this.total,
-    required this.ovo,
-    required this.bca,
-  }) : super(key: key);
+  PaymentDialog(
+      {Key? key,
+      required this.total,
+      required this.ovo,
+      required this.bca,
+      required this.title,
+      required this.poid,
+      required this.token})
+      : super(key: key);
+
+  List<dynamic> tokens = [""];
+
+  Future<bool> sendNotif(List<dynamic>? userToken) async {
+    final postUrl = 'https://fcm.googleapis.com/fcm/send';
+    final data = {
+      "registration_ids": userToken,
+      "collapse_key": "type_a",
+      "notification": {
+        "title": Constant.myName + " paid!",
+        "body": Constant.myName + " has paid " + title + "preorder",
+      }
+    };
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization':
+          "key=AAAAiLizO94:APA91bEWcwJ29j50QC47EeqBZODGr87irZ1ywpmh6xEmjY5YNR3jcz_K2mnCVPqIVFPsY1PdCs6PuRAMKNW_t5xzcsMSJi0rJWCCT5jrSUX_uRdIo7klD5p4cHHAfwzJntYxhxSFwyZ9" // 'key=YOUR_SERVER_KEY'
+    };
+
+    final response = await http.post(Uri.parse(postUrl),
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      // on success do sth
+      print('test ok push CFM');
+      return true;
+    } else {
+      print(' CFM error');
+      // on failure do sth
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +227,11 @@ class PaymentDialog extends StatelessWidget {
                   width: size.width * .3,
                   child: RoundButton(
                     onPressed: () {
+                      sendNotif(token);
+                      // auto jadi paid dlu
+                      DatabaseMethods()
+                          .setTransaction(Constant.myName, poid, "Paid");
+
                       Navigator.of(context).pop();
                     },
                     text: 'Done',

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
 import 'package:kiolah/model/item.dart';
+import 'package:kiolah/views/Home/home.dart';
 
 class DatabaseMethods {
   getUserByUsername(String username) async {
@@ -65,11 +67,51 @@ class DatabaseMethods {
         .catchError((e) => print(e.toString()));
   }
 
+  addChatRoomUpdate(var context, String before, String chatRoomId, chatRoomMap,
+      List<dynamic> messages) {
+    FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .set(chatRoomMap)
+        .then((value) {
+      messages.forEach((element) {
+        FirebaseFirestore.instance
+            .collection("chatRooms")
+            .doc(chatRoomId)
+            .collection("chats")
+            .add(element);
+      });
+      updatePreorderGroup(context, chatRoomId, before);
+    });
+  }
+
   getChatRooms(String username) async {
     return await FirebaseFirestore.instance
         .collection("chatRooms")
         .where("users", arrayContains: username)
         .get();
+  }
+
+  getChatRoomsbyId(String chatRoomId) async {
+    return await FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .get();
+  }
+
+  checkChatRoomID(String chatRoomId) {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .get();
+  }
+
+  updateChatRoom(String chatRoomId, chatRoomMap) {
+    FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .set(chatRoomMap)
+        .catchError((e) => print(e.toString()));
   }
 
   deleteChatRoom(String chatRoomId) async {
@@ -107,6 +149,15 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  getConversationMessage(String chatRoomId) async {
+    return await FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .orderBy("timestamp")
+        .get();
+  }
+
   addToken(String? token, String userId) {
     FirebaseFirestore.instance.collection("users").doc(userId).update({
       'token': FieldValue.arrayUnion([token])
@@ -130,6 +181,66 @@ class DatabaseMethods {
 
     print(orderMap);
     FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
+  }
+
+  updatePreorder(String title, int maxPeople, String preorderId) {
+    FirebaseFirestore.instance
+        .collection("preorders")
+        .where("preOrderId", isEqualTo: preorderId)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({"title": title});
+              documentSnapshot.reference.update({"maxPeople": maxPeople});
+            }));
+  }
+
+  updatePreorderItem(String username, String preorderId, Item item) {
+    Map<String, dynamic> itemMap = {
+      "count": item.count,
+      "description": item.description,
+      "foodId": item.foodId,
+      "name": item.name,
+      "price": item.price,
+      "username": item.username
+    };
+    FirebaseFirestore.instance
+        .collection("preorders")
+        .where("preOrderId", isEqualTo: preorderId)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({
+                'items': FieldValue.arrayRemove([itemMap])
+              });
+            }));
+  }
+
+  updatePreorderGroup(var context, String groupId, String old) {
+    FirebaseFirestore.instance
+        .collection("preorders")
+        .where("group", isEqualTo: old)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        print("SINI COK");
+        documentSnapshot.reference.update({"group": groupId});
+      });
+      deleteChatRoom(old);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
+    });
+  }
+
+  updatePreorderStatus(String status, String preorderId) {
+    FirebaseFirestore.instance
+        .collection("preorders")
+        .where("preOrderId", isEqualTo: preorderId)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({"status": status});
+            }));
   }
 
   getAllPreorder() async {
@@ -177,5 +288,19 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("preorders").doc(preorderId).update({
       'users': FieldValue.arrayUnion([uname])
     });
+    setTransaction(uname, preorderId, "Unpaid");
+  }
+
+  setTransaction(String username, String preorderId, String status) async {
+    FirebaseFirestore.instance.collection("transactions").doc(preorderId).set(
+        {"username": username, "preOrderId": preorderId, "status": status});
+  }
+
+  getUnpaidTransaction(String username) {
+    return FirebaseFirestore.instance
+        .collection("transactions")
+        .where("username", isEqualTo: username)
+        .where("status", isEqualTo: "Unpaid")
+        .get();
   }
 }

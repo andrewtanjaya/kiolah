@@ -52,7 +52,10 @@ class _PreorderCardState extends State<PreorderCard> {
         .then((DocumentSnapshot val) {
       // print('!!!!!!!!!!!!!!!!!!!!!');
       // print(widget.data.group);
-      groupName = val.get('groupName');
+      setState(() {
+        groupName = val.get('groupName');
+      });
+
       // print('!!!!!!!!!!!!!!!!!!!!!');
     });
   }

@@ -3,15 +3,19 @@ import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/promptDialog.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/model/item.dart';
+import 'package:kiolah/services/database.dart';
 
 class ItemsPreorderList extends StatelessWidget {
   final Item data;
+  final String id;
   final bool? canDelete;
 
   const ItemsPreorderList({
     Key? key,
     required this.data,
+    required this.id,
     this.canDelete,
   }) : super(key: key);
 
@@ -118,6 +122,8 @@ class ItemsPreorderList extends StatelessWidget {
                           primaryButtonText: 'DELETE',
                           primaryButtonFunction: () {
                             print('delete');
+                            DatabaseMethods()
+                                .updatePreorderItem(Constant.myName, id, data);
                             Navigator.pop(context);
                           });
                     },

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +28,7 @@ import 'package:kiolah/views/editPreOrder/editPreOrder.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
   // Body({Key? key}) : super(key: key);
@@ -51,6 +54,50 @@ class _BodyState extends State<Body> {
   int present = 0;
   List<Item> items = <Item>[];
   String showMoreButtonText = 'Show More';
+  List<dynamic> tokens = [""];
+
+  updateStatus() {
+    DatabaseMethods()
+        .updatePreorderStatus(preOrderStatus, widget.data.preOrderId);
+    tokens!.removeWhere((value) => value == null);
+    print("##############################");
+    print(tokens);
+    print("##############################");
+    sendNotif(tokens);
+  }
+
+  Future<bool> sendNotif(List<dynamic>? userToken) async {
+    final postUrl = 'https://fcm.googleapis.com/fcm/send';
+    final data = {
+      "registration_ids": userToken,
+      "collapse_key": "type_a",
+      "notification": {
+        "title": widget.data.title + " status changed!",
+        "body": widget.data.title + " status changed to " + preOrderStatus,
+      }
+    };
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization':
+          "key=AAAAiLizO94:APA91bEWcwJ29j50QC47EeqBZODGr87irZ1ywpmh6xEmjY5YNR3jcz_K2mnCVPqIVFPsY1PdCs6PuRAMKNW_t5xzcsMSJi0rJWCCT5jrSUX_uRdIo7klD5p4cHHAfwzJntYxhxSFwyZ9" // 'key=YOUR_SERVER_KEY'
+    };
+
+    final response = await http.post(Uri.parse(postUrl),
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      // on success do sth
+      print('test ok push CFM');
+      return true;
+    } else {
+      print(' CFM error');
+      // on failure do sth
+      return false;
+    }
+  }
 
   @override
   void initState() {
@@ -76,6 +123,13 @@ class _BodyState extends State<Body> {
           val.docs[0]["photoUrl"],
           val.docs[0]["username"],
         );
+        print("###########!!!#################");
+        print(val.docs[0]["token"].toList());
+        print("############!!!##############");
+        tokens = tokens + (val.docs[0]["token"].toList());
+        print("###########!!!#################");
+        print(tokens);
+        print("############!!!##############");
         // users.add(val);
         // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
         //   searchSnapshot = null;
@@ -119,6 +173,7 @@ class _BodyState extends State<Body> {
   late String preOrderStatus;
   List<String> status = ['Ongoing', 'Ordered', 'Completed'];
   var uname;
+  List<dynamic>? tokenCurrent;
 
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
@@ -133,6 +188,8 @@ class _BodyState extends State<Body> {
             val.docs[0]["photoUrl"],
             val.docs[0]["username"],
           );
+          tokenCurrent = val.docs[0]["token"].toList();
+
           print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
           print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
           print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -151,7 +208,7 @@ class _BodyState extends State<Body> {
     var price = 0.0;
     widget.data.items.forEach(
       (element) {
-        price += (element.price * element.count);
+        if (element.username == uname) price += (element.price * element.count);
       },
     );
     return price;
@@ -239,6 +296,7 @@ class _BodyState extends State<Body> {
                               itemCount: items.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return ItemsPreorderList(
+                                  id: widget.data.preOrderId,
                                   data: widget.data.items[index],
                                   canDelete: (currentUser.username ==
                                               widget
@@ -343,6 +401,9 @@ class _BodyState extends State<Body> {
                               context: context,
                               builder: (BuildContext context) {
                                 return PaymentDialog(
+                                  title: widget.data.title,
+                                  token: tokens,
+                                  poid: widget.data.preOrderId,
                                   bca: owner!.paymentType![0].toString(),
                                   ovo: owner!.paymentType![1].toString(),
                                   total: getTotalPrice(),
@@ -400,6 +461,7 @@ class _BodyState extends State<Body> {
                           onChanged: (String? newValue) {
                             setState(() {
                               preOrderStatus = newValue!;
+                              updateStatus();
                             });
                           },
                           items: status
@@ -459,7 +521,7 @@ class _BodyState extends State<Body> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditOrder(
+                            builder: (context) => EditOrder(data: widget.data
                                 // chatRoomId: widget.data.group,
                                 )))
                   },
@@ -484,8 +546,9 @@ class _BodyState extends State<Body> {
                 ),
               if (currentUser!.userId == owner!.userId)
                 TextButton(
-                  onPressed: () => {
+                  onPressed: () {
                     // delete preoder disini :)
+
                     showDialog(
                       context: context,
                       builder: (BuildContext dialogContext) {
@@ -495,11 +558,12 @@ class _BodyState extends State<Body> {
                             primaryButtonText: 'YES',
                             secondaryButtonText: 'NO',
                             primaryButtonFunction: () {
-                              print('delete');
+                              preOrderStatus = "Canceled";
+                              updateStatus();
                               Navigator.pop(context);
                             });
                       },
-                    ),
+                    );
                   },
                   child: Text(
                     'Cancel Preoder',

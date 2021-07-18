@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/custom_dialog.dart';
@@ -7,9 +8,12 @@ import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/model/UserItem.dart';
 import 'package:kiolah/model/account.dart';
+import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/Home/home.dart';
 
 class EditGroupDialog extends StatefulWidget {
-  const EditGroupDialog({Key? key}) : super(key: key);
+  final dynamic group;
+  const EditGroupDialog({Key? key, required this.group}) : super(key: key);
 
   @override
   _EditGroupDialogState createState() => _EditGroupDialogState();
@@ -19,29 +23,45 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
   TextEditingController groupNameController = new TextEditingController();
 
   // yang deleted nanti ditarok disini
-  late List<String> members;
+  late List<dynamic> members;
   late List<Widget> listMembersWidgets;
 
   // dummy data --> nanti lu tarik data member tarok di usernames aja
-  List<String> usernames = ['ganteng', 'babet', 'cantik'];
+  List<dynamic> usernames = ['ganteng', 'babet', 'cantik'];
   // untuk nanti tau posisi user yang dihapus
-  late List<String> dummyUsernames;
+  late List<dynamic> dummyUsernames;
+
+  getMember() {
+    DatabaseMethods()
+        .getChatRoomsbyId(widget.group["chatRoomId"])
+        .then((value) {
+      setState(() {
+        usernames = value["users"];
+        dummyUsernames = usernames;
+        usernames.forEach((element) {
+          DatabaseMethods().getUserByUsername(element).then((val) {
+            setState(() {
+              listMembersWidgets.add(
+                memberItem(
+                    // email, username, photoUrl nanti ganti sesuai dengan data yang lu tarik
+                    email: val.docs[0]["email"],
+                    photoUrl: val.docs[0]["photoUrl"],
+                    username: element),
+              );
+            });
+          });
+        });
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     dummyUsernames = usernames;
     members = <String>[];
     listMembersWidgets = <Widget>[];
-    usernames.forEach((element) {
-      listMembersWidgets.add(
-        memberItem(
-            // email, username, photoUrl nanti ganti sesuai dengan data yang lu tarik
-            email: 'adrianwijaya@gmail.com',
-            photoUrl:
-                'https://www.pikpng.com/pngl/b/417-4172348_testimonial-user-icon-color-clipart.png',
-            username: element),
-      );
-    });
+    getMember();
   }
 
   String? groupNameValidator(value) {
@@ -50,14 +70,85 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
       return 'Group\'s name must only contains 15 characters';
   }
 
+  getChatRoomId(List<dynamic> users) {
+    users.sort((a, b) {
+      // print(a);
+      // print(b);
+      return a
+          .substring(0, 1)
+          .codeUnitAt(0)
+          .compareTo(b.substring(0, 1).codeUnitAt(0));
+    });
+    String roomId = "";
+    for (var i = 0; i < users.length; i++) {
+      roomId += users[i];
+      // print(roomId);
+      if ((i + 1) < users.length) {
+        roomId += "_";
+      }
+    }
+    return roomId;
+  }
+
   // submit kelar
   submit() {
     if (formKey.currentState!.validate()) {
       var groupName = groupNameController.text.toString().trim();
       print(groupName);
 
-      print(members);
-      Navigator.pop(context);
+      print(dummyUsernames);
+      DatabaseMethods()
+          .checkChatRoomID(getChatRoomId(dummyUsernames))
+          .then((DocumentSnapshot val) {
+        print(val.data());
+        if (val.data() == null) {
+          //bole
+          DatabaseMethods()
+              .getConversationMessage(widget.group["chatRoomId"])
+              .then((value) {
+            setState(() {
+              print("@@@@@@@@@@@@@@@@@@");
+              print(value.docs);
+              print("@@@@@@@@@@@@@@@@@@");
+              Map<String, dynamic> chatRoomMap = {
+                "groupName": groupName,
+                "users": dummyUsernames,
+                "chatRoomId": getChatRoomId(dummyUsernames)
+              };
+
+              var messages = value.docs.map((entry) {
+                return {
+                  "message": entry["message"],
+                  "sendBy": entry["sendBy"],
+                  "timestamp": entry["timestamp"]
+                };
+              }).toList();
+              print("@@@@@@@@@@@@@@@@@@");
+              print(messages);
+              print("@@@@@@@@@@@@@@@@@@");
+              DatabaseMethods().addChatRoomUpdate(
+                  context,
+                  widget.group["chatRoomId"],
+                  getChatRoomId(dummyUsernames),
+                  chatRoomMap,
+                  messages);
+            });
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return CustomDialog(
+                title: 'Failed!',
+                description: 'Group with current members exists',
+                imageUrl: 'assets/emoji/paper_popper.png',
+                textButton: 'OK',
+              );
+            },
+          );
+        }
+      });
+      // Navigator.pop(context);
       // showDialog(
       //   context: context,
       //   builder: (BuildContext dialogContext) {
@@ -165,10 +256,8 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                 color: colorError,
               ),
               onPressed: () {
-                print(username);
                 members.add(username);
                 // function delete sini ya bos :)
-                print('mantap jiwa');
                 var index = 0;
                 setState(() {
                   dummyUsernames.forEach((element) {
@@ -178,7 +267,9 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                       listMembersWidgets.removeAt(index - 1);
                     }
                   });
-
+                  print("!@@@@@@@@@@@@@@@");
+                  print(dummyUsernames);
+                  print("!@@@@@@@@@@@@@@@");
                   // usernames.removeWhere((e) => {
                   //       e == '1',
                   //     });

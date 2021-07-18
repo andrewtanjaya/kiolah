@@ -8,16 +8,19 @@ import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/item.dart';
+import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/AddOrder/components/form_item.dart';
 import 'package:kiolah/views/AddOrder/components/user_form_item.dart';
+import 'package:kiolah/views/Home/home.dart';
 
 class EditOrder extends StatefulWidget {
   // final ScrollController scrollController;
-  EditOrder({
-    Key? key,
-    // required this.scrollController,
-  }) : super(key: key);
+  final PreOrder data;
+  EditOrder({Key? key, required this.data
+      // required this.scrollController,
+      })
+      : super(key: key);
 
   @override
   _EditOrderState createState() => _EditOrderState();
@@ -45,6 +48,7 @@ class _EditOrderState extends State<EditOrder> {
 
   // ini untuk ambil data drodpown group ye :)
   var groupsChoosen;
+
   // :)
 
   var databaseGroupData;
@@ -98,13 +102,20 @@ class _EditOrderState extends State<EditOrder> {
     getUserName();
   }
 
-  createPreOrder() {
+  editPreOrder() {
     if (formKey.currentState!.validate()) {
       var title = titleController.text.toString().trim();
       // var location = locationController.text.toString().trim();
       // var group = groupsChoosen;
       var maxPeople = int.parse(maxPeopleController.text.toString().trim());
       print('title : $title; ; maxPeople : $maxPeople');
+
+      DatabaseMethods()
+          .updatePreorder(title, maxPeople, widget.data.preOrderId);
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
+
       // Map<String, dynamic> newPreorder = {
       //   "preOrderId": "-",
       //   "title": title,
@@ -368,7 +379,7 @@ class _EditOrderState extends State<EditOrder> {
                 child: RoundButton(
                   text: 'Save',
                   onPressed: () {
-                    // edit Preorder
+                    editPreOrder();
                   },
                 ),
               ),

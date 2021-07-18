@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/preorder_card.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/constant.dart';
@@ -38,6 +39,23 @@ class _BodyState extends State<Body> {
       DatabaseMethods().getChatRooms(Constant.myName).then((val) {
         setState(() {
           totalPreorder = val.docs.length;
+          DatabaseMethods().getUnpaidTransaction(uname).then((value) {
+            print("#################");
+            print(value.docs.length);
+            if (value.docs.length != 0) {
+              showDialog(
+                context: context,
+                builder: (BuildContext dialogContext) {
+                  return CustomDialog(
+                    title: 'Oops !',
+                    description: 'You have unpaid preorder',
+                    imageUrl: 'assets/emoji/paper_popper.png',
+                    textButton: 'OK',
+                  );
+                },
+              );
+            }
+          });
         });
       });
       DatabaseMethods().getUserByUsername(uname).then((val) {
@@ -156,11 +174,13 @@ class _BodyState extends State<Body> {
       _currentButtonBarIndex = index;
       if (index == 0)
         data = mainData!
-            .where((element) => element.status != 'Completed')
+            .where((element) =>
+                element.status != 'Completed' && element.status != 'Canceled')
             .toList();
       if (index == 1)
         data = mainData!
-            .where((element) => element.status == 'Completed')
+            .where((element) =>
+                element.status == 'Completed' || element.status == 'Canceled')
             .toList();
     });
   }
