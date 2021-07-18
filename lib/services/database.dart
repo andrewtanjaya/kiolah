@@ -73,6 +73,7 @@ class DatabaseMethods {
   }
 
   deleteChatRoom(String chatRoomId) async {
+    deletePreorderbygroup(chatRoomId);
     return await FirebaseFirestore.instance
         .collection("chatRooms")
         .doc(chatRoomId)
@@ -154,6 +155,18 @@ class DatabaseMethods {
         .collection("chatRooms")
         .doc(groupId)
         .get();
+  }
+
+  deletePreorderbygroup(String groupid) {
+    FirebaseFirestore.instance
+        .collection("preorders")
+        .where("group", isEqualTo: groupid)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
   }
 
   addPreorderitems(String preorderId, var items, String uname) {

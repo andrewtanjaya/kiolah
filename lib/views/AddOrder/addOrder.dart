@@ -48,12 +48,7 @@ class _AddOrderState extends State<AddOrder> {
   var groupsChoosen;
   // :)
 
-  var databaseGroupData = [
-    'oppa club',
-    'girls club',
-    'mantap - mantap club',
-    'ganteng club'
-  ];
+  var databaseGroupData;
 
   String? titleValidator(value) {
     if (value.toString().length <= 0) {
@@ -86,6 +81,15 @@ class _AddOrderState extends State<AddOrder> {
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
+      getGroups();
+    });
+  }
+
+  getGroups() {
+    DatabaseMethods().getChatRooms(uname).then((val) {
+      setState(() {
+        databaseGroupData = val.docs;
+      });
     });
   }
 

@@ -14,6 +14,7 @@ import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/DetailJoinPreorder/detailJoinPreoder.dart';
 import 'package:kiolah/views/GroupPage/components/dropdownButton.dart';
+import 'package:kiolah/views/Home/home.dart';
 
 class GroupPage extends StatefulWidget {
   final dynamic group;
@@ -225,6 +226,11 @@ class _GroupPageState extends State<GroupPage> {
                                         DatabaseMethods().deleteChatRoom(widget
                                             .group["chatRoomId"]
                                             .toString());
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Home()));
                                       },
                                     );
                                   },
