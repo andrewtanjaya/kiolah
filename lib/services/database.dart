@@ -90,10 +90,14 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
   }
 
-  getAvailPreorder(String username) async {
-    return await FirebaseFirestore.instance
-        .collection("preorders")
-        .where("users", arrayContains: username)
+  getAllPreorder() async {
+    return await FirebaseFirestore.instance.collection("preorders").get();
+  }
+
+  getGroupById(String groupId) {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(groupId)
         .get();
   }
 }

@@ -6,6 +6,7 @@ import 'package:kiolah/components/status_button.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/etc/generate_color.dart';
 import 'package:kiolah/model/account.dart';
+import 'package:kiolah/model/group.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/DetailJoinPreorder/detailJoinPreoder.dart';
@@ -41,38 +42,31 @@ class _PreorderCardState extends State<PreorderCard> {
   QuerySnapshot? searchSnapshot;
   late List<Account> users;
   late QuerySnapshot owner;
+  var groupName;
+
+  getGroupName() {
+    databaseMethods
+        .getGroupById(widget.data.group)
+        .then((DocumentSnapshot val) {
+      print('!!!!!!!!!!!!!!!!!!!!!');
+      print(widget.data.group);
+      groupName = val.get('groupName');
+      print('!!!!!!!!!!!!!!!!!!!!!');
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print(widget.data.duration); // initiateSearch();
-    print(widget.data.title); // initiateSearch();
-    print(widget.data.group); // initiateSearch();
-    print(widget.data.location); // initiateSearch();
-    print(widget.data.owner); // initiateSearch();
-    print(widget.data.users); // initiateSearch();
-    print(widget.data.preOrderId); // initiateSearch();
-    print(widget.data.status); // initiateSearch();
-    // print(widget.data.duration); // initiateSearch();
-    // print(widget.data.duration); // initiateSearch();
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print('!!!!!!!!!!!!!!!!!!!!!');
     users = <Account>[];
     initiateSearch();
+    getGroupName();
   }
 
   initiateSearch() {
     widget.data.users.forEach((element) {
-      print('!!!!!!!!!!!!!!!!!!!!!');
-      print(element);
-      print('!!!!!!!!!!!!!!!!!!!!!');
-
       databaseMethods.getUserByUsername(element).then((val) {
         setState(() {
-          print('!!!!!!!!!!!!!!!!!!!!!');
-          print(val.docs[0]["paymentType"]);
           users.add(
             new Account(
               val.docs[0]["userId"],
@@ -83,7 +77,6 @@ class _PreorderCardState extends State<PreorderCard> {
               val.docs[0]["username"],
             ),
           );
-          print('!!!!!!!!!!!!!!!!!!!!!');
           // users.add(val);
           // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
           //   searchSnapshot = null;
@@ -175,7 +168,7 @@ class _PreorderCardState extends State<PreorderCard> {
                     ),
                   ),
                   ColoredOutlinedText(
-                    text: widget.data.group,
+                    text: groupName == null ? "Loading" : groupName,
                     color: colorWarning,
                   )
                   // IconButton(

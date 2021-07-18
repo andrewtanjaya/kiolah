@@ -5,6 +5,7 @@ import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/views/AddOrder/components/form_item.dart';
 
@@ -17,11 +18,19 @@ class DetailJoinPreOrder extends StatefulWidget {
 
 class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
   var itemForms = <ItemForm>[];
+  var uname;
+
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((username) {
+      uname = username.toString();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     itemForms.add(createNewItem());
+    getUserName();
   }
 
   addPreorderItem() {
@@ -33,8 +42,8 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
       var desc = itemDescriptionControllers[i].text;
       var quantity = itemQuantityControllers[i].text;
       var price = itemPriceControllers[i].text;
-      items.add(Item(
-          i.toString(), name, desc, int.parse(quantity), double.parse(price)));
+      items.add(Item(i.toString(), name, desc, int.parse(quantity),
+          double.parse(price), uname));
     }
 
     // items --> collection dari object item jadi tinggal upload dari situ :)

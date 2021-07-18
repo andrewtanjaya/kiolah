@@ -28,55 +28,13 @@ class _BodyState extends State<Body> {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
       getAllData();
-
-      // tes la lu
-      // db.getAvailPreorder(uname).then((val) {
-      //   setState(() {
-      //     preOrderData = val.docs.map((entry) => PreOrder(
-      //           entry["preOrderId"],
-      //           entry["title"],
-      //           entry["owner"],
-      //           entry["group"],
-      //           entry["location"],
-      //           entry["items"]
-      //               .map((v) => Item(v["foodId"], v["name"], v["description"],
-      //                   v["count"], double.parse(v["price"])))
-      //               .toList()
-      //               .cast<Item>(),
-      //           DateTime.fromMillisecondsSinceEpoch(
-      //               entry["duration"].seconds * 1000),
-      //           entry["users"].toList().cast<String>(),
-      //           // .map((v) => Account(
-      //           //     v["userId"],
-      //           //     v["email"],
-      //           //     PaymentType(
-      //           //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
-      //           //     v["phoneNumber"],
-      //           //     v["photoUrl"],
-      //           //     v["username"],
-      //           //     v["groups"].toList().cast<String>()))
-      //           // .toList()
-      //           // .cast<Account>(),
-      //           entry["status"],
-      //           entry["maxPeople"],
-      //         ));
-      //     mainData = preOrderData.toList().cast<PreOrder>();
-
-      //     data = mainData!
-      //         .where((element) => element.status != 'Completed')
-      //         .toList();
-      //     print('!****************************');
-      //     print(data.length);
-      //     print('!****************************');
-      //   });
-      // });
     });
   }
 
   var preOrderData;
   List<PreOrder>? mainData;
   getAllData() {
-    db.getAvailPreorder(uname).then((val) {
+    db.getAllPreorder().then((val) {
       setState(() {
         preOrderData = val.docs.map((entry) => PreOrder(
               entry["preOrderId"],
@@ -86,7 +44,7 @@ class _BodyState extends State<Body> {
               entry["location"],
               entry["items"]
                   .map((v) => Item(v["foodId"], v["name"], v["description"],
-                      v["count"], double.parse(v["price"])))
+                      v["count"], double.parse(v["price"]), uname))
                   .toList()
                   .cast<Item>(),
               DateTime.fromMillisecondsSinceEpoch(
@@ -109,11 +67,10 @@ class _BodyState extends State<Body> {
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
-            .where((element) => element.status != 'Completed')
+            .where((element) =>
+                element.status != 'Completed' &&
+                element.group.split("_").contains(uname))
             .toList();
-        print('!****************************');
-        print(data.length);
-        print('!****************************');
       });
     });
   }
@@ -122,24 +79,6 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     getUserName();
-    HelperFunction.saveUserLoggedInSP(true);
-    HelperFunction.getUsernameSP().then((username) {
-      Constant.myName = username.toString();
-    });
-    HelperFunction.getUserIDSP().then((userid) {
-      Constant.myId = userid.toString();
-    });
-    HelperFunction.getEmailSP().then((email) {
-      Constant.myEmail = email.toString();
-    });
-
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print(uname);
-    print('!!!!!!!!!!!!!!!!!!!!!');
-
-    print('!!!!!!!!!!!!!!!!!!!!!');
-    print(data);
-    print('!!!!!!!!!!!!!!!!!!!!!');
   }
 
   @override
