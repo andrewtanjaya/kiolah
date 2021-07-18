@@ -76,7 +76,7 @@ class _BodyState extends State<Body> {
   var preOrderData;
   List<PreOrder>? mainData;
   getAllData() {
-    db.getListPreorder(uname).then((val) {
+    db.getAvailPreorder(uname).then((val) {
       setState(() {
         preOrderData = val.docs.map((entry) => PreOrder(
               entry["preOrderId"],
