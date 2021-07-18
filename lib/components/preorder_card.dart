@@ -66,6 +66,8 @@ class _PreorderCardState extends State<PreorderCard> {
   }
 
   initiateSearch() {
+    print("DUARRRRR");
+    print(widget.data.users);
     widget.data.users.forEach((element) {
       databaseMethods.getUserByUsername(element).then((val) {
         setState(() {
@@ -83,10 +85,10 @@ class _PreorderCardState extends State<PreorderCard> {
           // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
           //   searchSnapshot = null;
           // }
+          print(users[0].photoUrl);
         });
       });
     });
-    print(users);
   }
 
   //   // databaseMethods.getUserByUsername(widget.data.owner).then((val) {
@@ -230,29 +232,31 @@ class _PreorderCardState extends State<PreorderCard> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Stack(
-                    children: [
-                      RowBorderedImage(
-                        borderColor: colorMainWhite,
-                        firstImageUrl: widget.data.users.length > 0
-                            ? users[0].photoUrl.toString()
-                            : '',
-                        secondImageUrl: widget.data.users.length > 1
-                            ? users[1].photoUrl.toString()
-                            : '',
-                        thirdImageUrl: widget.data.users.length > 2
-                            ? users[2].photoUrl.toString()
-                            : '',
-                        count: widget.data.users.length,
-                      ),
-                    ],
-                  ),
-                  StatusButton(status: widget.data.status),
-                ],
-              )
+              widget.data.users.length != 0
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Stack(
+                          children: [
+                            RowBorderedImage(
+                              borderColor: colorMainWhite,
+                              firstImageUrl: users.length > 0
+                                  ? users[0].photoUrl.toString()
+                                  : '',
+                              secondImageUrl: users.length > 1
+                                  ? users[1].photoUrl.toString()
+                                  : '',
+                              thirdImageUrl: users.length > 2
+                                  ? users[2].photoUrl.toString()
+                                  : '',
+                              count: widget.data.users.length,
+                            ),
+                          ],
+                        ),
+                        StatusButton(status: widget.data.status),
+                      ],
+                    )
+                  : Text("-")
             ],
           ),
         ),
