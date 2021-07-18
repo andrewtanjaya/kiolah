@@ -88,13 +88,6 @@ class _HeaderState extends State<Header> {
           ),
           InkWell(
             onTap: () {
-              // deleteToken();
-              // _authMethods.signOut();
-              // HelperFunction.saveEmailSP("");
-              // HelperFunction.saveUserLoggedInSP(false);
-              // HelperFunction.saveUsernameSP("");
-              // Navigator.pushReplacement(context,
-              //     MaterialPageRoute(builder: (context) => Authenticate()));
               Navigator.push(
                   context,
                   MaterialPageRoute(

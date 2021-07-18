@@ -1,6 +1,10 @@
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:kiolah/helper/authenticate.dart';
+import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
+import 'package:kiolah/services/auth.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -62,6 +66,18 @@ class _ProfilePageState extends State<ProfilePage> {
         uploadImageToFirebase();
       });
     }
+  }
+
+  AuthMethods _authMethods = new AuthMethods();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  deleteToken() {
+    _firebaseMessaging.getToken().then((token) {
+      print('--- Firebase token here ---');
+      List<dynamic> tokens = [token];
+      databaseMethods.deleteToken(tokens, Constant.myId);
+      print(token);
+    });
   }
 
   Future uploadImageToFirebase() async {
@@ -157,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: 16.0, bottom: 2.0),
                       child: Text(
-                        'username',
+                        uname,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.bold,
@@ -234,7 +250,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       description: 'Sign out from current account',
                       color: colorMainGray,
                       onPressed: () {
-                        print('Sign out');
+                        deleteToken();
+                        _authMethods.signOut();
+                        HelperFunction.saveEmailSP("");
+                        HelperFunction.saveUserLoggedInSP(false);
+                        HelperFunction.saveUsernameSP("");
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Authenticate()));
                       },
                     ),
                   ],
