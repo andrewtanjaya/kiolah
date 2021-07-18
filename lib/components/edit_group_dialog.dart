@@ -5,11 +5,11 @@ import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/model/UserItem.dart';
 import 'package:kiolah/model/account.dart';
 
 class EditGroupDialog extends StatefulWidget {
-  final dynamic group;
-  const EditGroupDialog({Key? key, required this.group}) : super(key: key);
+  const EditGroupDialog({Key? key}) : super(key: key);
 
   @override
   _EditGroupDialogState createState() => _EditGroupDialogState();
@@ -20,13 +20,28 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
 
   // yang deleted nanti ditarok disini
   late List<String> members;
+  late List<Widget> listMembersWidgets;
 
-  // dummy data
+  // dummy data --> nanti lu tarik data member tarok di usernames aja
   List<String> usernames = ['ganteng', 'babet', 'cantik'];
+  // untuk nanti tau posisi user yang dihapus
+  late List<String> dummyUsernames;
   @override
   void initState() {
     super.initState();
+    dummyUsernames = usernames;
     members = <String>[];
+    listMembersWidgets = <Widget>[];
+    usernames.forEach((element) {
+      listMembersWidgets.add(
+        memberItem(
+            // email, username, photoUrl nanti ganti sesuai dengan data yang lu tarik
+            email: 'adrianwijaya@gmail.com',
+            photoUrl:
+                'https://www.pikpng.com/pngl/b/417-4172348_testimonial-user-icon-color-clipart.png',
+            username: element),
+      );
+    });
   }
 
   String? groupNameValidator(value) {
@@ -42,7 +57,6 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
       print(groupName);
 
       print(members);
-
       Navigator.pop(context);
       // showDialog(
       //   context: context,
@@ -64,7 +78,8 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
       // bool? isAddedItem,
       ) {
     return Container(
-      width: 200,
+      width: 270,
+      // color: Colors.pink,
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
@@ -112,12 +127,16 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                   color: colorMainBlack,
                 ),
               ),
-              Text(
-                email,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12.0,
-                  color: colorMainGray,
+              Container(
+                width: 100,
+                child: Text(
+                  email,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10.0,
+                    color: colorMainGray,
+                  ),
                 ),
               ),
             ],
@@ -150,6 +169,20 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                 members.add(username);
                 // function delete sini ya bos :)
                 print('mantap jiwa');
+                var index = 0;
+                setState(() {
+                  dummyUsernames.forEach((element) {
+                    ++index;
+                    if (element == username) {
+                      dummyUsernames.removeAt(index - 1);
+                      listMembersWidgets.removeAt(index - 1);
+                    }
+                  });
+
+                  // usernames.removeWhere((e) => {
+                  //       e == '1',
+                  //     });
+                });
                 // members.add()
 
                 // addMember(username);
@@ -192,7 +225,7 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
       ),
       child: SingleChildScrollView(
         child: Container(
-          width: 320,
+          width: 360,
           height: 400,
           padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
           child: Column(
@@ -239,19 +272,16 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                       ),
                     ),
                     Container(
-                      width: 480,
+                      alignment: Alignment.center,
+                      // color: Colors.green,
+                      width: 360,
                       child: Expanded(
                         child: SizedBox(
                           height: 140,
                           child: ListView.separated(
-                            itemCount: 3,
+                            itemCount: listMembersWidgets.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return memberItem(
-                                username: usernames[index],
-                                email: 'adrian@gmail.com',
-                                photoUrl:
-                                    'https://www.pikpng.com/pngl/b/417-4172348_testimonial-user-icon-color-clipart.png',
-                              );
+                              return listMembersWidgets[index];
                             },
                             // physics: NeverScrollableScrollPhysics(),
                             separatorBuilder:

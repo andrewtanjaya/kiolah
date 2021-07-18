@@ -204,7 +204,9 @@ class _GroupPageState extends State<GroupPage> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext dialogContext) {
-                                    return EditGroupDialog(group: widget.group);
+                                    return EditGroupDialog(
+                                        // group: widget.group
+                                        );
                                   },
                                 );
                               },
