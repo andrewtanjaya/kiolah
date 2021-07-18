@@ -367,7 +367,7 @@ class _MainHomeState extends State<MainHome> {
           'Kiolah',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
-            fontSize: 24.0,
+            fontSize: 22.0,
             color: colorMainBlack,
           ),
         ),

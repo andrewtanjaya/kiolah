@@ -7,6 +7,7 @@ import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/services/auth.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/ProfilePage/profilePage.dart';
 
 class Header extends StatefulWidget {
   const Header({
@@ -87,13 +88,19 @@ class _HeaderState extends State<Header> {
           ),
           InkWell(
             onTap: () {
-              deleteToken();
-              _authMethods.signOut();
-              HelperFunction.saveEmailSP("");
-              HelperFunction.saveUserLoggedInSP(false);
-              HelperFunction.saveUsernameSP("");
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Authenticate()));
+              // deleteToken();
+              // _authMethods.signOut();
+              // HelperFunction.saveEmailSP("");
+              // HelperFunction.saveUserLoggedInSP(false);
+              // HelperFunction.saveUsernameSP("");
+              // Navigator.pushReplacement(context,
+              //     MaterialPageRoute(builder: (context) => Authenticate()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfilePage(
+                          // chatRoomId: widget.data.group,
+                          )));
             },
             child: Container(
               width: 48,

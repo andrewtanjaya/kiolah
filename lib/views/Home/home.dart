@@ -19,6 +19,7 @@ import 'package:kiolah/views/AddOrder/addOrder.dart';
 import 'package:kiolah/views/ExplorePage/explorePage.dart';
 import 'package:kiolah/views/Home/main_home.dart';
 import 'package:kiolah/views/Login/signIn.dart';
+import 'package:kiolah/views/ProfilePage/profilePage.dart';
 import 'components/header.dart';
 
 class Home extends StatefulWidget {
@@ -108,7 +109,7 @@ class HomeState extends State<Home> {
     _pages = [
       MainHome(scrollController: _scrollController),
       ExplorePage(scrollController: _scrollController),
-      MainHome(scrollController: _scrollController),
+      ProfilePage(),
       // Container(
       //   child: ListView(
       //     controller: _scrollController,

@@ -41,6 +41,8 @@ dependencies:
   ffi: ^1.1.2
   timeago: ^3.1.0
   flutter_multi_formatter: ^2.3.1
+  image_picker: ^0.8.2
+  pattern_formatter: ^2.0.0
 
 dev_dependencies:
   flutter_test:

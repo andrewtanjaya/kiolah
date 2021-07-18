@@ -165,7 +165,16 @@ class _BodyState extends State<Body> {
                   itemBuilder: (BuildContext context, int index) {
                     return PreorderCard(
                       data: data[index],
-                      kind: 'explore',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailJoinPreOrder(
+                                // data: widget.data,
+                                ),
+                          ),
+                        );
+                      },
                     );
                   },
                   shrinkWrap: true,
