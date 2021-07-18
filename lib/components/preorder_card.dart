@@ -8,6 +8,7 @@ import 'package:kiolah/etc/generate_color.dart';
 import 'package:kiolah/model/account.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/DetailJoinPreorder/detailJoinPreoder.dart';
 import 'package:kiolah/views/DetailPreorder/detailPreorder.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'colored_outlined_text.dart';
@@ -15,10 +16,12 @@ import 'icon_text.dart';
 
 class PreorderCard extends StatefulWidget {
   final PreOrder data;
+  final String kind;
 
   PreorderCard({
     Key? key,
     required this.data,
+    required this.kind,
     // required this.title,
     // required this.owner,
     // required this.duration,
@@ -101,6 +104,29 @@ class _PreorderCardState extends State<PreorderCard> {
   //   // });
   // }
 
+  onTapFunction() {
+    var type = widget.kind.toString().toLowerCase();
+    if (type == 'home') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetailPreOrder(
+            data: widget.data,
+          ),
+        ),
+      );
+    } else if (type == 'explore') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetailJoinPreOrder(
+              // data: widget.data,
+              ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -110,16 +136,7 @@ class _PreorderCardState extends State<PreorderCard> {
       ),
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailPreOrder(
-                data: widget.data,
-              ),
-            ),
-          );
-        },
+        onTap: onTapFunction,
         child: Container(
           width: 350,
           height: 230,
@@ -176,11 +193,26 @@ class _PreorderCardState extends State<PreorderCard> {
                 color: colorMainGray,
                 width: 250,
               ),
-              IconText(
-                icon: Icons.location_on_rounded,
-                text: widget.data.location,
-                color: colorMainGray,
-                width: 250,
+              Row(
+                children: [
+                  IconText(
+                    icon: Icons.location_on_rounded,
+                    text: widget.data.location,
+                    color: colorMainGray,
+                  ),
+                  SizedBox(
+                    child: Text(
+                      '\u2022',
+                      style: GoogleFonts.poppins(color: colorMainGray),
+                    ),
+                    width: 20.0,
+                  ),
+                  IconText(
+                    icon: Icons.people_rounded,
+                    text: widget.data.maxPeople.toString(),
+                    color: colorMainGray,
+                  ),
+                ],
               ),
               Row(
                 children: [

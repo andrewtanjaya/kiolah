@@ -89,4 +89,11 @@ class DatabaseMethods {
     print(orderMap);
     FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
   }
+
+  getAvailPreorder(String username) async {
+    return await FirebaseFirestore.instance
+        .collection("preorders")
+        .where("users", arrayContains: username)
+        .get();
+  }
 }

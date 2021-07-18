@@ -49,36 +49,41 @@ class _MainHomeState extends State<MainHome> {
     db.getListPreorder(uname).then((val) {
       setState(() {
         preOrderData = val.docs.map((entry) => PreOrder(
-            entry["preOrderId"],
-            entry["title"],
-            entry["owner"],
-            entry["group"],
-            entry["location"],
-            entry["items"]
-                .map((v) => Item(v["foodId"], v["name"], v["description"],
-                    v["count"], double.parse(v["price"])))
-                .toList()
-                .cast<Item>(),
-            DateTime.fromMillisecondsSinceEpoch(
-                entry["duration"].seconds * 1000),
-            entry["users"].toList().cast<String>(),
-            // .map((v) => Account(
-            //     v["userId"],
-            //     v["email"],
-            //     PaymentType(
-            //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
-            //     v["phoneNumber"],
-            //     v["photoUrl"],
-            //     v["username"],
-            //     v["groups"].toList().cast<String>()))
-            // .toList()
-            // .cast<Account>(),
-            entry["status"]));
+              entry["preOrderId"],
+              entry["title"],
+              entry["owner"],
+              entry["group"],
+              entry["location"],
+              entry["items"]
+                  .map((v) => Item(v["foodId"], v["name"], v["description"],
+                      v["count"], double.parse(v["price"])))
+                  .toList()
+                  .cast<Item>(),
+              DateTime.fromMillisecondsSinceEpoch(
+                  entry["duration"].seconds * 1000),
+              entry["users"].toList().cast<String>(),
+              // .map((v) => Account(
+              //     v["userId"],
+              //     v["email"],
+              //     PaymentType(
+              //         v["paymentType"]["ovo"], v["paymentType"]["bca"]),
+              //     v["phoneNumber"],
+              //     v["photoUrl"],
+              //     v["username"],
+              //     v["groups"].toList().cast<String>()))
+              // .toList()
+              // .cast<Account>(),
+              entry["status"],
+              entry["maxPeople"],
+            ));
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
+        print('!****************************');
+        print(data.length);
+        print('!****************************');
       });
     });
   }
@@ -357,6 +362,15 @@ class _MainHomeState extends State<MainHome> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 64.0,
+        title: Text(
+          'Kiolah',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.bold,
+            fontSize: 24.0,
+            color: colorMainBlack,
+          ),
+        ),
         elevation: 0,
         backgroundColor: colorMainWhite,
         iconTheme: IconThemeData(
@@ -381,7 +395,7 @@ class _MainHomeState extends State<MainHome> {
                       child: SizedBox(
                         height: 5 * 66.0,
                         child: ListView.separated(
-                          controller: _scrollController,
+                          // controller: _scrollController,
                           itemCount: 5,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
@@ -438,8 +452,8 @@ class _MainHomeState extends State<MainHome> {
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Body(
-          scrollController: _scrollController,
-        ),
+            // scrollController: _scrollController,
+            ),
       ),
       floatingActionButton: isFAB
           ? FAB(icon: Icons.edit_rounded, onPressed: () {})
