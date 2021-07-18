@@ -10,6 +10,7 @@ import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/Home/home.dart';
 
 import 'components/form_item.dart';
 import 'components/user_form_item.dart';
@@ -136,6 +137,9 @@ class _AddOrderState extends State<AddOrder> {
       };
 
       db.addPreorder(newPreorder);
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
       // List<Item> items = [];
       // // List<String> names = [];
       // // List<String> names = [];
