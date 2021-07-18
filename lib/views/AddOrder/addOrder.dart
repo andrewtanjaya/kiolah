@@ -103,7 +103,7 @@ class _AddOrderState extends State<AddOrder> {
     if (formKey.currentState!.validate()) {
       var title = titleController.text.toString().trim();
       var location = locationController.text.toString().trim();
-      var group = groupController.text.toString().trim();
+      var group = groupsChoosen;
       var maxPeople = int.parse(maxPeopleController.text.toString().trim());
       print(
           'title : $title; location $location; group : $group;maxPeople : $maxPeople');
@@ -267,10 +267,10 @@ class _AddOrderState extends State<AddOrder> {
                                 },
                                 items: databaseGroupData
                                     .map<DropdownMenuItem<String>>(
-                                        (String value) {
+                                        (dynamic value) {
                                   return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
+                                    value: value["chatRoomId"],
+                                    child: Text(value["groupName"]),
                                   );
                                 }).toList(),
                               ),
