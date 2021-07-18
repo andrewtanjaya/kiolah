@@ -11,7 +11,8 @@ class PreOrder {
   DateTime duration;
   List<String> users;
   String status;
+  int maxPeople;
 
   PreOrder(this.preOrderId, this.title, this.owner, this.group, this.location,
-      this.items, this.duration, this.users, this.status);
+      this.items, this.duration, this.users, this.status, this.maxPeople);
 }

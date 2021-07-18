@@ -77,7 +77,8 @@ class _BodyState extends State<Body> {
             //     v["groups"].toList().cast<String>()))
             // .toList()
             // .cast<Account>(),
-            entry["status"]));
+            entry["status"],
+            entry["maxPeople"]));
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!

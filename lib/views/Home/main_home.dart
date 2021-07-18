@@ -73,12 +73,16 @@ class _MainHomeState extends State<MainHome> {
             //     v["groups"].toList().cast<String>()))
             // .toList()
             // .cast<Account>(),
-            entry["status"]));
+            entry["status"],
+            entry["maxPeople"]));
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
+        print('!****************************');
+        print(data.length);
+        print('!****************************');
       });
     });
   }
