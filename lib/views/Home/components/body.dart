@@ -61,7 +61,7 @@ class _BodyState extends State<Body> {
             entry["location"],
             entry["items"]
                 .map((v) => Item(v["foodId"], v["name"], v["description"],
-                    v["count"], double.parse(v["price"])))
+                    v["count"], double.parse(v["price"]), uname))
                 .toList()
                 .cast<Item>(),
             DateTime.fromMillisecondsSinceEpoch(

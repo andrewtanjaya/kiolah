@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/account.dart';
+import 'package:kiolah/model/item.dart';
 
 class DatabaseMethods {
   getUserByUsername(String username) async {
@@ -90,10 +91,24 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
   }
 
-  getAvailPreorder(String username) async {
-    return await FirebaseFirestore.instance
-        .collection("preorders")
-        .where("users", arrayContains: username)
+  getAllPreorder() async {
+    return await FirebaseFirestore.instance.collection("preorders").get();
+  }
+
+  getGroupById(String groupId) {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(groupId)
         .get();
+  }
+
+  addPreorderitems(String preorderId, var items, String uname) {
+    FirebaseFirestore.instance
+        .collection("preorders")
+        .doc(preorderId)
+        .update({'items': FieldValue.arrayUnion(items)});
+    FirebaseFirestore.instance.collection("preorders").doc(preorderId).update({
+      'users': FieldValue.arrayUnion([uname])
+    });
   }
 }
