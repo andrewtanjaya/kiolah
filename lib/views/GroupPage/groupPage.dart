@@ -271,6 +271,7 @@ class _GroupPageState extends State<GroupPage> {
                                 );
                               },
                             ),
+                            value: 'Edit Details',
                           ),
                           DropdownMenuItem(
                             child: GroupDropdownButton(
@@ -293,6 +294,7 @@ class _GroupPageState extends State<GroupPage> {
                                 );
                               },
                             ),
+                            value: 'Delete',
                           ),
                         ],
                       ),
