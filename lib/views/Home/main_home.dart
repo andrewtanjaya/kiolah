@@ -16,6 +16,7 @@ import 'package:kiolah/model/paymentType.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/AddOrder/addOrder.dart';
+import 'package:kiolah/views/GroupPage/groupPage.dart';
 import '../search.dart';
 import 'components/body.dart';
 import 'components/header.dart';
@@ -398,20 +399,28 @@ class _MainHomeState extends State<MainHome> {
                           // controller: _scrollController,
                           itemCount: 5,
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              width: 12.0,
-                              height: 48.0,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
-                                color: colorMainWhite,
-                              ),
-                              child: Text(
-                                'W',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  color: colorMainGray,
-                                  fontSize: 12.0,
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => GroupPage()));
+                              },
+                              child: Container(
+                                width: 12.0,
+                                height: 48.0,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  color: colorMainWhite,
+                                ),
+                                child: Text(
+                                  'W',
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w600,
+                                    color: colorMainGray,
+                                    fontSize: 12.0,
+                                  ),
                                 ),
                               ),
                             );
