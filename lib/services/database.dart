@@ -75,7 +75,7 @@ class DatabaseMethods {
     ];
     return await FirebaseFirestore.instance
         .collection("preorders")
-        .where("owner", isEqualTo: "andi")
+        .where("users", arrayContains: username)
         .get();
   }
 
