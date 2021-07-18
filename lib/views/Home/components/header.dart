@@ -102,7 +102,7 @@ class _HeaderState extends State<Header> {
                 // color: Colors.green,
                 borderRadius: BorderRadius.circular(8.0),
                 image: DecorationImage(
-                  image: AssetImage(widget.imageUrl),
+                  image: NetworkImage(widget.imageUrl),
                   alignment: Alignment.center,
                   fit: BoxFit.fill,
                 ),
