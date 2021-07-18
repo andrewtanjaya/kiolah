@@ -60,8 +60,13 @@ class _BodyState extends State<Body> {
             entry["group"],
             entry["location"],
             entry["items"]
-                .map((v) => Item(v["foodId"], v["name"], v["description"],
-                    v["count"], double.parse(v["price"]), uname))
+                .map((v) => Item(
+                    v["foodId"].toString(),
+                    v["name"],
+                    v["description"],
+                    v["count"],
+                    double.parse(v["price"].toString()).toDouble(),
+                    "--"))
                 .toList()
                 .cast<Item>(),
             DateTime.fromMillisecondsSinceEpoch(
@@ -80,6 +85,9 @@ class _BodyState extends State<Body> {
             // .cast<Account>(),
             entry["status"],
             entry["maxPeople"]));
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        print(preOrderData.toString());
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
