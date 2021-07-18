@@ -12,6 +12,7 @@ import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/model/account.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/Home/home.dart';
 import 'package:kiolah/views/conversationScreen.dart';
 import 'package:http/http.dart' as http;
 
@@ -144,12 +145,12 @@ class _SearchScreenState extends State<SearchScreen> {
     // name groupName
 
     databaseMethods.addChatRoom(chatRoomId, chatRoomMap);
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ConversationScreen(
-          chatRoomId: chatRoomId,
-        ),
+        builder: (context) => Home(
+            // chatRoomId: chatRoomId,
+            ),
       ),
     );
   }

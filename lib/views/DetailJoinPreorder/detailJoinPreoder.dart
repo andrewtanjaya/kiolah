@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/add_header.dart';
+import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
@@ -10,6 +11,7 @@ import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/AddOrder/components/form_item.dart';
+import 'package:kiolah/views/Home/home.dart';
 
 class DetailJoinPreOrder extends StatefulWidget {
   final PreOrder data;
@@ -143,13 +145,13 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
                         alignment: Alignment.center,
                         // color: Colors.green,
                         width: 360,
-                        height: (180.0 * itemForms.length),
+                        height: (240.0 * itemForms.length),
                         // padding: EdgeInsets.symmetric(horizontal: 24.0),
                         margin: EdgeInsets.all(0),
                         child: Expanded(
                           child: SizedBox(
                             width: 360,
-                            height: (180.0 * itemForms.length),
+                            height: (240.0 * itemForms.length),
                             child: ListView.separated(
                               // controller: _scrollController,
                               itemCount: itemForms.length,
@@ -186,11 +188,41 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
                   ),
                 ),
               ),
+              Container(
+                width: size.width,
+                // color: Colors.green,
+                alignment: Alignment.center,
+                // margin: EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextButton(
+                  onPressed: () => setState(() => itemForms.removeLast()),
+                  child: Text(
+                    'REMOVE LAST ITEM',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      color: colorMainGray,
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ),
+              ),
               Center(
                 child: RoundButton(
                   text: 'ADD ITEMS',
                   onPressed: () {
                     addPreorderItem();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return CustomDialog(
+                          title: 'Yay!',
+                          description: 'Item(s) have been added',
+                          imageUrl: 'assets/emoji/paper_popper.png',
+                          textButton: 'Ok',
+                        );
+                      },
+                    );
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Home()));
                   },
                 ),
               ),

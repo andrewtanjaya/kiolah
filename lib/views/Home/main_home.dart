@@ -405,7 +405,7 @@ class _MainHomeState extends State<MainHome> {
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                     child: Expanded(
                       child: SizedBox(
-                        height: 5 * 66.0,
+                        height: groups.length * 76.0,
                         child: ListView.separated(
                           // controller: _scrollController,
                           itemCount: groups.length,
@@ -427,7 +427,9 @@ class _MainHomeState extends State<MainHome> {
                                   color: colorMainWhite,
                                 ),
                                 child: Text(
-                                  'W',
+                                  groups[index]["groupName"][0]
+                                      .toString()
+                                      .toUpperCase(),
                                   style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w600,
                                     color: colorMainGray,
@@ -439,7 +441,7 @@ class _MainHomeState extends State<MainHome> {
                           },
                           physics: new NeverScrollableScrollPhysics(),
                           separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(height: 16.0),
+                              const SizedBox(height: 12.0),
                           // physics: const NeverScrollableScrollPhysics(),
                         ),
                       ),

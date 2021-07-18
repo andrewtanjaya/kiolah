@@ -66,7 +66,7 @@ class _BodyState extends State<Body> {
                     v["description"],
                     v["count"],
                     double.parse(v["price"].toString()).toDouble(),
-                    "--"))
+                    v["username"]))
                 .toList()
                 .cast<Item>(),
             DateTime.fromMillisecondsSinceEpoch(

@@ -115,6 +115,7 @@ class _GroupPageState extends State<GroupPage> {
         iconTheme: IconThemeData(color: colorMainBlack),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
@@ -141,10 +142,12 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                           Container(
+                            width: 220,
                             child: Text(
                               widget.group["groupName"].toString(),
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
-                                fontSize: 32.0,
+                                fontSize: 28.0,
                                 fontWeight: FontWeight.bold,
                                 color: colorMainBlack,
                               ),
@@ -247,7 +250,8 @@ class _GroupPageState extends State<GroupPage> {
               ),
               SizedBox(height: 16.0),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                // color: Colors.green,
+                // margin: EdgeInsets.symmetric(horizontal: 20.0),
                 width: size.width,
                 height: (246.0 * data.length),
                 child: Expanded(

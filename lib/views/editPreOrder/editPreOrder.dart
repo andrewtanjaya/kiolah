@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/add_header.dart';
-import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
@@ -10,22 +9,21 @@ import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/AddOrder/components/form_item.dart';
+import 'package:kiolah/views/AddOrder/components/user_form_item.dart';
 
-import 'components/form_item.dart';
-import 'components/user_form_item.dart';
-
-class AddOrder extends StatefulWidget {
+class EditOrder extends StatefulWidget {
   // final ScrollController scrollController;
-  AddOrder({
+  EditOrder({
     Key? key,
     // required this.scrollController,
   }) : super(key: key);
 
   @override
-  _AddOrderState createState() => _AddOrderState();
+  _EditOrderState createState() => _EditOrderState();
 }
 
-class _AddOrderState extends State<AddOrder> {
+class _EditOrderState extends State<EditOrder> {
   List<UserFormItem> userItems = <UserFormItem>[];
   List<ItemForm> itemForms = <ItemForm>[];
 
@@ -102,40 +100,25 @@ class _AddOrderState extends State<AddOrder> {
 
   createPreOrder() {
     if (formKey.currentState!.validate()) {
-      if (groupsChoosen == null) {
-        showDialog(
-          context: context,
-          builder: (BuildContext dialogContext) {
-            return CustomDialog(
-              title: 'Oops',
-              description: 'Groups must be filled',
-              imageUrl: 'assets/emoji/exclamation_mark.png',
-              textButton: 'Continue',
-            );
-          },
-        );
-        return;
-      }
       var title = titleController.text.toString().trim();
-      var location = locationController.text.toString().trim();
-      var group = groupsChoosen;
+      // var location = locationController.text.toString().trim();
+      // var group = groupsChoosen;
       var maxPeople = int.parse(maxPeopleController.text.toString().trim());
-      print(
-          'title : $title; location $location; group : $group;maxPeople : $maxPeople');
-      Map<String, dynamic> newPreorder = {
-        "preOrderId": "-",
-        "title": title,
-        "location": location,
-        "group": group,
-        "maxPeople": maxPeople,
-        "status": "Ongoing",
-        "duration": Timestamp.now(),
-        "owner": uname,
-        "items": [],
-        "users": []
-      };
+      print('title : $title; ; maxPeople : $maxPeople');
+      // Map<String, dynamic> newPreorder = {
+      //   "preOrderId": "-",
+      //   "title": title,
+      //   "location": location,
+      //   "group": group,
+      //   "maxPeople": maxPeople,
+      //   "status": "Ongoing",
+      //   "duration": Timestamp.now(),
+      //   "owner": uname,
+      //   "items": [],
+      //   "users": []
+      // };
 
-      db.addPreorder(newPreorder);
+      // db.addPreorder(newPreorder);
       // List<Item> items = [];
       // // List<String> names = [];
       // // List<String> names = [];
@@ -215,7 +198,7 @@ class _AddOrderState extends State<AddOrder> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AddHeader(firstText: 'Create', secondText: 'New Preorder'),
+              AddHeader(firstText: 'Edit', secondText: 'Preorder'),
               Form(
                 key: formKey,
                 child: Container(
@@ -233,66 +216,66 @@ class _AddOrderState extends State<AddOrder> {
                           onChanged: (value) => {},
                         ),
                       ),
-                      TextInputContainer(
-                        child: TextInputField(
-                          controller: locationController,
-                          validator: locationValidator,
-                          icon: Icons.place_rounded,
-                          hintText: 'Location',
-                          maxLength: 20,
-                          onChanged: (value) => {},
-                        ),
-                      ),
-                      Container(
-                        width: 400,
-                        margin: EdgeInsets.only(
-                            left: 22.0, right: 22.0, top: 12.0, bottom: 4.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Icon(
-                                Icons.people_rounded,
-                                color: colorMainBlack,
-                                size: 24.0,
-                              ),
-                            ),
-                            SizedBox(width: 16.0),
-                            Container(
-                              // padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      // TextInputContainer(
+                      //   child: TextInputField(
+                      //     controller: locationController,
+                      //     validator: locationValidator,
+                      //     icon: Icons.place_rounded,
+                      //     hintText: 'Location',
+                      //     maxLength: 20,
+                      //     onChanged: (value) => {},
+                      //   ),
+                      // ),
+                      // Container(
+                      //   width: 400,
+                      //   margin: EdgeInsets.only(
+                      //       left: 22.0, right: 22.0, top: 12.0, bottom: 4.0),
+                      //   child: Row(
+                      //     children: [
+                      //       Container(
+                      //         child: Icon(
+                      //           Icons.people_rounded,
+                      //           color: colorMainBlack,
+                      //           size: 24.0,
+                      //         ),
+                      //       ),
+                      //       SizedBox(width: 16.0),
+                      //       Container(
+                      //         // padding: EdgeInsets.symmetric(horizontal: 8.0),
 
-                              // ini dropdown nya ya :)
-                              child: DropdownButton<String>(
-                                value: groupsChoosen,
-                                icon: Icon(Icons.arrow_drop_down_rounded),
-                                iconSize: 24,
-                                // elevation: 16,
-                                style: GoogleFonts.poppins(
-                                  color: colorMainBlack,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.0,
-                                ),
-                                underline: Container(
-                                  height: .8,
-                                  color: colorMainBlack,
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    groupsChoosen = newValue!;
-                                  });
-                                },
-                                items: databaseGroupData
-                                    .map<DropdownMenuItem<String>>(
-                                        (dynamic value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value["chatRoomId"],
-                                    child: Text(value["groupName"]),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      //         // ini dropdown nya ya :)
+                      //         child: DropdownButton<String>(
+                      //           value: groupsChoosen,
+                      //           icon: Icon(Icons.arrow_drop_down_rounded),
+                      //           iconSize: 24,
+                      //           // elevation: 16,
+                      //           style: GoogleFonts.poppins(
+                      //             color: colorMainBlack,
+                      //             fontWeight: FontWeight.w500,
+                      //             fontSize: 14.0,
+                      //           ),
+                      //           underline: Container(
+                      //             height: .8,
+                      //             color: colorMainBlack,
+                      //           ),
+                      //           onChanged: (String? newValue) {
+                      //             setState(() {
+                      //               groupsChoosen = newValue!;
+                      //             });
+                      //           },
+                      //           items: databaseGroupData
+                      //               .map<DropdownMenuItem<String>>(
+                      //                   (dynamic value) {
+                      //             return DropdownMenuItem<String>(
+                      //               value: value["chatRoomId"],
+                      //               child: Text(value["groupName"]),
+                      //             );
+                      //           }).toList(),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       // Container(
                       //   margin: EdgeInsets.symmetric(horizontal: 0.0),
                       //   child: TextInputContainer(
@@ -383,9 +366,9 @@ class _AddOrderState extends State<AddOrder> {
               SizedBox(height: 8.0),
               Center(
                 child: RoundButton(
-                  text: 'CREATE',
+                  text: 'Save',
                   onPressed: () {
-                    createPreOrder();
+                    // edit Preorder
                   },
                 ),
               ),

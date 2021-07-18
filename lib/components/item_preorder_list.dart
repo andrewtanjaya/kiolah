@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/components/promptDialog.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/model/item.dart';
 
 class ItemsPreorderList extends StatelessWidget {
   final Item data;
+  final bool? canDelete;
 
   const ItemsPreorderList({
     Key? key,
     required this.data,
+    this.canDelete,
   }) : super(key: key);
 
   @override
@@ -19,7 +22,7 @@ class ItemsPreorderList extends StatelessWidget {
       width: 400,
       height: 60,
       // color: Colors.pink,
-      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,9 +51,9 @@ class ItemsPreorderList extends StatelessWidget {
             ),
           ),
           Container(
-            width: 192,
+            width: canDelete != true ? 200 : 160,
             // color: Colors.green,
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            margin: EdgeInsets.symmetric(horizontal: 12.0),
             // color: Colors.green,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -97,6 +100,31 @@ class ItemsPreorderList extends StatelessWidget {
               ),
             ),
           ),
+          if (canDelete == true)
+            Container(
+              child: IconButton(
+                icon: Icon(Icons.clear_rounded),
+                color: colorError,
+                onPressed: () {
+                  // print('delete');
+                  // :)
+                  // delete preoder
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return PromptDialog(
+                          title: 'Delete Item ?',
+                          description: 'This action can\'t be undone.',
+                          primaryButtonText: 'DELETE',
+                          primaryButtonFunction: () {
+                            print('delete');
+                            Navigator.pop(context);
+                          });
+                    },
+                  );
+                },
+              ),
+            )
         ],
       ),
     );

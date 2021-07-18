@@ -7,6 +7,7 @@ class PromptDialog extends StatefulWidget {
   final String title;
   final String description;
   final String primaryButtonText;
+  final String? secondaryButtonText;
   final VoidCallback? primaryButtonFunction;
 
   PromptDialog({
@@ -15,6 +16,7 @@ class PromptDialog extends StatefulWidget {
     required this.description,
     required this.primaryButtonText,
     required this.primaryButtonFunction,
+    this.secondaryButtonText,
   }) : super(key: key);
 
   @override
@@ -75,7 +77,9 @@ class _PromptDialogState extends State<PromptDialog> {
                         primary: colorMainBlue,
                       ),
                       child: Text(
-                        'CANCEL',
+                        widget.secondaryButtonText != null
+                            ? widget.secondaryButtonText!
+                            : 'CANCEL',
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
                           color: colorMainGray,

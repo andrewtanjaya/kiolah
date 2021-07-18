@@ -7,8 +7,8 @@ import 'package:kiolah/etc/constants.dart';
 
 class PaymentDialog extends StatelessWidget {
   final double total;
-  final int ovo;
-  final int bca;
+  final String ovo;
+  final String bca;
 
   const PaymentDialog({
     Key? key,

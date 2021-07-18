@@ -7,6 +7,7 @@ import 'package:kiolah/components/colored_outlined_text.dart';
 import 'package:kiolah/components/icon_text.dart';
 import 'package:kiolah/components/item_preorder_list.dart';
 import 'package:kiolah/components/payment_dialog.dart';
+import 'package:kiolah/components/promptDialog.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/row_rounded_bordered_image.dart';
 import 'package:kiolah/components/status_button.dart';
@@ -14,10 +15,14 @@ import 'package:kiolah/components/two_text_inline.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/etc/functions.dart';
 import 'package:kiolah/etc/generate_color.dart';
+import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/model/account.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/Home/components/background.dart';
 import 'package:kiolah/views/conversationScreen.dart';
+import 'package:kiolah/views/editPreOrder/editPreOrder.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -40,6 +45,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+
   int perPage = 3;
   int present = 0;
   List<Item> items = <Item>[];
@@ -48,6 +55,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
+    preOrderStatus = widget.data.status;
     setState(() {
       if (widget.data.items.length < perPage) {
         perPage = widget.data.items.length;
@@ -55,23 +63,87 @@ class _BodyState extends State<Body> {
       items.addAll(widget.data.items.getRange(present, present + perPage));
       present = present + perPage;
     });
+
+    getUserName();
+
+    databaseMethods.getUserByUsername(widget.data.owner).then((val) {
+      setState(() {
+        owner = new Account(
+          val.docs[0]["userId"],
+          val.docs[0]["email"],
+          (val.docs[0]["paymentType"]).toList().cast<String>(),
+          val.docs[0]["phoneNumber"],
+          val.docs[0]["photoUrl"],
+          val.docs[0]["username"],
+        );
+        // users.add(val);
+        // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
+        //   searchSnapshot = null;
+        // }
+        // print(users[0].photoUrl);
+      });
+    });
+
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print(widget.data.items[0].username.toString());
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   }
 
   showMoreLessItems() {
-    setState(() {
-      if (items.length < widget.data.items.length) {
-        items.addAll(
-            widget.data.items.getRange(present, widget.data.items.length));
-        showMoreButtonText = 'Show Less';
-        present = widget.data.items.length;
-      } else {
-        items = [];
-        items.addAll(
-          widget.data.items.getRange(0, perPage),
-        );
-        showMoreButtonText = 'Show More';
-        present = perPage;
-      }
+    setState(
+      () {
+        if (items.length < widget.data.items.length) {
+          items.addAll(
+              widget.data.items.getRange(present, widget.data.items.length));
+          showMoreButtonText = 'Show Less';
+          present = widget.data.items.length;
+        } else {
+          items = [];
+          items.addAll(
+            widget.data.items.getRange(0, perPage),
+          );
+          showMoreButtonText = 'Show More';
+          present = perPage;
+        }
+      },
+    );
+  }
+
+  late Account owner;
+  late Account currentUser;
+  // :)
+  late String preOrderStatus;
+  List<String> status = ['Ongoing', 'Ordered', 'Completed'];
+  var uname;
+
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((username) {
+      uname = username.toString();
+      DatabaseMethods().getUserByUsername(uname).then((val) {
+        setState(() {
+          currentUser = new Account(
+            val.docs[0]["userId"],
+            val.docs[0]["email"],
+            (val.docs[0]["paymentType"]).toList().cast<String>(),
+            val.docs[0]["phoneNumber"],
+            val.docs[0]["photoUrl"],
+            val.docs[0]["username"],
+          );
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print(currentUser.username);
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        });
+      });
     });
   }
 
@@ -79,7 +151,7 @@ class _BodyState extends State<Body> {
     var price = 0.0;
     widget.data.items.forEach(
       (element) {
-        price += element.price;
+        price += (element.price * element.count);
       },
     );
     return price;
@@ -168,6 +240,12 @@ class _BodyState extends State<Body> {
                               itemBuilder: (BuildContext context, int index) {
                                 return ItemsPreorderList(
                                   data: widget.data.items[index],
+                                  canDelete: (currentUser.username ==
+                                              widget
+                                                  .data.items[index].username ||
+                                          currentUser!.userId == owner!.userId)
+                                      ? true
+                                      : false,
                                 );
                               },
                               physics: NeverScrollableScrollPhysics(),
@@ -257,24 +335,82 @@ class _BodyState extends State<Body> {
                           ),
                         ],
                       ),
-                      // RoundButton(
-                      //   text: 'Pay',
-                      //   onPressed: () => {
-                      //     showDialog(
-                      //       context: context,
-                      //       builder: (BuildContext context) {
-                      //         return PaymentDialog(
-                      //           bca: widget.data.users[0].paymentType!.bca
-                      //               .toInt(),
-                      //           ovo: widget.data.users[0].paymentType!.ovo
-                      //               .toInt(),
-                      //           total: getTotalPrice(),
-                      //         );
-                      //       },
-                      //     )
-                      //   },
-                      //   color: colorSuccess,
-                      // ),
+                      if (currentUser!.userId != owner!.userId)
+                        RoundButton(
+                          text: 'Pay',
+                          onPressed: () => {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return PaymentDialog(
+                                  bca: owner!.paymentType![0].toString(),
+                                  ovo: owner!.paymentType![1].toString(),
+                                  total: getTotalPrice(),
+                                );
+                              },
+                            )
+                          },
+                          color: colorSuccess,
+                        ),
+                    ],
+                  ),
+                ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Divider(
+                  color: colorMainGray,
+                  height: 2.0,
+                ),
+              ),
+              if (currentUser!.userId == owner!.userId)
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Change Status',
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                            color: colorMainBlack,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: DropdownButton<String>(
+                          value: preOrderStatus,
+                          // icon: const Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            color: colorMainBlue,
+                            fontSize: 14.0,
+                          ),
+                          underline: Container(
+                            height: 0,
+                            color: colorMainBlack,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              preOrderStatus = newValue!;
+                            });
+                          },
+                          items: status
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -286,6 +422,9 @@ class _BodyState extends State<Body> {
                     height: 2.0,
                   ),
                 ),
+              SizedBox(
+                height: 8.0,
+              ),
               TextButton.icon(
                 onPressed: () => {
                   Navigator.push(
@@ -308,7 +447,75 @@ class _BodyState extends State<Body> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
+              ),
+              if (currentUser!.userId == owner!.userId)
+                SizedBox(
+                  height: 12.0,
+                ),
+              if (currentUser!.userId == owner!.userId)
+                TextButton(
+                  onPressed: () => {
+                    // edit preoder disini :)
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditOrder(
+                                // chatRoomId: widget.data.group,
+                                )))
+                  },
+                  child: Text(
+                    'Edit Preoder',
+                    style: GoogleFonts.poppins(
+                      color: colorMainGray,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // icon: Icon(
+                  //   Icons.chat_rounded,
+                  //   color: colorMainGray,
+                  //   size: 18.0,
+                  // ),
+                ),
+
+              if (currentUser!.userId == owner!.userId)
+                SizedBox(
+                  height: 24.0,
+                ),
+              if (currentUser!.userId == owner!.userId)
+                TextButton(
+                  onPressed: () => {
+                    // delete preoder disini :)
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return PromptDialog(
+                            title: 'Cancel this order ?',
+                            description: 'This action can\'t be undone.',
+                            primaryButtonText: 'YES',
+                            secondaryButtonText: 'NO',
+                            primaryButtonFunction: () {
+                              print('delete');
+                              Navigator.pop(context);
+                            });
+                      },
+                    ),
+                  },
+                  child: Text(
+                    'Cancel Preoder',
+                    style: GoogleFonts.poppins(
+                      color: colorError,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // icon: Icon(
+                  //   Icons.chat_rounded,
+                  //   color: colorMainGray,
+                  //   size: 18.0,
+                  // ),
+                ),
+              if (currentUser!.userId == owner!.userId) SizedBox(height: 16.0),
             ],
           ),
         ),

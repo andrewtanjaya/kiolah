@@ -104,7 +104,7 @@ class _SignUpState extends State<SignUp> {
     AppBar appBar = AppBar(
       backgroundColor: colorMainWhite,
       elevation: 0,
-      iconTheme: IconThemeData(color: colorMainBlack),
+      // iconTheme: IconThemeData(color: colorMainBlack),
     );
 
     double height = appBar.preferredSize.height;

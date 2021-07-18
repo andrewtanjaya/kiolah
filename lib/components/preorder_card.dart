@@ -52,7 +52,7 @@ class _PreorderCardState extends State<PreorderCard> {
         .then((DocumentSnapshot val) {
       // print('!!!!!!!!!!!!!!!!!!!!!');
       // print(widget.data.group);
-      // groupName = val.get('groupName');
+      groupName = val.get('groupName');
       // print('!!!!!!!!!!!!!!!!!!!!!');
     });
   }
@@ -66,8 +66,8 @@ class _PreorderCardState extends State<PreorderCard> {
   }
 
   initiateSearch() {
-    // print("DUARRRRR");
-    // print(widget.data.users);
+    print("DUARRRRR");
+    print(widget.data.users);
     widget.data.users.forEach((element) {
       databaseMethods.getUserByUsername(element).then((val) {
         setState(() {
@@ -173,7 +173,7 @@ class _PreorderCardState extends State<PreorderCard> {
                   ),
                   ColoredOutlinedText(
                     text: groupName == null ? "Loading" : groupName,
-                    color: colorWarning,
+                    color: colorMainGray,
                   )
                   // IconButton(
                   //   icon: Icon(
@@ -242,12 +242,8 @@ class _PreorderCardState extends State<PreorderCard> {
               //           firstImageUrl: users.length > 0
               //               ? users[0].photoUrl.toString()
               //               : '',
-              //           secondImageUrl: users.length > 1
-              //               ? users[1].photoUrl.toString()
-              //               : '',
-              //           thirdImageUrl: users.length > 2
-              //               ? users[2].photoUrl.toString()
-              //               : '',
+              //           secondImageUrl: '',
+              //           thirdImageUrl: '',
               //           count: widget.data.users.length,
               //         ),
               //       ],

@@ -17,13 +17,11 @@ class _SignInState extends State<SignIn> {
     AppBar appBar = AppBar(
       backgroundColor: colorMainWhite,
       elevation: 0,
-      iconTheme: IconThemeData(color: colorMainBlack),
+      // iconTheme: IconThemeData(color: colorMainBlack),
     );
     double height = appBar.preferredSize.height;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: appBar,
       body: Body(
         toggle: widget.toggle,
         height: height,

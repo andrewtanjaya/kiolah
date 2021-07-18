@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/authenticate.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/helper/helperFunction.dart';
@@ -192,7 +193,7 @@ class ChatRoomItem extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                  color: Colors.yellow,
+                  color: colorMainBlue,
                   borderRadius: BorderRadius.circular(40)),
               child: Text(username.substring(0, 1).toUpperCase()),
             ),

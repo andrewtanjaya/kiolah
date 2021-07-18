@@ -104,14 +104,14 @@ class _HeaderState extends State<Header> {
                 image: DecorationImage(
                   image: NetworkImage(widget.imageUrl),
                   alignment: Alignment.center,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: colorMainGray,
+                    color: colorMainGray.withOpacity(0.2),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, 5), // changes position of shadow
+                    offset: Offset(0, 2), // changes position of shadow
                   ),
                 ],
               ),
