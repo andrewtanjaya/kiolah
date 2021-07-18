@@ -453,6 +453,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: TextInputField(
                           controller: groupNameController,
                           validator: groupNameValidator,
+                          maxLength: 15,
                           // icon: Icons.mail_outline_outlined,
                           hintText: 'Group Name',
                           onChanged: (value) => {},

@@ -102,7 +102,9 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: colorMainWhite,
+      elevation: 0,
+      iconTheme: IconThemeData(color: colorMainBlack),
     );
 
     double height = appBar.preferredSize.height;

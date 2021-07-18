@@ -1,5 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/views/Login/components/body.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,7 +15,9 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     // get screen size
     AppBar appBar = AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: colorMainWhite,
+      elevation: 0,
+      iconTheme: IconThemeData(color: colorMainBlack),
     );
     double height = appBar.preferredSize.height;
     return Scaffold(

@@ -38,11 +38,22 @@ class _AddOrderState extends State<AddOrder> {
   TextEditingController groupController = new TextEditingController();
   TextEditingController maxPeopleController = new TextEditingController();
 
-  var userIds = <TextEditingController>[];
-  var itemNames = <TextEditingController>[];
-  var descriptions = <TextEditingController>[];
-  var prices = <TextEditingController>[];
-  var quantities = <TextEditingController>[];
+  // var userIds = <TextEditingController>[];
+  // var itemNames = <TextEditingController>[];
+  // var descriptions = <TextEditingController>[];
+  // var prices = <TextEditingController>[];
+  // var quantities = <TextEditingController>[];
+
+  // ini untuk ambil data drodpown group ye :)
+  var groupsChoosen;
+  // :)
+
+  var databaseGroupData = [
+    'oppa club',
+    'girls club',
+    'mantap - mantap club',
+    'ganteng club'
+  ];
 
   String? titleValidator(value) {
     if (value.toString().length <= 0) {
@@ -199,6 +210,7 @@ class _AddOrderState extends State<AddOrder> {
                           controller: titleController,
                           validator: titleValidator,
                           hintText: 'Preorder name',
+                          maxLength: 10,
                           onChanged: (value) => {},
                         ),
                       ),
@@ -208,21 +220,72 @@ class _AddOrderState extends State<AddOrder> {
                           validator: locationValidator,
                           icon: Icons.place_rounded,
                           hintText: 'Location',
+                          maxLength: 20,
                           onChanged: (value) => {},
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 0.0),
-                        child: TextInputContainer(
-                          child: TextInputField(
-                            controller: groupController,
-                            validator: groupValidator,
-                            icon: Icons.group_rounded,
-                            hintText: 'Group',
-                            onChanged: (value) => {},
-                          ),
+                        width: 400,
+                        margin: EdgeInsets.only(
+                            left: 22.0, right: 22.0, top: 12.0, bottom: 4.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Icon(
+                                Icons.people_rounded,
+                                color: colorMainBlack,
+                                size: 24.0,
+                              ),
+                            ),
+                            SizedBox(width: 16.0),
+                            Container(
+                              // padding: EdgeInsets.symmetric(horizontal: 8.0),
+
+                              // ini dropdown nya ya :)
+                              child: DropdownButton<String>(
+                                value: groupsChoosen,
+                                icon: Icon(Icons.arrow_drop_down_rounded),
+                                iconSize: 24,
+                                // elevation: 16,
+                                style: GoogleFonts.poppins(
+                                  color: colorMainBlack,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.0,
+                                ),
+                                underline: Container(
+                                  height: .8,
+                                  color: colorMainBlack,
+                                ),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    groupsChoosen = newValue!;
+                                  });
+                                },
+                                items: databaseGroupData
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      // Container(
+                      //   margin: EdgeInsets.symmetric(horizontal: 0.0),
+                      //   child: TextInputContainer(
+                      //     child: TextInputField(
+                      //       controller: groupController,
+                      //       validator: groupValidator,
+                      //       icon: Icons.group_rounded,
+                      //       hintText: 'Group',
+                      //       onChanged: (value) => {},
+                      //     ),
+                      //   ),
+                      // ),
                       // Container(
                       //   margin: EdgeInsets.symmetric(
                       //       vertical: 8.0, horizontal: 16.0),
@@ -262,7 +325,8 @@ class _AddOrderState extends State<AddOrder> {
                       //   ),
                       // ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 0.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 8.0),
                         child: TextInputContainer(
                           child: TextInputField(
                             controller: maxPeopleController,
@@ -270,6 +334,7 @@ class _AddOrderState extends State<AddOrder> {
                             icon: Icons.group_rounded,
                             hintText: 'Max People',
                             isNumberFormat: true,
+                            maxLength: 2,
                             onChanged: (value) => {},
                           ),
                         ),
@@ -296,6 +361,7 @@ class _AddOrderState extends State<AddOrder> {
               //     ),
               //   ),
               // ),
+              SizedBox(height: 8.0),
               Center(
                 child: RoundButton(
                   text: 'CREATE',

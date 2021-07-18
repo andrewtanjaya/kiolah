@@ -7,12 +7,14 @@ class RoundButton extends StatelessWidget {
   final Color color;
   final VoidCallback? onPressed;
   final double width;
+  final bool? isBold;
   const RoundButton({
     Key? key,
     required this.text,
     this.onPressed,
     this.color: colorMainBlue,
     this.width: 200,
+    this.isBold,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class RoundButton extends StatelessWidget {
           text,
           style: GoogleFonts.poppins(
             letterSpacing: 1.5,
-            fontWeight: FontWeight.w500,
+            fontWeight: isBold == true ? FontWeight.bold : FontWeight.w500,
             fontSize: 12,
             color: colorMainWhite,
           ),
