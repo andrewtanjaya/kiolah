@@ -232,31 +232,29 @@ class _PreorderCardState extends State<PreorderCard> {
                   ),
                 ],
               ),
-              widget.data.users.length != 0
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Stack(
-                          children: [
-                            RowBorderedImage(
-                              borderColor: colorMainWhite,
-                              firstImageUrl: users.length > 0
-                                  ? users[0].photoUrl.toString()
-                                  : '',
-                              secondImageUrl: users.length > 1
-                                  ? users[1].photoUrl.toString()
-                                  : '',
-                              thirdImageUrl: users.length > 2
-                                  ? users[2].photoUrl.toString()
-                                  : '',
-                              count: widget.data.users.length,
-                            ),
-                          ],
-                        ),
-                        StatusButton(status: widget.data.status),
-                      ],
-                    )
-                  : Text("-")
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Stack(
+              //       children: [
+              //         RowBorderedImage(
+              //           borderColor: colorMainWhite,
+              //           firstImageUrl: users.length > 0
+              //               ? users[0].photoUrl.toString()
+              //               : '',
+              //           secondImageUrl: users.length > 1
+              //               ? users[1].photoUrl.toString()
+              //               : '',
+              //           thirdImageUrl: users.length > 2
+              //               ? users[2].photoUrl.toString()
+              //               : '',
+              //           count: widget.data.users.length,
+              //         ),
+              //       ],
+              //     ),
+              //     StatusButton(status: widget.data.status),
+              //   ],
+              // )
             ],
           ),
         ),

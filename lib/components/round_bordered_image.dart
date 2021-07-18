@@ -28,7 +28,7 @@ class RoundBorderedImage extends StatelessWidget {
           color: colorBorder,
         ),
         image: DecorationImage(
-          image: AssetImage(imageUrl),
+          image: NetworkImage(imageUrl),
           alignment: Alignment.center,
           fit: BoxFit.fill,
         ),
