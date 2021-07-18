@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
 
-class TextInputField extends StatelessWidget {
+class CardNumberTextField extends StatelessWidget {
   final TextEditingController controller;
   final IconData? icon;
   final String hintText;
@@ -11,7 +12,7 @@ class TextInputField extends StatelessWidget {
   final bool? isNumberFormat;
   final int? maxLength;
 
-  const TextInputField({
+  const CardNumberTextField({
     Key? key,
     required this.controller,
     this.icon,
@@ -47,9 +48,10 @@ class TextInputField extends StatelessWidget {
           borderSide: BorderSide(color: colorMainBlack),
         ),
       ),
-      inputFormatters: isNumberFormat == true
-          ? [WhitelistingTextInputFormatter.digitsOnly]
-          : null,
+      inputFormatters: [
+        WhitelistingTextInputFormatter.digitsOnly,
+        CreditCardFormatter(),
+      ],
       controller: controller,
       maxLength: maxLength,
       keyboardType:

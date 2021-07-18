@@ -17,12 +17,14 @@ import 'icon_text.dart';
 
 class PreorderCard extends StatefulWidget {
   final PreOrder data;
-  final String kind;
+  // final String kind;
+  final VoidCallback? onPressed;
 
   PreorderCard({
     Key? key,
     required this.data,
-    required this.kind,
+    // required this.kind,
+    this.onPressed,
     // required this.title,
     // required this.owner,
     // required this.duration,
@@ -97,28 +99,28 @@ class _PreorderCardState extends State<PreorderCard> {
   //   // });
   // }
 
-  onTapFunction() {
-    var type = widget.kind.toString().toLowerCase();
-    if (type == 'home') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DetailPreOrder(
-            data: widget.data,
-          ),
-        ),
-      );
-    } else if (type == 'explore') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DetailJoinPreOrder(
-            data: widget.data,
-          ),
-        ),
-      );
-    }
-  }
+  // onTapFunction() {
+  //   // var type = widget.kind.toString().toLowerCase();
+  //   // if (type == 'home') {
+  //   //   Navigator.push(
+  //   //     context,
+  //   //     MaterialPageRoute(
+  //   //       builder: (context) => DetailPreOrder(
+  //   //         data: widget.data,
+  //   //       ),
+  //   //     ),
+  //   //   );
+  //   // } else if (type == 'explore') {
+  //   //   Navigator.push(
+  //   //     context,
+  //   //     MaterialPageRoute(
+  //   //       builder: (context) => DetailJoinPreOrder(
+  //   //           // data: widget.data,
+  //   //           ),
+  //   //     ),
+  //   //   );
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +131,7 @@ class _PreorderCardState extends State<PreorderCard> {
       ),
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
-        onTap: onTapFunction,
+        onTap: widget.onPressed,
         child: Container(
           width: 350,
           height: 230,
