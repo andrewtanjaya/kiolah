@@ -24,6 +24,17 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("users").doc(userId).set(userMap);
   }
 
+  updateUserPhoto(String photoUrl, String uname) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .where("username", isEqualTo: uname)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({"photoUrl": photoUrl});
+            }));
+  }
+
   addChatRoom(String chatRoomId, chatRoomMap) {
     FirebaseFirestore.instance
         .collection("chatRooms")

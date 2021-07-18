@@ -1,4 +1,9 @@
 import 'dart:io';
+import 'package:kiolah/helper/helperFunction.dart';
+import 'package:kiolah/model/account.dart';
+import 'package:kiolah/services/database.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +22,32 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   // nanti ambil dari sini bos gambarnya :)
   late File imageFile;
+  var uname;
+  Account? user = null;
+
+  getUserName() async {
+    await HelperFunction.getUsernameSP().then((username) {
+      uname = username.toString();
+      DatabaseMethods().getUserByUsername(uname).then((val) {
+        setState(() {
+          user = new Account(
+            val.docs[0]["userId"],
+            val.docs[0]["email"],
+            (val.docs[0]["paymentType"]).toList().cast<String>(),
+            val.docs[0]["phoneNumber"],
+            val.docs[0]["photoUrl"],
+            val.docs[0]["username"],
+          );
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
 
   /// Get from gallery
   _getFromGallery() async {
@@ -28,8 +59,20 @@ class _ProfilePageState extends State<ProfilePage> {
     if (pickedFile != null) {
       setState(() {
         imageFile = File(pickedFile.path);
+        uploadImageToFirebase();
       });
     }
+  }
+
+  Future uploadImageToFirebase() async {
+    String fileName = basename(imageFile.path);
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference firebaseStorageRef =
+        storage.ref().child('uploads/$fileName' + DateTime.now().toString());
+    UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+    uploadTask.then((res) => res.ref.getDownloadURL().then((value) {
+          DatabaseMethods().updateUserPhoto(value, uname);
+        }));
   }
 
   /// Get from Camera
@@ -85,8 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         borderRadius: BorderRadius.circular(96.0),
                         image: DecorationImage(
                           // image: FileImage(),
-                          image: NetworkImage(
-                              'https://i.pinimg.com/474x/ac/52/49/ac5249bab2ad2ff258d5d86188019fd3.jpg'),
+                          image: NetworkImage(user!.photoUrl!),
                           alignment: Alignment.center,
                           fit: BoxFit.fitWidth,
                         ),
@@ -128,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 350,
                       alignment: Alignment.center,
                       child: Text(
-                        'email',
+                        user!.email.toString(),
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w500,
