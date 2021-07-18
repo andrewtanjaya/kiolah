@@ -10,9 +10,7 @@ import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/DetailJoinPreorder/detailJoinPreoder.dart';
 
 class Body extends StatefulWidget {
-  const Body({
-    Key? key,
-  }) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -114,8 +112,8 @@ class _BodyState extends State<Body> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailJoinPreOrder(
-                                // data: widget.data,
-                                ),
+                              data: widget.data,
+                            ),
                           ),
                         );
                       },
