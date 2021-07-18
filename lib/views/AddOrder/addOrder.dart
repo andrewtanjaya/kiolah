@@ -102,7 +102,7 @@ class _AddOrderState extends State<AddOrder> {
         "duration": Timestamp.now(),
         "owner": uname,
         "items": [],
-        "users": [uname]
+        "users": []
       };
 
       db.addPreorder(newPreorder);

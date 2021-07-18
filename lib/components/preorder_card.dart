@@ -113,8 +113,8 @@ class _PreorderCardState extends State<PreorderCard> {
         context,
         MaterialPageRoute(
           builder: (context) => DetailJoinPreOrder(
-              // data: widget.data,
-              ),
+            data: widget.data,
+          ),
         ),
       );
     }

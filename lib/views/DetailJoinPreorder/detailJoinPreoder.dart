@@ -7,10 +7,13 @@ import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/helperFunction.dart';
 import 'package:kiolah/model/item.dart';
+import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/AddOrder/components/form_item.dart';
 
 class DetailJoinPreOrder extends StatefulWidget {
-  DetailJoinPreOrder({Key? key}) : super(key: key);
+  final PreOrder data;
+  DetailJoinPreOrder({Key? key, required this.data}) : super(key: key);
 
   @override
   _DetailJoinPreOrderState createState() => _DetailJoinPreOrderState();
@@ -47,10 +50,25 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
     }
 
     // items --> collection dari object item jadi tinggal upload dari situ :)
+    // for (int i = 0; i < items.length; i++) {
+    //   print(
+    //       'id : ${items[i].foodId}; name : ${items[i].name}; description : ${items[i].description}; count : ${items[i].count}; price : ${items[i].price}; username: ${items[i].username}');
+    // }
+    var itemsArr = [];
     for (int i = 0; i < items.length; i++) {
-      print(
-          'id : ${items[i].foodId}; name : ${items[i].name}; description : ${items[i].description}; count : ${items[i].count}; price : ${items[i].price}');
+      Map<String, dynamic>? itemMap = {
+        "foodId": items[i].foodId,
+        "name": items[i].name,
+        "description": items[i].description,
+        "count": items[i].count,
+        "price": items[i].price,
+        "username": items[i].username
+      };
+
+      itemsArr.add(itemMap);
     }
+
+    DatabaseMethods().addPreorderitems(widget.data.preOrderId, itemsArr, uname);
   }
 
   final formKey = GlobalKey<FormState>();
