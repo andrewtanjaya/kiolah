@@ -5,26 +5,26 @@ import 'package:kiolah/components/text_input_field.dart';
 import 'package:kiolah/etc/constants.dart';
 
 class ItemForm extends StatelessWidget {
-  final TextEditingController? itemNameController;
-  final TextEditingController? itemDescriptionController;
-  final TextEditingController? itemQuantityController;
-  final TextEditingController? itemPriceController;
+  final TextEditingController itemNameController;
+  final TextEditingController itemDescriptionController;
+  final TextEditingController itemQuantityController;
+  final TextEditingController itemPriceController;
 
   const ItemForm({
     Key? key,
-    this.itemNameController,
-    this.itemDescriptionController,
-    this.itemQuantityController,
-    this.itemPriceController,
+    required this.itemNameController,
+    required this.itemDescriptionController,
+    required this.itemQuantityController,
+    required this.itemPriceController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController itemNameController = new TextEditingController();
-    TextEditingController itemDescriptionController =
-        new TextEditingController();
-    TextEditingController itemQuantityController = new TextEditingController();
-    TextEditingController itemPriceController = new TextEditingController();
+    // TextEditingController itemNameController = new TextEditingController();
+    // TextEditingController itemDescriptionController =
+    //     new TextEditingController();
+    // TextEditingController itemQuantityController = new TextEditingController();
+    // TextEditingController itemPriceController = new TextEditingController();
 
     String? itemNameValidator(value) {
       return value.toString().length > 15 ? 'Name max 15 letter' : null;
@@ -48,6 +48,13 @@ class ItemForm extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       width: 350,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24.0),
+        border: Border.all(
+          width: 1.5,
+          color: colorMainGray,
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,

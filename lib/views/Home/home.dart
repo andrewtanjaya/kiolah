@@ -16,6 +16,7 @@ import 'package:kiolah/model/preOrder.dart';
 import 'package:kiolah/services/auth.dart';
 import 'package:kiolah/services/database.dart';
 import 'package:kiolah/views/AddOrder/addOrder.dart';
+import 'package:kiolah/views/ExplorePage/explorePage.dart';
 import 'package:kiolah/views/Home/main_home.dart';
 import 'package:kiolah/views/Login/signIn.dart';
 import 'components/header.dart';
@@ -106,7 +107,7 @@ class HomeState extends State<Home> {
     getToken();
     _pages = [
       MainHome(scrollController: _scrollController),
-      AddOrder(),
+      ExplorePage(scrollController: _scrollController),
       MainHome(scrollController: _scrollController),
       // Container(
       //   child: ListView(
@@ -136,38 +137,39 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: AnimatedBuilder(
-        animation: _scrollController,
-        builder: (context, child) {
-          return AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            height: _scrollController.position.userScrollDirection ==
-                    ScrollDirection.reverse
-                ? 0
-                : 59,
-            child: child,
-          );
-        },
-        child: BottomNavigationBar(
-          onTap: onTabTapped,
-          currentIndex: _currentIndex,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.explore_rounded),
-              title: Text('Explore'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              title: Text('User'),
-            ),
-          ],
-        ),
+      bottomNavigationBar:
+          // AnimatedBuilder(
+          //   animation: _scrollController,
+          //   builder: (context, child) {
+          //     return AnimatedContainer(
+          //       duration: Duration(milliseconds: 300),
+          //       height: _scrollController.position.userScrollDirection ==
+          //               ScrollDirection.reverse
+          //           ? 0
+          //           : 59,
+          //       child: child,
+          //     );
+          //   },
+          //   child: BottomNavigationBar(
+          BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore_rounded),
+            title: Text('Explore'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded),
+            title: Text('User'),
+          ),
+        ],
       ),
       body: _pages[_currentIndex],
     );

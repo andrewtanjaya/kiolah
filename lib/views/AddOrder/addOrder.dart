@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/components/add_header.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/components/text_input_container.dart';
 import 'package:kiolah/components/text_input_field.dart';
@@ -184,39 +185,7 @@ class _AddOrderState extends State<AddOrder> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 32.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FittedBox(
-                      child: Text(
-                        'Create',
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32.0,
-                          color: colorMainBlack,
-                        ),
-                      ),
-                    ),
-                    FittedBox(
-                      // width: ,
-                      // color: Colors.pink,
-                      child: Text(
-                        'New Preorder',
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32.0,
-                          color: colorMainBlack,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              AddHeader(firstText: 'Create', secondText: 'New Preorder'),
               Form(
                 key: formKey,
                 child: Container(
