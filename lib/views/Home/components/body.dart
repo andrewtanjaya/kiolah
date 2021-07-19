@@ -109,7 +109,8 @@ class _BodyState extends State<Body> {
         mainData = preOrderData.toList().cast<PreOrder>();
 
         data = mainData!
-            .where((element) => element.status != 'Completed')
+            .where((element) =>
+                element.status != 'Completed' && element.status != 'Canceled')
             .toList();
         // print('!****************************');
         // print(data.length);

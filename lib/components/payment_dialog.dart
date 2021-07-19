@@ -228,10 +228,6 @@ class PaymentDialog extends StatelessWidget {
                   child: RoundButton(
                     onPressed: () {
                       sendNotif(token);
-                      // auto jadi paid dlu
-                      DatabaseMethods()
-                          .setTransaction(Constant.myName, poid, "Paid");
-
                       Navigator.of(context).pop();
                     },
                     text: 'Done',

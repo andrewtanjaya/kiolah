@@ -93,7 +93,9 @@ class _PhoneDialogState extends State<PhoneDialog> {
                   ],
                   decoration: InputDecoration(
                     // icon: Icon(Icons.phone_iphone),
-                    hintText: "Phone Number",
+                    hintText: (user!.phoneNumber! != '-')
+                        ? user!.phoneNumber!
+                        : 'Phone Number',
                     // fillColor: colorMainBlack,
                   ),
                 ),

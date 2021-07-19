@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/round_button.dart';
 import 'package:kiolah/etc/constants.dart';
+import 'package:kiolah/helper/constant.dart';
+import 'package:kiolah/model/preOrder.dart';
+import 'package:kiolah/services/database.dart';
 
 class PaidStatusDialog extends StatefulWidget {
-  // PaidStatusDialog({Key? key}) : super(key: key);
+  final PreOrder po;
+  final String? owner;
+  PaidStatusDialog({Key? key, required this.po, required this.owner})
+      : super(key: key);
 
   @override
   _PaidStatusDialogState createState() => _PaidStatusDialogState();
@@ -23,20 +29,37 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
     // payStatus = 'Unpaid';
     members = <String>[];
     listMembersWidgets = <Widget>[];
-    listMembersWidgets.add(
-      memberItem(
-        username: 'adrian',
-        email: 'adrian@gmail.com',
-        photoUrl:
-            'https://cdn.icon-icons.com/icons2/1736/PNG/512/4043232-avatar-batman-comics-hero_113278.png',
-      ),
-    );
+    widget.po.users.forEach((element) {
+      DatabaseMethods()
+          .getStatusTransaction(element, widget.po.preOrderId)
+          .then((e) {
+        if (element != widget.owner) {
+          DatabaseMethods().getUserByUsername(element).then((val) {
+            setState(() {
+              print("####################");
+              print(element + " " + widget.po.preOrderId);
+              print(e.docs[0]["status"]);
+              print("####################");
+              listMembersWidgets.add(
+                memberItem(
+                    // email, username, photoUrl nanti ganti sesuai dengan data yang lu tarik
+                    email: val.docs[0]["email"],
+                    photoUrl: val.docs[0]["photoUrl"],
+                    username: element,
+                    status: e.docs[0]["status"]),
+              );
+            });
+          });
+        }
+      });
+    });
   }
 
   Widget memberItem({
     required String username,
     required String email,
     required String photoUrl,
+    required String status,
     // required // List<dynamic>? userToken,
   }
       // bool? isAddedItem,
@@ -115,7 +138,7 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
             width: 100,
             // color: Colors.pink,
             child: DropdownButton<String>(
-              value: payStatus,
+              value: status,
               // icon: const Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
@@ -132,7 +155,9 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
                 setState(
                   () {
                     print(newValue);
-                    payStatus = newValue!;
+                    status = newValue!;
+                    DatabaseMethods()
+                        .setTransaction(username, widget.po.preOrderId, status);
                     // preOrderStatus = newValue!;
                     // currentPreorderStatus = preOrderStatus;
                     // updateStatus();

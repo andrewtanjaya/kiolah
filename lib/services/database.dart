@@ -288,12 +288,28 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("preorders").doc(preorderId).update({
       'users': FieldValue.arrayUnion([uname])
     });
-    setTransaction(uname, preorderId, "Unpaid");
+    addTransaction(uname, preorderId);
+  }
+
+  addTransaction(String username, String preorderId) {
+    FirebaseFirestore.instance.collection("transactions").add(
+        {"username": username, "preOrderId": preorderId, "status": "Unpaid"});
   }
 
   setTransaction(String username, String preorderId, String status) async {
-    FirebaseFirestore.instance.collection("transactions").doc(preorderId).set(
-        {"username": username, "preOrderId": preorderId, "status": status});
+    FirebaseFirestore.instance
+        .collection("transactions")
+        .where("preOrderId", isEqualTo: preorderId)
+        .where("username", isEqualTo: username)
+        .get()
+        .then((QuerySnapshot querySnapshot) =>
+            querySnapshot.docs.forEach((documentSnapshot) {
+              documentSnapshot.reference.update({
+                "username": username,
+                "preOrderId": preorderId,
+                "status": status
+              });
+            }));
   }
 
   getUnpaidTransaction(String username) {
@@ -301,6 +317,14 @@ class DatabaseMethods {
         .collection("transactions")
         .where("username", isEqualTo: username)
         .where("status", isEqualTo: "Unpaid")
+        .get();
+  }
+
+  getStatusTransaction(String username, String preorderId) {
+    return FirebaseFirestore.instance
+        .collection("transactions")
+        .where("username", isEqualTo: username)
+        .where("preOrderId", isEqualTo: preorderId)
         .get();
   }
 

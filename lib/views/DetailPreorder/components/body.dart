@@ -335,8 +335,9 @@ class _BodyState extends State<Body> {
                   data: element,
                   id: widget.data.preOrderId,
                   canDelete: ((currentUser.username == element.username ||
-                          currentUser!.userId == owner!.userId ||
-                          widget.data.status.toLowerCase() == 'ongoing') && (widget.data.status.toLowerCase() != 'canceled'))
+                              currentUser!.userId == owner!.userId ||
+                              widget.data.status.toLowerCase() == 'ongoing') &&
+                          (widget.data.status.toLowerCase() != 'canceled'))
                       ? true
                       : false,
                   itemIndex: index - 1,
@@ -999,13 +1000,13 @@ class _BodyState extends State<Body> {
                       context: context,
                       builder: (BuildContext context) {
                         return PaidStatusDialog(
-                            // title: widget.data.title,
-                            // token: tokens,
-                            // poid: widget.data.preOrderId,
-                            // bca: owner!.paymentType![0].toString(),
-                            // ovo: owner!.paymentType![1].toString(),
-                            // total: getTotalPrice(),
-                            );
+                          owner: owner.username,
+                          po: widget.data,
+                          // token: tokens,
+                          // bca: owner!.paymentType![0].toString(),
+                          // ovo: owner!.paymentType![1].toString(),
+                          // total: getTotalPrice(),
+                        );
                       },
                     )
                   },
