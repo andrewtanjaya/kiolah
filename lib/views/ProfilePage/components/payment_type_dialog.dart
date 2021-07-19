@@ -51,7 +51,7 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
           );
 
           if (user!.paymentType![0] == "-") user!.paymentType![0] = "Input OVO";
-          if (user!.paymentType![1] == "-") user!.paymentType![0] = "Input BCA";
+          if (user!.paymentType![1] == "-") user!.paymentType![1] = "Input BCA";
         });
       });
     });

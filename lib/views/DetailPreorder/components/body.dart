@@ -71,8 +71,13 @@ class _BodyState extends State<Body> {
   updateStatus() {
     DatabaseMethods()
         .updatePreorderStatus(preOrderStatus, widget.data.preOrderId);
+
     memberToken = [""];
     widget.data.users.forEach((element) {
+      if (preOrderStatus == "Canceled") {
+        DatabaseMethods()
+            .setTransaction(element, widget.data.preOrderId, "Paid");
+      }
       print("#####################");
       print(element);
       print("#####################");
@@ -314,7 +319,7 @@ class _BodyState extends State<Body> {
   late Account? currentUser;
   // :)
   late String preOrderStatus;
-  List<String> status = ['Ongoing', 'Ordered', 'Completed'];
+  List<String> status = ['Ongoing', 'Ordered', 'Completed', 'Canceled'];
   var uname;
   List<dynamic>? tokenCurrent;
   late List<dynamic> dummyItems;
