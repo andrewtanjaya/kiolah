@@ -137,7 +137,7 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
           Container(
             width: 100,
             // color: Colors.pink,
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
               value: status,
               // icon: const Icon(Icons.arrow_downward),
               iconSize: 24,
@@ -147,10 +147,10 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
                 color: colorMainBlack,
                 fontSize: 14.0,
               ),
-              underline: Container(
-                height: 0,
-                color: colorMainBlack,
-              ),
+              // underline: Container(
+              //   height: 0,
+              //   color: colorMainBlack,
+              // ),
               onChanged: (String? newValue) {
                 setState(
                   () {

@@ -195,7 +195,8 @@ class DatabaseMethods {
             }));
   }
 
-  updatePreorderItem(String username, String preorderId, Item item) {
+  updatePreorderItem(
+      String username, String preorderId, dynamic item, bool noMoreItem) {
     Map<String, dynamic> itemMap = {
       "count": item.count,
       "description": item.description,
@@ -213,6 +214,12 @@ class DatabaseMethods {
               documentSnapshot.reference.update({
                 'items': FieldValue.arrayRemove([itemMap])
               });
+
+              if (noMoreItem == true) {
+                documentSnapshot.reference.update({
+                  'users': FieldValue.arrayRemove([username])
+                });
+              }
             }));
   }
 

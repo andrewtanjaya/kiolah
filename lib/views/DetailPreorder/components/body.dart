@@ -298,6 +298,15 @@ class _BodyState extends State<Body> {
   List<dynamic>? tokenCurrent;
   late List<dynamic> dummyItems;
 
+  bool checkNoMoreItem(Item i) {
+    int counter = 0;
+    dummyItems.forEach((element) {
+      if (element.username == i.username) counter++;
+    });
+
+    return counter <= 1 ? true : false;
+  }
+
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
@@ -352,10 +361,11 @@ class _BodyState extends State<Body> {
                           primaryButtonFunction: () {
                             print('delete');
                             DatabaseMethods().updatePreorderItem(
-                              Constant.myName,
-                              widget.data.preOrderId,
-                              element,
-                            );
+                                element.username.toString(),
+                                widget.data.preOrderId,
+                                element,
+                                checkNoMoreItem(element));
+
                             Navigator.pop(context);
                             Navigator.pushReplacement<void, void>(
                               context,
