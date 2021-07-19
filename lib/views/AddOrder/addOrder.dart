@@ -284,14 +284,16 @@ class _AddOrderState extends State<AddOrder> {
                                     groupsChoosen = newValue!;
                                   });
                                 },
-                                items: databaseGroupData
-                                    .map<DropdownMenuItem<String>>(
-                                        (dynamic value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value["chatRoomId"],
-                                    child: Text(value["groupName"]),
-                                  );
-                                }).toList(),
+                                items: databaseGroupData == null
+                                    ? null
+                                    : databaseGroupData
+                                        .map<DropdownMenuItem<String>>(
+                                            (dynamic value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value["chatRoomId"],
+                                          child: Text(value["groupName"]),
+                                        );
+                                      }).toList(),
                               ),
                             ),
                           ],
