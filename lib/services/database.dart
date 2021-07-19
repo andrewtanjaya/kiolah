@@ -37,7 +37,7 @@ class DatabaseMethods {
             }));
   }
 
-  updateUserPhone(String phone, String uname) {
+  updateUserPhone(var context, String phone, String uname) {
     FirebaseFirestore.instance
         .collection("users")
         .where("username", isEqualTo: uname)
@@ -45,10 +45,11 @@ class DatabaseMethods {
         .then((QuerySnapshot querySnapshot) =>
             querySnapshot.docs.forEach((documentSnapshot) {
               documentSnapshot.reference.update({"phoneNumber": phone});
+              Navigator.pop(context);
             }));
   }
 
-  updateUserPayment(List<String> pay, String uname) {
+  updateUserPayment(var context, List<String> pay, String uname) {
     FirebaseFirestore.instance
         .collection("users")
         .where("username", isEqualTo: uname)
@@ -56,6 +57,7 @@ class DatabaseMethods {
         .then((QuerySnapshot querySnapshot) =>
             querySnapshot.docs.forEach((documentSnapshot) {
               documentSnapshot.reference.update({"paymentType": pay});
+              Navigator.pop(context);
             }));
   }
 

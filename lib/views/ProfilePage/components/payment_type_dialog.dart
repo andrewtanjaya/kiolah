@@ -49,6 +49,9 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
             val.docs[0]["photoUrl"],
             val.docs[0]["username"],
           );
+
+          if (user!.paymentType![0] == "-") user!.paymentType![0] = "Input OVO";
+          if (user!.paymentType![1] == "-") user!.paymentType![0] = "Input BCA";
         });
       });
     });
@@ -65,7 +68,7 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
       var ovo = ovoController.text.toString().trim();
       var bca = bcaController.text.toString().trim();
       List<String> pay = [ovo, bca];
-      DatabaseMethods().updateUserPayment(pay, uname);
+      DatabaseMethods().updateUserPayment(context, pay, uname);
     }
   }
 
@@ -128,9 +131,7 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
 
                           // icon: Icons.place_rounded,
                           maxLength: 17,
-                          hintText: user!.paymentType![0].toString() != '-'
-                              ? user!.paymentType![0].toString()
-                              : 'Input OVO',
+                          hintText: user?.paymentType?[0] ?? "Input OVO",
                           onChanged: (value) => {},
                         ),
                       ),
@@ -164,9 +165,7 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
                       validator: bcaValidator,
                       // icon: Icons.place_rounded,
                       maxLength: 10,
-                      hintText: user!.paymentType![1].toString() != '-'
-                          ? user!.paymentType![1].toString()
-                          : 'Input BCA',
+                      hintText: user?.paymentType?[1] ?? "Input BCA",
                       onChanged: (value) => {},
                     ),
                   ),

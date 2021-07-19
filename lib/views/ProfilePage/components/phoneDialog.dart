@@ -35,6 +35,10 @@ class _PhoneDialogState extends State<PhoneDialog> {
             val.docs[0]["photoUrl"],
             val.docs[0]["username"],
           );
+
+          if (user!.phoneNumber == "-") {
+            user!.phoneNumber = "Phone Number";
+          }
         });
       });
     });
@@ -49,7 +53,7 @@ class _PhoneDialogState extends State<PhoneDialog> {
   submit() {
     if (formKey.currentState!.validate()) {
       var phoneNumber = phoneNumberController.text.toString().trim();
-      DatabaseMethods().updateUserPhone(phoneNumber, uname);
+      DatabaseMethods().updateUserPhone(context, phoneNumber, uname);
     }
   }
 
@@ -93,9 +97,7 @@ class _PhoneDialogState extends State<PhoneDialog> {
                   ],
                   decoration: InputDecoration(
                     // icon: Icon(Icons.phone_iphone),
-                    hintText: (user!.phoneNumber! != '-')
-                        ? user!.phoneNumber!
-                        : 'Phone Number',
+                    hintText: (user?.phoneNumber) ?? "Phone Number",
                     // fillColor: colorMainBlack,
                   ),
                 ),
