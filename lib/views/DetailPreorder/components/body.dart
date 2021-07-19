@@ -104,10 +104,10 @@ class _BodyState extends State<Body> {
     super.initState();
     preOrderStatus = widget.data.status;
     setState(() {
-      if (widget.data.items.length < perPage) {
-        perPage = widget.data.items.length;
+      if ((widget.data.items?.length ?? 0) < perPage) {
+        perPage = (widget.data.items?.length ?? 0);
       }
-      items.addAll(widget.data.items.getRange(present, present + perPage));
+      items.addAll(widget.data.items!.getRange(present, present + perPage));
       present = present + perPage;
     });
 
@@ -141,7 +141,7 @@ class _BodyState extends State<Body> {
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print(widget.data.items[0].username.toString());
+    // print(widget.data.items[0].username.toString());
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -150,15 +150,15 @@ class _BodyState extends State<Body> {
   showMoreLessItems() {
     setState(
       () {
-        if (items.length < widget.data.items.length) {
-          items.addAll(
-              widget.data.items.getRange(present, widget.data.items.length));
+        if (items.length < (widget.data.items?.length ?? 0)) {
+          items.addAll(widget.data.items!
+              .getRange(present, (widget.data.items?.length ?? 0)));
           showMoreButtonText = 'Show Less';
-          present = widget.data.items.length;
+          present = (widget.data.items?.length ?? 0);
         } else {
           items = [];
           items.addAll(
-            widget.data.items.getRange(0, perPage),
+            widget.data.items!.getRange(0, perPage),
           );
           showMoreButtonText = 'Show More';
           present = perPage;
@@ -206,7 +206,7 @@ class _BodyState extends State<Body> {
 
   getTotalPrice() {
     var price = 0.0;
-    widget.data.items.forEach(
+    widget.data.items?.forEach(
       (element) {
         if (element.username == uname) price += (element.price * element.count);
       },
@@ -281,7 +281,7 @@ class _BodyState extends State<Body> {
                   width: size.width,
                   child: Container(
                     width: 400,
-                    height: (perPage < widget.data.items.length)
+                    height: (perPage < (widget.data.items?.length ?? 0))
                         ? ((60.0 * (present + 1) + (present + 1) * 10.0))
                         : ((60.0 * (items.length) + (items.length) * 12.0)),
                     child: Column(
@@ -297,10 +297,10 @@ class _BodyState extends State<Body> {
                               itemBuilder: (BuildContext context, int index) {
                                 return ItemsPreorderList(
                                   id: widget.data.preOrderId,
-                                  data: widget.data.items[index],
+                                  data: widget.data.items![index],
                                   canDelete: (currentUser.username ==
-                                              widget
-                                                  .data.items[index].username ||
+                                              widget.data.items![index]
+                                                  .username ||
                                           currentUser!.userId == owner!.userId)
                                       ? true
                                       : false,
@@ -313,7 +313,7 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                         ),
-                        if (perPage < widget.data.items.length)
+                        if (perPage < (widget.data.items?.length ?? 0))
                           TextButton(
                             onPressed: () => {
                               showMoreLessItems(),

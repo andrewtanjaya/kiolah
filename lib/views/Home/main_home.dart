@@ -405,10 +405,10 @@ class _MainHomeState extends State<MainHome> {
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                     child: Expanded(
                       child: SizedBox(
-                        height: groups.length * 76.0,
+                        height: (groups?.length ?? 0) * 76.0,
                         child: ListView.separated(
                           // controller: _scrollController,
-                          itemCount: groups.length,
+                          itemCount: (groups?.length ?? 0),
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {

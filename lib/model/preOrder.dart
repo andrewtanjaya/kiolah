@@ -7,7 +7,7 @@ class PreOrder {
   String owner;
   String group;
   String location;
-  List<Item> items;
+  List<Item>? items;
   DateTime duration;
   List<String> users;
   String status;

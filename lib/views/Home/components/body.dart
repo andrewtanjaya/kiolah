@@ -28,7 +28,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   List<PreOrder>? mainData;
-  List<PreOrder> data = <PreOrder>[];
+  List<PreOrder>? data = <PreOrder>[];
   DatabaseMethods db = new DatabaseMethods();
   var uname;
   var preOrderData;
@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
       uname = username.toString();
       DatabaseMethods().getChatRooms(Constant.myName).then((val) {
         setState(() {
-          totalPreorder = val.docs.length;
+          totalPreorder = 3;
           DatabaseMethods().getUnpaidTransaction(uname).then((value) {
             print("#################");
             print(value.docs.length);
@@ -253,25 +253,25 @@ class _BodyState extends State<Body> {
             // color: Colors.green,
             // width: size.width,
             width: 350,
-            height: (246.0 * data.length),
+            height: (246.0 * (data?.length ?? 1)),
             // padding: EdgeInsets.symmetric(horizontal: 24.0),
             margin: EdgeInsets.all(0),
             child: Expanded(
               child: SizedBox(
                 width: 350,
-                height: (246.0 * data.length),
+                height: (246.0 * (data?.length ?? 1)),
                 child: ListView.separated(
                   // controller: _scrollController,
-                  itemCount: data.length,
+                  itemCount: (data?.length ?? 1),
                   itemBuilder: (BuildContext context, int index) {
                     return PreorderCard(
-                      data: data[index],
+                      data: data![index],
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPreOrder(
-                              data: data[index],
+                              data: data![index],
                             ),
                           ),
                         );

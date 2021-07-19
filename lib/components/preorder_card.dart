@@ -218,7 +218,9 @@ class _PreorderCardState extends State<PreorderCard> {
                 children: [
                   IconText(
                     icon: Icons.restaurant_rounded,
-                    text: widget.data.items.length.toString() + ' items',
+                    text:
+                        (widget.data.items?.length.toString() ?? 0.toString()) +
+                            " items",
                     color: colorMainGray,
                   ),
                   SizedBox(

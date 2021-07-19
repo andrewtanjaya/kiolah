@@ -144,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         borderRadius: BorderRadius.circular(96.0),
                         image: DecorationImage(
                           // image: FileImage(),
-                          image: NetworkImage(user!.photoUrl!),
+                          image: NetworkImage(user?.photoUrl ?? ""),
                           alignment: Alignment.center,
                           fit: BoxFit.fitWidth,
                         ),
@@ -173,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: 16.0, bottom: 2.0),
                       child: Text(
-                        uname,
+                        uname ?? 'username',
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.bold,
@@ -186,7 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 350,
                       alignment: Alignment.center,
                       child: Text(
-                        user!.email.toString(),
+                        user?.email ?? 'email',
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w500,
