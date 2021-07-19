@@ -110,6 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: colorMainWhite,
         elevation: 0,
         iconTheme: IconThemeData(

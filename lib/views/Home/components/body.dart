@@ -49,7 +49,7 @@ class _BodyState extends State<Body> {
                   return CustomDialog(
                     title: 'Oops !',
                     description: 'You have unpaid preorder',
-                    imageUrl: 'assets/emoji/paper_popper.png',
+                    imageUrl: 'assets/emoji/exclamation_mark.png',
                     textButton: 'OK',
                   );
                 },

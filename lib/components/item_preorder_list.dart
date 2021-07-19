@@ -6,19 +6,32 @@ import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/constant.dart';
 import 'package:kiolah/model/item.dart';
 import 'package:kiolah/services/database.dart';
+import 'package:kiolah/views/DetailPreorder/components/body.dart';
+import 'package:kiolah/views/Home/home.dart';
 
-class ItemsPreorderList extends StatelessWidget {
+class ItemsPreorderList extends StatefulWidget {
   final Item data;
   final String id;
   final bool? canDelete;
+  final int? itemIndex;
+  final List<dynamic>? listItemsUI;
+  final VoidCallback? onPressedDelete;
 
   const ItemsPreorderList({
     Key? key,
     required this.data,
     required this.id,
     this.canDelete,
+    this.itemIndex,
+    this.listItemsUI,
+    this.onPressedDelete,
   }) : super(key: key);
 
+  @override
+  _ItemsPreorderListState createState() => _ItemsPreorderListState();
+}
+
+class _ItemsPreorderListState extends State<ItemsPreorderList> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,7 +58,7 @@ class ItemsPreorderList extends StatelessWidget {
               ),
             ),
             child: Text(
-              'x${data.count}',
+              'x${widget.data.count}',
               overflow: TextOverflow.clip,
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w500,
@@ -55,7 +68,7 @@ class ItemsPreorderList extends StatelessWidget {
             ),
           ),
           Container(
-            width: canDelete != true ? 200 : 160,
+            width: widget.canDelete != true ? 200 : 160,
             // color: Colors.green,
             margin: EdgeInsets.symmetric(horizontal: 12.0),
             // color: Colors.green,
@@ -65,7 +78,7 @@ class ItemsPreorderList extends StatelessWidget {
               children: [
                 Container(
                   child: Text(
-                    data.name,
+                    widget.data.name,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
                       color: colorMainBlack,
@@ -76,7 +89,7 @@ class ItemsPreorderList extends StatelessWidget {
                 ),
                 Container(
                   child: Text(
-                    data.description,
+                    widget.data.description,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
                       color: colorMainGray,
@@ -94,7 +107,7 @@ class ItemsPreorderList extends StatelessWidget {
             child: Text(
               'IDR ' +
                   toCurrencyString(
-                    data.price.toString(),
+                    widget.data.price.toString(),
                   ),
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.poppins(
@@ -104,31 +117,15 @@ class ItemsPreorderList extends StatelessWidget {
               ),
             ),
           ),
-          if (canDelete == true)
+          if (widget.canDelete == true)
             Container(
               child: IconButton(
                 icon: Icon(Icons.clear_rounded),
                 color: colorError,
-                onPressed: () {
-                  // print('delete');
-                  // :)
-                  // delete preoder
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext dialogContext) {
-                      return PromptDialog(
-                          title: 'Delete Item ?',
-                          description: 'This action can\'t be undone.',
-                          primaryButtonText: 'DELETE',
-                          primaryButtonFunction: () {
-                            print('delete');
-                            DatabaseMethods()
-                                .updatePreorderItem(Constant.myName, id, data);
-                            Navigator.pop(context);
-                          });
-                    },
-                  );
-                },
+                onPressed: widget.onPressedDelete,
+                // print('delete');
+                // :)
+                // delete preoder
               ),
             )
         ],

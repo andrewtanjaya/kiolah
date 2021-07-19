@@ -30,6 +30,7 @@ class ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 64.0,
         backgroundColor: colorMainWhite,
         elevation: 0,

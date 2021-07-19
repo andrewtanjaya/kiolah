@@ -13,8 +13,11 @@ class StatusButton extends StatelessWidget {
     var color;
     if (status.toLowerCase() == 'ongoing') {
       color = colorWarning;
-    } else if (status.toLowerCase() == 'unpaid') {
+    } else if (status.toLowerCase() == 'unpaid' ||
+        status.toLowerCase() == 'canceled') {
       color = colorError;
+    } else if (status.toLowerCase() == 'ordered') {
+      color = colorMainBlue;
     } else {
       color = colorSuccess;
     }

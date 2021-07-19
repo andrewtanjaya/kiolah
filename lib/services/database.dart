@@ -183,8 +183,8 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
   }
 
-  updatePreorder(String title, int maxPeople, String preorderId) {
-    FirebaseFirestore.instance
+  updatePreorder(String title, int maxPeople, String preorderId) async {
+    await FirebaseFirestore.instance
         .collection("preorders")
         .where("preOrderId", isEqualTo: preorderId)
         .get()
@@ -301,6 +301,13 @@ class DatabaseMethods {
         .collection("transactions")
         .where("username", isEqualTo: username)
         .where("status", isEqualTo: "Unpaid")
+        .get();
+  }
+
+  getPreorder(String preorderid) async {
+    return await FirebaseFirestore.instance
+        .collection("preorders")
+        .doc(preorderid)
         .get();
   }
 }

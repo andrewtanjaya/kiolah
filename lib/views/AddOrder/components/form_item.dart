@@ -54,6 +54,7 @@ class ItemForm extends StatelessWidget {
           width: 1.5,
           color: colorMainGray,
         ),
+        color: Colors.white30,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
