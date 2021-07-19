@@ -65,6 +65,7 @@ class _GroupPageState extends State<GroupPage> {
 
   var preOrderData;
   List<PreOrder>? mainData;
+  var groupName;
   getAllData() {
     db.getPreorderGroup(widget.group["chatRoomId"]).then((val) {
       setState(() {
@@ -98,6 +99,7 @@ class _GroupPageState extends State<GroupPage> {
         print('!****************************');
         print(data.length);
         print('!****************************');
+        groupName = widget.group["groupName"].toString();
       });
     });
   }
@@ -145,7 +147,7 @@ class _GroupPageState extends State<GroupPage> {
                           Container(
                             width: 220,
                             child: Text(
-                              widget.group["groupName"].toString(),
+                              groupName,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                 fontSize: 28.0,
@@ -205,9 +207,12 @@ class _GroupPageState extends State<GroupPage> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext dialogContext) {
-                                    return EditGroupDialog(group: widget.group);
+                                    return EditGroupDialog(
+                                      group: widget.group,
+                                      // groupName: groupName,
+                                    );
                                   },
-                                );
+                                ).then((value) => initState);
                               },
                             ),
                             value: 'Edit Details',
@@ -232,9 +237,11 @@ class _GroupPageState extends State<GroupPage> {
                                             .toString());
                                         Navigator.pop(context);
                                         Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Home()));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Home(),
+                                          ),
+                                        );
                                       },
                                     );
                                   },
@@ -269,14 +276,18 @@ class _GroupPageState extends State<GroupPage> {
                             if (data[index].maxPeople >
                                     data[index].users.length ||
                                 data[index].users.contains(uname)) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailJoinPreOrder(
-                                    data: data[index],
-                                  ),
-                                ),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => DetailJoinPreOrder(
+                              //       data: data[index],
+                              // ).whenCompletedPag(initState),
+
+                              Navigator.of(context)
+                                  .push(new MaterialPageRoute(
+                                      builder: (context) => DetailJoinPreOrder(
+                                          data: data[index])))
+                                  .whenComplete(initState);
                             } else {
                               showDialog(
                                 context: context,
@@ -284,7 +295,8 @@ class _GroupPageState extends State<GroupPage> {
                                   return CustomDialog(
                                     title: 'Oops !',
                                     description: 'Preorder is full',
-                                    imageUrl: 'assets/emoji/paper_popper.png',
+                                    imageUrl:
+                                        'assets/emoji/slightly_frowning_face.png',
                                     textButton: 'Ok',
                                   );
                                 },

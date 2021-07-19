@@ -13,7 +13,11 @@ import 'package:kiolah/views/Home/home.dart';
 
 class EditGroupDialog extends StatefulWidget {
   final dynamic group;
-  const EditGroupDialog({Key? key, required this.group}) : super(key: key);
+  // final String? groupName;
+  const EditGroupDialog({
+    Key? key,
+    required this.group,
+  }) : super(key: key);
 
   @override
   _EditGroupDialogState createState() => _EditGroupDialogState();
@@ -159,8 +163,12 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
       } else {
         DatabaseMethods()
             .updateChatRoomName(groupName, widget.group["chatRoomId"]);
+        setState(() {});
+        Navigator.pop(context);
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (context) => Home()));
       }
-      // Navigator.pop(context);
+
       // showDialog(
       //   context: context,
       //   builder: (BuildContext dialogContext) {

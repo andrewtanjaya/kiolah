@@ -365,9 +365,9 @@ class _BodyState extends State<Body> {
                   data: element,
                   id: widget.data.preOrderId,
                   canDelete: ((currentUser!.username == element.username ||
-                              currentUser!.userId == owner!.userId ||
-                              widget.data.status.toLowerCase() == 'ongoing') &&
-                          (widget.data.status.toLowerCase() != 'canceled'))
+                                  currentUser!.userId == owner!.userId) &&
+                              widget.data.status.toLowerCase() == 'ongoing') ==
+                          true
                       ? true
                       : false,
                   itemIndex: index - 1,

@@ -133,7 +133,8 @@ class _BodyState extends State<Body> {
                               return CustomDialog(
                                 title: 'Oops !',
                                 description: 'Preorder is full',
-                                imageUrl: 'assets/emoji/paper_popper.png',
+                                imageUrl:
+                                    'assets/emoji/slightly_frowning_face.png',
                                 textButton: 'Ok',
                               );
                             },

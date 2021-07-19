@@ -412,11 +412,16 @@ class _MainHomeState extends State<MainHome> {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
+                                Navigator.of(context)
+                                    .push(new MaterialPageRoute(
                                         builder: (context) =>
-                                            GroupPage(group: groups[index])));
+                                            GroupPage(group: groups[index])))
+                                    .whenComplete(initState);
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             GroupPage(group: groups[index])));
                               },
                               child: Container(
                                 width: 12.0,
@@ -459,10 +464,10 @@ class _MainHomeState extends State<MainHome> {
                     child: IconButton(
                       icon: Icon(Icons.add_rounded),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchScreen()));
+                        Navigator.of(context)
+                            .push(new MaterialPageRoute(
+                                builder: (context) => SearchScreen()))
+                            .whenComplete(getUserName);
                       },
                     ),
                   ),
