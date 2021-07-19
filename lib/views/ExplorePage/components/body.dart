@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/preorder_card.dart';
 import 'package:kiolah/etc/constants.dart';
 import 'package:kiolah/helper/constant.dart';
@@ -75,7 +76,9 @@ class _BodyState extends State<Body> {
         data = mainData!
             .where((element) =>
                 element.status != 'Completed' &&
-                element.group.split("_").contains(uname))
+                element.group.split("_").contains(uname) &&
+                element.status != 'Canceled' &&
+                element.status != 'Ordered')
             .toList();
 
         // print(data[0].users.length);
@@ -113,14 +116,29 @@ class _BodyState extends State<Body> {
                     return PreorderCard(
                       data: data[index],
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailJoinPreOrder(
-                              data: data[index],
+                        if (data[index].maxPeople > data[index].users.length ||
+                            data[index].users.contains(uname)) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailJoinPreOrder(
+                                data: data[index],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext dialogContext) {
+                              return CustomDialog(
+                                title: 'Oops !',
+                                description: 'Preorder is full',
+                                imageUrl: 'assets/emoji/paper_popper.png',
+                                textButton: 'Ok',
+                              );
+                            },
+                          );
+                        }
                       },
                     );
                   },

@@ -122,18 +122,18 @@ class _BodyState extends State<Body> {
           "phoneNumber": value.phoneNumber.toString(),
           "photoUrl": value.photoUrl.toString(),
           "userId": value.userId.toString(),
-          "username": userNameController.text
+          "username": userNameController.text.trim()
         };
 
         // save shared pref
         HelperFunction.saveUserLoggedInSP(true);
-        HelperFunction.saveUsernameSP(userNameController.text);
+        HelperFunction.saveUsernameSP(userNameController.text.trim());
         HelperFunction.saveEmailSP(emailController.text);
         HelperFunction.saveUserIdSP(userId);
         setState(() {
           SignUp.isLoading = true;
         });
-        Constant.myName = userNameController.text;
+        Constant.myName = userNameController.text.trim();
         Constant.myEmail = emailController.text;
         Constant.myId = userId;
         databaseMethods.uploadUserInfo(userInfoMap, userId);

@@ -38,13 +38,15 @@ class Body extends StatefulWidget {
   final Function toggle;
   final double height;
   final PreOrder data;
+  final String group;
 
-  const Body({
-    Key? key,
-    this.height: 0,
-    required this.toggle,
-    required this.data,
-  }) : super(key: key);
+  const Body(
+      {Key? key,
+      this.height: 0,
+      required this.toggle,
+      required this.data,
+      required this.group})
+      : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -58,6 +60,7 @@ class _BodyState extends State<Body> {
   // List<Item> items = <Item>[];
   String showMoreButtonText = 'Show More';
   List<dynamic> tokens = [""];
+  List<dynamic> memberToken = [""];
 
   late List<Widget> itemList;
 
@@ -68,14 +71,32 @@ class _BodyState extends State<Body> {
   updateStatus() {
     DatabaseMethods()
         .updatePreorderStatus(preOrderStatus, widget.data.preOrderId);
-    tokens!.removeWhere((value) => value == null);
-    print("##############################");
-    print(tokens);
-    print("##############################");
-    sendNotif(tokens);
+    memberToken = [""];
+    widget.data.users.forEach((element) {
+      print("#####################");
+      print(element);
+      print("#####################");
+      databaseMethods.getUserByUsername(element).then((val) {
+        setState(() {
+          memberToken = memberToken + (val.docs[0]["token"].toList());
+          print("#####################");
+          print("habis tambah");
+          print(memberToken);
+          print("#####################");
+
+          sendNotif(val.docs[0]["token"].toList());
+          // users.add(val);
+          // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
+          //   searchSnapshot = null;
+          // }
+          // print(users[0].photoUrl);
+        });
+      });
+    });
   }
 
   Future<bool> sendNotif(List<dynamic>? userToken) async {
+    print("Ini yang dipassing " + userToken.toString());
     final postUrl = 'https://fcm.googleapis.com/fcm/send';
     final data = {
       "registration_ids": userToken,
@@ -290,7 +311,7 @@ class _BodyState extends State<Body> {
   // }
 
   late Account owner;
-  late Account currentUser;
+  late Account? currentUser;
   // :)
   late String preOrderStatus;
   List<String> status = ['Ongoing', 'Ordered', 'Completed'];
@@ -343,7 +364,7 @@ class _BodyState extends State<Body> {
               itemPreorderList(
                   data: element,
                   id: widget.data.preOrderId,
-                  canDelete: ((currentUser.username == element.username ||
+                  canDelete: ((currentUser!.username == element.username ||
                               currentUser!.userId == owner!.userId ||
                               widget.data.status.toLowerCase() == 'ongoing') &&
                           (widget.data.status.toLowerCase() != 'canceled'))
@@ -826,7 +847,7 @@ class _BodyState extends State<Body> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ColoredOutlinedText(
-                      text: widget.data.group,
+                      text: widget.group,
                       color: colorMainBlue,
                     ),
                     Expanded(

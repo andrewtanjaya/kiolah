@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiolah/components/custom_dialog.dart';
@@ -32,6 +33,10 @@ class _BodyState extends State<Body> {
   DatabaseMethods db = new DatabaseMethods();
   var uname;
   var preOrderData;
+
+  List<String> groupName = [];
+
+  getGroupName() {}
 
   getUserName() async {
     await HelperFunction.getUsernameSP().then((username) {
@@ -116,6 +121,20 @@ class _BodyState extends State<Body> {
         // print('!****************************');
         // print(data.length);
         // print('!****************************');
+
+        data.forEach((element) {
+          DatabaseMethods()
+              .getGroupById(element.group)
+              .then((DocumentSnapshot val) {
+            // print('!!!!!!!!!!!!!!!!!!!!!');
+            // print(widget.data.group);
+            setState(() {
+              groupName.add(val.get('groupName').toString());
+            });
+
+            // print('!!!!!!!!!!!!!!!!!!!!!');
+          });
+        });
       });
     });
   }
@@ -269,14 +288,19 @@ class _BodyState extends State<Body> {
                     return PreorderCard(
                       data: data[index],
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailPreOrder(
-                              data: data[index],
-                            ),
-                          ),
-                        );
+                        Navigator.of(context)
+                            .push(new MaterialPageRoute(
+                                builder: (context) => DetailPreOrder(
+                                    data: data[index],
+                                    group: groupName[index])))
+                            .whenComplete(getUserName);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => DetailPreOrder(
+                        //         data: data[index], group: groupName[index]),
+                        //   ),
+                        // );
                       },
                     );
                   },

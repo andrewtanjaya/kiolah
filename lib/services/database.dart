@@ -87,6 +87,13 @@ class DatabaseMethods {
     });
   }
 
+  updateChatRoomName(String groupName, String chatRoomid) {
+    FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomid)
+        .update({"groupName": groupName});
+  }
+
   getChatRooms(String username) async {
     return await FirebaseFirestore.instance
         .collection("chatRooms")

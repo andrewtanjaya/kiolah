@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kiolah/components/custom_dialog.dart';
 import 'package:kiolah/components/edit_group_dialog.dart';
 import 'package:kiolah/components/fab.dart';
 import 'package:kiolah/components/fab_extended.dart';
@@ -265,13 +266,30 @@ class _GroupPageState extends State<GroupPage> {
                         return PreorderCard(
                           data: data[index],
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailJoinPreOrder(data: data[index]),
-                              ),
-                            );
+                            if (data[index].maxPeople >
+                                    data[index].users.length ||
+                                data[index].users.contains(uname)) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailJoinPreOrder(
+                                    data: data[index],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext dialogContext) {
+                                  return CustomDialog(
+                                    title: 'Oops !',
+                                    description: 'Preorder is full',
+                                    imageUrl: 'assets/emoji/paper_popper.png',
+                                    textButton: 'Ok',
+                                  );
+                                },
+                              );
+                            }
                           },
                         );
                       },

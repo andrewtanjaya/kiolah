@@ -97,60 +97,69 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
       print(groupName);
 
       print(dummyUsernames);
-      DatabaseMethods()
-          .checkChatRoomID(getChatRoomId(dummyUsernames))
-          .then((DocumentSnapshot val) {
-        print(val.data());
-        if (val.data() == null) {
-          //bole
-          DatabaseMethods()
-              .getConversationMessage(widget.group["chatRoomId"])
-              .then((value) {
-            setState(
-              () {
-                print("@@@@@@@@@@@@@@@@@@");
-                print(value.docs);
-                print("@@@@@@@@@@@@@@@@@@");
-                Map<String, dynamic> chatRoomMap = {
-                  "groupName": groupName,
-                  "users": dummyUsernames,
-                  "chatRoomId": getChatRoomId(dummyUsernames)
-                };
-
-                var messages = value.docs.map((entry) {
-                  return {
-                    "message": entry["message"],
-                    "sendBy": entry["sendBy"],
-                    "timestamp": entry["timestamp"]
+      print("####################");
+      print("member yang dihapus");
+      print(members);
+      print("####################");
+      if (members.length != 0) {
+        DatabaseMethods()
+            .checkChatRoomID(getChatRoomId(dummyUsernames))
+            .then((DocumentSnapshot val) {
+          print(val.data());
+          if (val.data() == null) {
+            //bole
+            DatabaseMethods()
+                .getConversationMessage(widget.group["chatRoomId"])
+                .then((value) {
+              setState(
+                () {
+                  print("@@@@@@@@@@@@@@@@@@");
+                  print(value.docs);
+                  print("@@@@@@@@@@@@@@@@@@");
+                  Map<String, dynamic> chatRoomMap = {
+                    "groupName": groupName,
+                    "users": dummyUsernames,
+                    "chatRoomId": getChatRoomId(dummyUsernames)
                   };
-                }).toList();
-                print("@@@@@@@@@@@@@@@@@@");
-                print(messages);
-                print("@@@@@@@@@@@@@@@@@@");
-                DatabaseMethods().addChatRoomUpdate(
-                    context,
-                    widget.group["chatRoomId"],
-                    getChatRoomId(dummyUsernames),
-                    chatRoomMap,
-                    messages);
-                getMember();
+
+                  var messages = value.docs.map((entry) {
+                    return {
+                      "message": entry["message"],
+                      "sendBy": entry["sendBy"],
+                      "timestamp": entry["timestamp"]
+                    };
+                  }).toList();
+                  print("@@@@@@@@@@@@@@@@@@");
+                  print(messages);
+                  print("@@@@@@@@@@@@@@@@@@");
+                  DatabaseMethods().addChatRoomUpdate(
+                      context,
+                      widget.group["chatRoomId"],
+                      getChatRoomId(dummyUsernames),
+                      chatRoomMap,
+                      messages);
+                  getMember();
+                },
+              );
+            });
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext dialogContext) {
+                return CustomDialog(
+                  title: 'Failed!',
+                  description: 'Group with current members exists',
+                  imageUrl: 'assets/emoji/slightly_frowning_face.png',
+                  textButton: 'OK',
+                );
               },
             );
-          });
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext dialogContext) {
-              return CustomDialog(
-                title: 'Failed!',
-                description: 'Group with current members exists',
-                imageUrl: 'assets/emoji/slightly_frowning_face.png',
-                textButton: 'OK',
-              );
-            },
-          );
-        }
-      });
+          }
+        });
+      } else {
+        DatabaseMethods()
+            .updateChatRoomName(groupName, widget.group["chatRoomId"]);
+      }
       // Navigator.pop(context);
       // showDialog(
       //   context: context,

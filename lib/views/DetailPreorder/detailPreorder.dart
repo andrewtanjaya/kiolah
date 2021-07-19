@@ -6,10 +6,12 @@ import 'components/body.dart';
 class DetailPreOrder extends StatefulWidget {
   // DetailPage({Key? key}) : super(key: key);
   final PreOrder data;
+  final String group;
 
   const DetailPreOrder({
     Key? key,
     required this.data,
+    required this.group,
   });
 
   @override
@@ -28,10 +30,7 @@ class _DetailPreOrderState extends State<DetailPreOrder> {
           color: colorMainBlack,
         ),
       ),
-      body: Body(
-        toggle: () => {},
-        data: widget.data,
-      ),
+      body: Body(toggle: () => {}, data: widget.data, group: widget.group),
     );
   }
 }

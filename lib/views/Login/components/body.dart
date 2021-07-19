@@ -41,9 +41,9 @@ class _BodyState extends State<Body> {
   QuerySnapshot? snapUserInfo;
 
   signIn() {
-    HelperFunction.saveEmailSP(emailController.text);
+    HelperFunction.saveEmailSP(emailController.text.trim());
     if (formKey.currentState!.validate()) {
-      databaseMethods.getUserByEmail(emailController.text).then(
+      databaseMethods.getUserByEmail(emailController.text.trim()).then(
         (value) {
           snapUserInfo = value;
           HelperFunction.saveUsernameSP(
@@ -53,7 +53,7 @@ class _BodyState extends State<Body> {
         },
       );
 
-      String email = emailController.text;
+      String email = emailController.text.trim();
       String pass = passwordController.text;
 
       setState(() {
