@@ -253,7 +253,10 @@ class _PreorderCardState extends State<PreorderCard> {
               //         ),
               //       ],
               //     ),
-              //     StatusButton(status: widget.data.status),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 4.0),
+                  alignment: Alignment.centerRight,
+                  child: StatusButton(status: widget.data.status)),
               //   ],
               // )
             ],

@@ -156,7 +156,7 @@ class _GroupPageState extends State<GroupPage> {
                         ],
                       ),
                     ),
-                    Expanded(child: Container()),
+                    // Expanded(child: Container()),
                     Container(
                       // child: IconButton(
                       //   icon: Icon(

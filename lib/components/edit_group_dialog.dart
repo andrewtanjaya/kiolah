@@ -106,33 +106,36 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
           DatabaseMethods()
               .getConversationMessage(widget.group["chatRoomId"])
               .then((value) {
-            setState(() {
-              print("@@@@@@@@@@@@@@@@@@");
-              print(value.docs);
-              print("@@@@@@@@@@@@@@@@@@");
-              Map<String, dynamic> chatRoomMap = {
-                "groupName": groupName,
-                "users": dummyUsernames,
-                "chatRoomId": getChatRoomId(dummyUsernames)
-              };
-
-              var messages = value.docs.map((entry) {
-                return {
-                  "message": entry["message"],
-                  "sendBy": entry["sendBy"],
-                  "timestamp": entry["timestamp"]
+            setState(
+              () {
+                print("@@@@@@@@@@@@@@@@@@");
+                print(value.docs);
+                print("@@@@@@@@@@@@@@@@@@");
+                Map<String, dynamic> chatRoomMap = {
+                  "groupName": groupName,
+                  "users": dummyUsernames,
+                  "chatRoomId": getChatRoomId(dummyUsernames)
                 };
-              }).toList();
-              print("@@@@@@@@@@@@@@@@@@");
-              print(messages);
-              print("@@@@@@@@@@@@@@@@@@");
-              DatabaseMethods().addChatRoomUpdate(
-                  context,
-                  widget.group["chatRoomId"],
-                  getChatRoomId(dummyUsernames),
-                  chatRoomMap,
-                  messages);
-            });
+
+                var messages = value.docs.map((entry) {
+                  return {
+                    "message": entry["message"],
+                    "sendBy": entry["sendBy"],
+                    "timestamp": entry["timestamp"]
+                  };
+                }).toList();
+                print("@@@@@@@@@@@@@@@@@@");
+                print(messages);
+                print("@@@@@@@@@@@@@@@@@@");
+                DatabaseMethods().addChatRoomUpdate(
+                    context,
+                    widget.group["chatRoomId"],
+                    getChatRoomId(dummyUsernames),
+                    chatRoomMap,
+                    messages);
+                getMember();
+              },
+            );
           });
         } else {
           showDialog(
@@ -141,7 +144,7 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
               return CustomDialog(
                 title: 'Failed!',
                 description: 'Group with current members exists',
-                imageUrl: 'assets/emoji/paper_popper.png',
+                imageUrl: 'assets/emoji/slightly_frowning_face.png',
                 textButton: 'OK',
               );
             },
@@ -256,15 +259,44 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                 color: colorError,
               ),
               onPressed: () {
-                members.add(username);
+                // members.add(username);
                 // function delete sini ya bos :)
                 var index = 0;
                 setState(() {
                   dummyUsernames.forEach((element) {
                     ++index;
+                    // print('!!!!!!!!!!!!!!!!!!');
+                    // print('!!!!!!!!!!!!!!!!!!');
+                    // print(element);
+                    // print(index);
+                    // print('!!!!!!!!!!!!!!!!!!');
+                    // print('!!!!!!!!!!!!!!!!!!');
+                    // print(dummyUsernames[index - 1]);
+                    // print(listMembersWidgets[index - 1]);
                     if (element == username) {
-                      dummyUsernames.removeAt(index - 1);
-                      listMembersWidgets.removeAt(index - 1);
+                      print('element : : $element');
+                      dummyUsernames.removeWhere((item) => item == username);
+                      print(dummyUsernames);
+                      listMembersWidgets = [];
+                      dummyUsernames.forEach((element) {
+                        DatabaseMethods()
+                            .getUserByUsername(element)
+                            .then((val) {
+                          setState(() {
+                            listMembersWidgets.add(
+                              memberItem(
+                                  // email, username, photoUrl nanti ganti sesuai dengan data yang lu tarik
+                                  email: val.docs[0]["email"],
+                                  photoUrl: val.docs[0]["photoUrl"],
+                                  username: element),
+                            );
+                          });
+                        });
+                      });
+
+                      // print(dummyUsernames
+                      //     .where((element) => element == username));
+
                     }
                   });
                   print("!@@@@@@@@@@@@@@@");

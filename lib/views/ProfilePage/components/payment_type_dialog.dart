@@ -128,7 +128,9 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
 
                           // icon: Icons.place_rounded,
                           maxLength: 17,
-                          hintText: 'Input OVO',
+                          hintText: user!.paymentType![0].toString() != '-'
+                              ? user!.paymentType![0].toString()
+                              : 'Input OVO',
                           onChanged: (value) => {},
                         ),
                       ),
@@ -162,7 +164,9 @@ class PaymentTypeDialogState extends State<PaymentTypeDialog> {
                       validator: bcaValidator,
                       // icon: Icons.place_rounded,
                       maxLength: 10,
-                      hintText: 'Input BCA',
+                      hintText: user!.paymentType![1].toString() != '-'
+                          ? user!.paymentType![1].toString()
+                          : 'Input BCA',
                       onChanged: (value) => {},
                     ),
                   ),
