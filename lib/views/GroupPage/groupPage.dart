@@ -147,7 +147,7 @@ class _GroupPageState extends State<GroupPage> {
                           Container(
                             width: 220,
                             child: Text(
-                              groupName,
+                              groupName ?? "loading",
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                 fontSize: 28.0,
