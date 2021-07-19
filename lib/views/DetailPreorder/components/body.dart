@@ -804,7 +804,7 @@ class _BodyState extends State<Body> {
                             child: SizedBox(
                               height: 80.0 * (widget.data.items?.length ?? 0),
                               child: ListView.separated(
-                                itemCount: (widget.data.items?.length ?? 0),
+                                itemCount: (widget.data.items!.length),
                                 itemBuilder: (BuildContext context, int index) {
                                   return itemList[index];
                                   // return ItemsPreorderList(
