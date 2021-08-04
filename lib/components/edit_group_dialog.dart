@@ -13,7 +13,6 @@ import 'package:kiolah/views/Home/home.dart';
 
 class EditGroupDialog extends StatefulWidget {
   final dynamic group;
-  // final String? groupName;
   const EditGroupDialog({
     Key? key,
     required this.group,
