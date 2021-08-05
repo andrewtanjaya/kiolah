@@ -27,18 +27,14 @@ class _ChatListState extends State<ChatList> {
 
   getToken() {
     _firebaseMessaging.getToken().then((token) {
-      print('--- Firebase token here ---');
       databaseMethods.addToken(token, Constant.myId);
-      print(token);
     });
   }
 
   deleteToken() {
     _firebaseMessaging.getToken().then((token) {
-      print('--- Firebase token here ---');
       List<dynamic> tokens = [token];
       databaseMethods.deleteToken(tokens, Constant.myId);
-      print(token);
     });
   }
 
@@ -81,7 +77,6 @@ class _ChatListState extends State<ChatList> {
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {

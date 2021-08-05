@@ -80,16 +80,9 @@ class _BodyState extends State<Body> {
         DatabaseMethods()
             .setTransaction(element, widget.data.preOrderId, "Paid");
       }
-      print("#####################");
-      print(element);
-      print("#####################");
       databaseMethods.getUserByUsername(element).then((val) {
         setState(() {
           memberToken = memberToken + (val.docs[0]["token"].toList());
-          print("#####################");
-          print("habis tambah");
-          print(memberToken);
-          print("#####################");
 
           sendNotif(val.docs[0]["token"].toList());
           // users.add(val);
@@ -103,7 +96,6 @@ class _BodyState extends State<Body> {
   }
 
   Future<bool> sendNotif(List<dynamic>? userToken) async {
-    print("Ini yang dipassing " + userToken.toString());
     final postUrl = 'https://fcm.googleapis.com/fcm/send';
     final data = {
       "registration_ids": userToken,
@@ -178,13 +170,9 @@ class _BodyState extends State<Body> {
           val.docs[0]["photoUrl"],
           val.docs[0]["username"],
         );
-        print("###########!!!#################");
-        print(val.docs[0]["token"].toList());
-        print("############!!!##############");
+
         tokens = tokens + (val.docs[0]["token"].toList());
-        print("###########!!!#################");
-        print(tokens);
-        print("############!!!##############");
+
         // users.add(val);
         // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
         //   searchSnapshot = null;
@@ -194,13 +182,6 @@ class _BodyState extends State<Body> {
 
       DatabaseMethods().getPreorder(widget.data.preOrderId).then(
         (val) {
-          print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          // print(val.docs[0]["title"]);
-          print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
           setState(() {
             preOrderData = new PreOrder(
               val["preOrderId"],
@@ -231,13 +212,6 @@ class _BodyState extends State<Body> {
 
     currentPreorderStatus = widget.data.status;
 
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // print(widget.data.items[0].username.toString());
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     itemList = [];
   }
 
@@ -381,9 +355,7 @@ class _BodyState extends State<Body> {
                   //                               currentUser!.userId == owner!.userId)
                   //                           ? true
                   //                           : false,
-                  print("###########!!!#################");
-                  print(element);
-                  print("############!!!##############");
+
                   itemList.add(
                     itemPreorderList(
                         data: element ?? null,
@@ -406,7 +378,6 @@ class _BodyState extends State<Body> {
                                 description: 'This action can\'t be undone.',
                                 primaryButtonText: 'DELETE',
                                 primaryButtonFunction: () {
-                                  print('delete');
                                   DatabaseMethods().updatePreorderItem(
                                       element.username.toString(),
                                       widget.data.preOrderId,

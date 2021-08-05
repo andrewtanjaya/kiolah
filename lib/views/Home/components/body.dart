@@ -45,11 +45,8 @@ class _BodyState extends State<Body> {
         setState(() {
           totalPreorder = val.docs.length;
           DatabaseMethods().getUnpaidTransaction(uname).then((value) {
-            print("#################");
-            print(value.docs.length);
             var unpaid = false;
             for (var i = 0; i < value.docs.length; i++) {
-              print(value.docs[i]["owner"]);
               if (value.docs[i]["owner"] != uname) {
                 unpaid = true;
                 break;
@@ -135,10 +132,6 @@ class _BodyState extends State<Body> {
             // print(widget.data.group);
             setState(() {
               groupName.add(val.get('groupName').toString());
-              print("^^^^^^^^^^^^^^^^^");
-              print(data);
-              print(groupName);
-              print("^^^^^^^^^^^^^^^^^");
             });
 
             // print('!!!!!!!!!!!!!!!!!!!!!');
@@ -205,22 +198,18 @@ class _BodyState extends State<Body> {
   void _onButtonBarTapped(int index) {
     setState(() {
       _currentButtonBarIndex = index;
-      print("oioioioioioioio");
       if (index == 0) {
-        print("0 nihh");
         data = mainData!
             .where((element) =>
                 element.status != 'Completed' && element.status != 'Canceled')
             .toList();
       }
       if (index == 1) {
-        print("1 nihh");
         data = mainData!
             .where((element) =>
                 element.status == 'Completed' || element.status == 'Canceled')
             .toList();
       }
-      print("mamakk");
       groupName = [];
       data.forEach((element) {
         DatabaseMethods()
@@ -230,10 +219,6 @@ class _BodyState extends State<Body> {
           // print(widget.data.group);
           setState(() {
             groupName.add(val.get('groupName').toString());
-            print("^^^^^^^^^^^^^^^^^");
-            print(element.group);
-            print(groupName);
-            print("^^^^^^^^^^^^^^^^^");
           });
 
           // print('!!!!!!!!!!!!!!!!!!!!!');
@@ -324,9 +309,6 @@ class _BodyState extends State<Body> {
                     return PreorderCard(
                       data: data[index],
                       onPressed: () {
-                        print("--------------");
-                        print(data[index].title + groupName[index]);
-                        print("--------------");
                         Navigator.of(context)
                             .push(new MaterialPageRoute(
                                 builder: (context) => DetailPreOrder(

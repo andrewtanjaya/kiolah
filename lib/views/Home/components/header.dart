@@ -31,10 +31,8 @@ class _HeaderState extends State<Header> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   deleteToken() {
     _firebaseMessaging.getToken().then((token) {
-      print('--- Firebase token here ---');
       List<dynamic> tokens = [token];
       databaseMethods.deleteToken(tokens, Constant.myId);
-      print(token);
     });
   }
 

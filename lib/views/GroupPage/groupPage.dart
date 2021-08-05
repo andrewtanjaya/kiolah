@@ -96,9 +96,6 @@ class _GroupPageState extends State<GroupPage> {
         data = mainData!
             .where((element) => element.status != 'Completed')
             .toList();
-        print('!****************************');
-        print(data.length);
-        print('!****************************');
         groupName = widget.group["groupName"].toString();
       });
     });
@@ -231,7 +228,6 @@ class _GroupPageState extends State<GroupPage> {
                                       primaryButtonText: 'DELETE',
                                       primaryButtonFunction: () {
                                         // delete sini bos :)
-                                        print(widget.group["chatRoomId"]);
                                         DatabaseMethods().deleteChatRoom(widget
                                             .group["chatRoomId"]
                                             .toString());

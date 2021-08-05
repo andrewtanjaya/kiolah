@@ -36,10 +36,6 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
         if (element != widget.owner) {
           DatabaseMethods().getUserByUsername(element).then((val) {
             setState(() {
-              print("####################");
-              print(element + " " + widget.po.preOrderId);
-              print(e.docs[0]["status"]);
-              print("####################");
               listMembersWidgets.add(
                 memberItem(
                     // email, username, photoUrl nanti ganti sesuai dengan data yang lu tarik
@@ -154,7 +150,6 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
               onChanged: (String? newValue) {
                 setState(
                   () {
-                    print(newValue);
                     status = newValue!;
                     DatabaseMethods()
                         .setTransaction(username, widget.po.preOrderId, status);
@@ -242,7 +237,6 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
                 text: 'Done',
                 onPressed: () {
                   Navigator.pop(context);
-                  print('mantap');
                 },
               ),
             )

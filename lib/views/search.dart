@@ -67,9 +67,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 val.docs[0]["username"],
               ),
             );
-            // print('!!!!!!!!!!!!!!!!!!!!!');
-            // print(addedUsers[0].photoUrl);
-            // print('!!!!!!!!!!!!!!!!!!!!!');
           }
         });
       });
@@ -117,20 +114,12 @@ class _SearchScreenState extends State<SearchScreen> {
     });
     if (!alreadyContain) {
       users.add(username);
-      print(users);
       searchAddedUsers();
     }
     // showAddedUsers();
   }
 
   createChatRoom() {
-    // print('!!!!!!!!!!!!!!!!!!!!1');
-    // print('users : $users');
-    // print('!!!!!!!!!!!!!!!!!!!!1');
-    // users.removeAt(0);
-    // print('!!!!!!!!!!!!!!!!!!!!1');
-    // print('users : $users');
-    // print('!!!!!!!!!!!!!!!!!!!!1');
     String chatRoomId = getChatRoomId(users);
     var groupName = groupNameController.text.toString().trim();
     Map<String, dynamic> chatRoomMap = {
@@ -138,11 +127,6 @@ class _SearchScreenState extends State<SearchScreen> {
       "users": users,
       "chatRoomId": chatRoomId
     };
-    // print('!!!!!!!!!!!!!!!!!!!!1');
-    // print('chatroomMap : $chatRoomMap');
-    // print('!!!!!!!!!!!!!!!!!!!!1');
-
-    // name groupName
 
     databaseMethods.addChatRoom(chatRoomId, chatRoomMap);
     Navigator.pushReplacement(
@@ -233,7 +217,6 @@ class _SearchScreenState extends State<SearchScreen> {
   //         Spacer(),
   //         GestureDetector(
   //           onTap: () {
-  //             print(userToken);
   //             sendNotif(userToken);
   //           },
   //           child: Container(
@@ -527,8 +510,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
 getChatRoomId(List<String> users) {
   users.sort((a, b) {
-    // print(a);
-    // print(b);
     return a
         .substring(0, 1)
         .codeUnitAt(0)

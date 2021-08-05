@@ -121,8 +121,6 @@ class _AddOrderState extends State<AddOrder> {
       var location = locationController.text.toString().trim();
       var group = groupsChoosen;
       var maxPeople = int.parse(maxPeopleController.text.toString().trim());
-      print(
-          'title : $title; location $location; group : $group;maxPeople : $maxPeople');
       Map<String, dynamic> newPreorder = {
         "preOrderId": "-",
         "title": title,

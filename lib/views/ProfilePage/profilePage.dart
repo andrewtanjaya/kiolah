@@ -33,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
       DatabaseMethods().getUserByUsername(uname).then((val) {
-        print("inininininiiniin");
         setState(() {
           user = new Account(
             val.docs[0]["userId"],
@@ -74,10 +73,8 @@ class _ProfilePageState extends State<ProfilePage> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   deleteToken() {
     _firebaseMessaging.getToken().then((token) {
-      print('--- Firebase token here ---');
       List<dynamic> tokens = [token];
       databaseMethods.deleteToken(tokens, Constant.myId);
-      print(token);
     });
   }
 

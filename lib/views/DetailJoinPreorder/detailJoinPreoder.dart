@@ -41,7 +41,6 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
   addPreorderItem() {
     List<Item> items = [];
     List<String> names = [];
-    print(itemNameControllers[0].text);
     for (int i = 0; i < itemForms.length; i++) {
       var name = itemNameControllers[i].text;
       var desc = itemDescriptionControllers[i].text;

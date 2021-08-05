@@ -108,7 +108,6 @@ class _EditOrderState extends State<EditOrder> {
       // var location = locationController.text.toString().trim();
       // var group = groupsChoosen;
       var maxPeople = int.parse(maxPeopleController.text.toString().trim());
-      print('title : $title; ; maxPeople : $maxPeople');
 
       DatabaseMethods()
           .updatePreorder(title, maxPeople, widget.data.preOrderId);
