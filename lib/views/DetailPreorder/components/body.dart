@@ -140,6 +140,22 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     preOrderStatus = widget.data.status;
+    currentUser = new Account(
+      "1",
+      "abc",
+      ["a", "b"],
+      "0000",
+      "-",
+      "asd",
+    );
+    owner = new Account(
+      "1",
+      "abc",
+      ["a", "b"],
+      "0000",
+      "-",
+      "asd",
+    );
     setState(() {
       // if (widget.data.items.length < perPage) {
       //   perPage = widget.data.items.length;
@@ -351,188 +367,192 @@ class _BodyState extends State<Body> {
           dummyItems = [];
           dummyItems = widget.data.items!;
           int index = 0;
-          dummyItems.forEach((element) {
-            ++index;
-            //  ItemsPreorderList(
-            //                       id: widget.data.preOrderId,
-            //                       data: widget.data.items[index],
-            //                       canDelete: (currentUser.username ==
-            //                                   widget
-            //                                       .data.items[index].username ||
-            //                               currentUser!.userId == owner!.userId)
-            //                           ? true
-            //                           : false,
-            print("###########!!!#################");
-            print(element);
-            print("############!!!##############");
-            itemList.add(
-              itemPreorderList(
-                  data: element,
-                  id: widget.data.preOrderId,
-                  canDelete: ((currentUser!.username == element.username ||
-                                  currentUser!.userId == owner!.userId) &&
-                              widget.data.status.toLowerCase() == 'ongoing') ==
-                          true
-                      ? true
-                      : false,
-                  itemIndex: index - 1,
-                  onPressedDelete: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext dialogContext) {
-                        return PromptDialog(
-                          title: 'Delete Item ?',
-                          description: 'This action can\'t be undone.',
-                          primaryButtonText: 'DELETE',
-                          primaryButtonFunction: () {
-                            print('delete');
-                            DatabaseMethods().updatePreorderItem(
-                                element.username.toString(),
-                                widget.data.preOrderId,
-                                element,
-                                checkNoMoreItem(element));
+          dummyItems.length != 0
+              ? dummyItems.forEach((element) {
+                  ++index;
+                  //  ItemsPreorderList(
+                  //                       id: widget.data.preOrderId,
+                  //                       data: widget.data.items[index],
+                  //                       canDelete: (currentUser.username ==
+                  //                                   widget
+                  //                                       .data.items[index].username ||
+                  //                               currentUser!.userId == owner!.userId)
+                  //                           ? true
+                  //                           : false,
+                  print("###########!!!#################");
+                  print(element);
+                  print("############!!!##############");
+                  itemList.add(
+                    itemPreorderList(
+                        data: element ?? null,
+                        id: widget.data.preOrderId,
+                        canDelete: ((currentUser!.username ==
+                                            element.username ||
+                                        currentUser!.userId == owner!.userId) &&
+                                    widget.data.status.toLowerCase() ==
+                                        'ongoing') ==
+                                true
+                            ? true
+                            : false,
+                        itemIndex: index == 0 ? index : index - 1,
+                        onPressedDelete: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext dialogContext) {
+                              return PromptDialog(
+                                title: 'Delete Item ?',
+                                description: 'This action can\'t be undone.',
+                                primaryButtonText: 'DELETE',
+                                primaryButtonFunction: () {
+                                  print('delete');
+                                  DatabaseMethods().updatePreorderItem(
+                                      element.username.toString(),
+                                      widget.data.preOrderId,
+                                      element,
+                                      checkNoMoreItem(element));
 
-                            Navigator.pop(context);
-                            Navigator.pushReplacement<void, void>(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (BuildContext context) => Home(),
-                              ),
-                            );
-                            //   DatabaseMethods()
-                            //       .getPreorder(widget.data.preOrderId)
-                            //       .then(
-                            //     (val) {
-                            //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //       // print(val.docs[0]["title"]);
-                            //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //       setState(() {
-                            //         var preOrderData;
-                            //         preOrderData = new PreOrder(
-                            //           val["preOrderId"],
-                            //           val["title"],
-                            //           val["owner"],
-                            //           val["group"],
-                            //           val["location"],
-                            //           val["items"]
-                            //               .map((v) => Item(
-                            //                   v["foodId"],
-                            //                   v["name"],
-                            //                   v["description"],
-                            //                   v["count"],
-                            //                   double.parse(
-                            //                           v["price"].toString())
-                            //                       .toDouble(),
-                            //                   v["username"]))
-                            //               .toList()
-                            //               .cast<Item>(),
-                            //           DateTime.fromMillisecondsSinceEpoch(
-                            //               val["duration"].seconds * 1000),
-                            //           val["users"].toList().cast<String>(),
-                            //           val["status"],
-                            //           val["maxPeople"],
-                            //         );
-                            //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //         print(preOrderData.items.length);
-                            //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            //         itemList = [];
-                            //         preOrderData.items.forEach(
-                            //           (e) => {
-                            //             itemList.add(
-                            //               itemPreorderList(
-                            //                 data: element,
-                            //                 id: widget.data.preOrderId,
-                            //                 canDelete: (currentUser
-                            //                                 .username ==
-                            //                             element.username ||
-                            //                         currentUser!.userId ==
-                            //                             owner!.userId ||
-                            //                         widget.data.status
-                            //                                 .toLowerCase() ==
-                            //                             'ongoing')
-                            //                     ? true
-                            //                     : false,
-                            //                 itemIndex: index - 1,
-                            //               ),
-                            //             ),
-                            //           },
-                            //         );
-                            //       });
-                            //     },
-                            //   ),
-                            // );
-                          },
-                        );
-                      },
-                    );
-                  }),
-            );
-            // new ItemsPreorderList(
-            //   data: element,
-            //   id: widget.data.preOrderId,
-            //   canDelete: (currentUser.username == element.username ||
-            //           currentUser!.userId == owner!.userId || widget.data.status.toLowerCase() == 'ongoing')
-            //       ? true
-            //       : false,
-            //   listItemsUI: itemList,
-            //   itemIndex: index - 1,
-            //   key: Key("index_${index - 1}"),
-            //   onPressedDelete: () {
-            //     showDialog(
-            //       context: context,
-            //       builder: (BuildContext dialogContext) {
-            //         return PromptDialog(
-            //             title: 'Delete Item ?',
-            //             description: 'This action can\'t be undone.',
-            //             primaryButtonText: 'DELETE',
-            //             primaryButtonFunction: () {
-            //               print('delete');
-            //               DatabaseMethods().updatePreorderItem(
-            //                   Constant.myName,
-            //                   widget.data.preOrderId,
-            //                   element);
-            //               Navigator.pop(context);
-            //               // Navigator.pushReplacement<void, void>(
-            //               //   context,
-            //               //   MaterialPageRoute<void>(
-            //               //     builder: (BuildContext context) => Home(),
-            //               //   ),
-            //               // );
-            //               setState(() {
-            //                 // print('!!!!!!!!!!!!!!!!');
-            //                 // print('!!!!!!!!!!!!!!!!');
-            //                 // print(index - 1);
-            //                 // print('!!!!!!!!!!!!!!!!');
-            //                 // print('!!!!!!!!!!!!!!!!');
-            //                 // itemList.removeAt(index - 1);
-            //                 this.itemList.removeWhere((element) =>
-            //                     element.key == Key("index_${index - 1}"));
-            //               });
-            //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //               //   print(widget.listItemsUI);
-            //               //   widget.listItemsUI!.removeAt(widget.itemIndex!);
-            //               //   print(widget.listItemsUI);
-            //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //               // });
-            //             });
-            //       },
-            //     );
-            //   },
-            // ),
-            // );
-          });
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement<void, void>(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) => Home(),
+                                    ),
+                                  );
+                                  //   DatabaseMethods()
+                                  //       .getPreorder(widget.data.preOrderId)
+                                  //       .then(
+                                  //     (val) {
+                                  //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //       // print(val.docs[0]["title"]);
+                                  //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //       print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //       setState(() {
+                                  //         var preOrderData;
+                                  //         preOrderData = new PreOrder(
+                                  //           val["preOrderId"],
+                                  //           val["title"],
+                                  //           val["owner"],
+                                  //           val["group"],
+                                  //           val["location"],
+                                  //           val["items"]
+                                  //               .map((v) => Item(
+                                  //                   v["foodId"],
+                                  //                   v["name"],
+                                  //                   v["description"],
+                                  //                   v["count"],
+                                  //                   double.parse(
+                                  //                           v["price"].toString())
+                                  //                       .toDouble(),
+                                  //                   v["username"]))
+                                  //               .toList()
+                                  //               .cast<Item>(),
+                                  //           DateTime.fromMillisecondsSinceEpoch(
+                                  //               val["duration"].seconds * 1000),
+                                  //           val["users"].toList().cast<String>(),
+                                  //           val["status"],
+                                  //           val["maxPeople"],
+                                  //         );
+                                  //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //         print(preOrderData.items.length);
+                                  //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //         print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                  //         itemList = [];
+                                  //         preOrderData.items.forEach(
+                                  //           (e) => {
+                                  //             itemList.add(
+                                  //               itemPreorderList(
+                                  //                 data: element,
+                                  //                 id: widget.data.preOrderId,
+                                  //                 canDelete: (currentUser
+                                  //                                 .username ==
+                                  //                             element.username ||
+                                  //                         currentUser!.userId ==
+                                  //                             owner!.userId ||
+                                  //                         widget.data.status
+                                  //                                 .toLowerCase() ==
+                                  //                             'ongoing')
+                                  //                     ? true
+                                  //                     : false,
+                                  //                 itemIndex: index - 1,
+                                  //               ),
+                                  //             ),
+                                  //           },
+                                  //         );
+                                  //       });
+                                  //     },
+                                  //   ),
+                                  // );
+                                },
+                              );
+                            },
+                          );
+                        }),
+                  );
+                  // new ItemsPreorderList(
+                  //   data: element,
+                  //   id: widget.data.preOrderId,
+                  //   canDelete: (currentUser.username == element.username ||
+                  //           currentUser!.userId == owner!.userId || widget.data.status.toLowerCase() == 'ongoing')
+                  //       ? true
+                  //       : false,
+                  //   listItemsUI: itemList,
+                  //   itemIndex: index - 1,
+                  //   key: Key("index_${index - 1}"),
+                  //   onPressedDelete: () {
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext dialogContext) {
+                  //         return PromptDialog(
+                  //             title: 'Delete Item ?',
+                  //             description: 'This action can\'t be undone.',
+                  //             primaryButtonText: 'DELETE',
+                  //             primaryButtonFunction: () {
+                  //               print('delete');
+                  //               DatabaseMethods().updatePreorderItem(
+                  //                   Constant.myName,
+                  //                   widget.data.preOrderId,
+                  //                   element);
+                  //               Navigator.pop(context);
+                  //               // Navigator.pushReplacement<void, void>(
+                  //               //   context,
+                  //               //   MaterialPageRoute<void>(
+                  //               //     builder: (BuildContext context) => Home(),
+                  //               //   ),
+                  //               // );
+                  //               setState(() {
+                  //                 // print('!!!!!!!!!!!!!!!!');
+                  //                 // print('!!!!!!!!!!!!!!!!');
+                  //                 // print(index - 1);
+                  //                 // print('!!!!!!!!!!!!!!!!');
+                  //                 // print('!!!!!!!!!!!!!!!!');
+                  //                 // itemList.removeAt(index - 1);
+                  //                 this.itemList.removeWhere((element) =>
+                  //                     element.key == Key("index_${index - 1}"));
+                  //               });
+                  //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  //               //   print(widget.listItemsUI);
+                  //               //   widget.listItemsUI!.removeAt(widget.itemIndex!);
+                  //               //   print(widget.listItemsUI);
+                  //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  //               //   print("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  //               // });
+                  //             });
+                  //       },
+                  //     );
+                  //   },
+                  // ),
+                  // );
+                })
+              : "";
         });
       });
     });
@@ -806,7 +826,9 @@ class _BodyState extends State<Body> {
                               child: ListView.separated(
                                 itemCount: (widget.data.items!.length),
                                 itemBuilder: (BuildContext context, int index) {
-                                  return itemList[index];
+                                  return itemList.length != 0
+                                      ? itemList[index]
+                                      : Text("No Data");
                                   // return ItemsPreorderList(
                                   //   id: widget.data.preOrderId,
                                   //   data: widget.data.items[index],
