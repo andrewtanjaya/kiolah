@@ -26,7 +26,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('A bg message just showed up :  ${message.messageId}');
 }
 
 Future<void> main() async {
@@ -75,9 +74,7 @@ class _MyAppState extends State<MyApp> {
         var data = await deviceInfoPlugin.iosInfo;
         identifier = data.identifierForVendor; //UUID for iOS
       }
-    } on PlatformException {
-      print('Failed to get platform version');
-    }
+    } on PlatformException {}
   }
 
   checkLoggedIn() async {

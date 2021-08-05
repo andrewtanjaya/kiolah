@@ -187,8 +187,6 @@ class DatabaseMethods {
         .id
         .toString();
     orderMap["preOrderId"] = id;
-
-    print(orderMap);
     FirebaseFirestore.instance.collection("preorders").doc(id).set(orderMap);
   }
 
@@ -239,7 +237,6 @@ class DatabaseMethods {
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((documentSnapshot) {
-        print("SINI COK");
         documentSnapshot.reference.update({"group": groupId});
       });
       deleteChatRoom(old);
@@ -308,7 +305,6 @@ class DatabaseMethods {
   }
 
   addTransaction(String username, String preorderId, String owner) {
-    print("asdsd");
     FirebaseFirestore.instance.collection("transactions").add({
       "username": username,
       "preOrderId": preorderId,

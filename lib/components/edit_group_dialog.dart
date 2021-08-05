@@ -75,8 +75,6 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
 
   getChatRoomId(List<dynamic> users) {
     users.sort((a, b) {
-      // print(a);
-      // print(b);
       return a
           .substring(0, 1)
           .codeUnitAt(0)
@@ -85,7 +83,6 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
     String roomId = "";
     for (var i = 0; i < users.length; i++) {
       roomId += users[i];
-      // print(roomId);
       if ((i + 1) < users.length) {
         roomId += "_";
       }
@@ -97,18 +94,10 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
   submit() {
     if (formKey.currentState!.validate()) {
       var groupName = groupNameController.text.toString().trim();
-      print(groupName);
-
-      print(dummyUsernames);
-      print("####################");
-      print("member yang dihapus");
-      print(members);
-      print("####################");
       if (members.length != 0) {
         DatabaseMethods()
             .checkChatRoomID(getChatRoomId(dummyUsernames))
             .then((DocumentSnapshot val) {
-          print(val.data());
           if (val.data() == null) {
             //bole
             DatabaseMethods()
@@ -116,9 +105,6 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                 .then((value) {
               setState(
                 () {
-                  print("@@@@@@@@@@@@@@@@@@");
-                  print(value.docs);
-                  print("@@@@@@@@@@@@@@@@@@");
                   Map<String, dynamic> chatRoomMap = {
                     "groupName": groupName,
                     "users": dummyUsernames,
@@ -132,9 +118,6 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                       "timestamp": entry["timestamp"]
                     };
                   }).toList();
-                  print("@@@@@@@@@@@@@@@@@@");
-                  print(messages);
-                  print("@@@@@@@@@@@@@@@@@@");
                   DatabaseMethods().addChatRoomUpdate(
                       context,
                       widget.group["chatRoomId"],
@@ -281,18 +264,8 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                 setState(() {
                   dummyUsernames.forEach((element) {
                     ++index;
-                    // print('!!!!!!!!!!!!!!!!!!');
-                    // print('!!!!!!!!!!!!!!!!!!');
-                    // print(element);
-                    // print(index);
-                    // print('!!!!!!!!!!!!!!!!!!');
-                    // print('!!!!!!!!!!!!!!!!!!');
-                    // print(dummyUsernames[index - 1]);
-                    // print(listMembersWidgets[index - 1]);
                     if (element == username) {
-                      print('element : : $element');
                       dummyUsernames.removeWhere((item) => item == username);
-                      print(dummyUsernames);
                       listMembersWidgets = [];
                       dummyUsernames.forEach((element) {
                         DatabaseMethods()
@@ -309,15 +282,9 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                           });
                         });
                       });
-
-                      // print(dummyUsernames
-                      //     .where((element) => element == username));
-
                     }
                   });
-                  print("!@@@@@@@@@@@@@@@");
-                  print(dummyUsernames);
-                  print("!@@@@@@@@@@@@@@@");
+
                   // usernames.removeWhere((e) => {
                   //       e == '1',
                   //     });
@@ -340,7 +307,6 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
           // Spacer(),
           // GestureDetector(
           //   onTap: () {
-          //     print(userToken);
           //     sendNotif(userToken);
           //   },
           //   child: Container(
