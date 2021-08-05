@@ -275,7 +275,7 @@ class _EditGroupDialogState extends State<EditGroupDialog> {
                 color: colorError,
               ),
               onPressed: () {
-                // members.add(username);
+                members.add(username);
                 // function delete sini ya bos :)
                 var index = 0;
                 setState(() {

@@ -5,11 +5,13 @@ import 'components/body.dart';
 
 class DetailPreOrder extends StatefulWidget {
   // DetailPage({Key? key}) : super(key: key);
+  final Future<dynamic> func;
   final PreOrder data;
   final String group;
 
   const DetailPreOrder({
     Key? key,
+    required this.func,
     required this.data,
     required this.group,
   });
@@ -30,7 +32,11 @@ class _DetailPreOrderState extends State<DetailPreOrder> {
           color: colorMainBlack,
         ),
       ),
-      body: Body(toggle: () => {}, data: widget.data, group: widget.group),
+      body: Body(
+          func: widget.func,
+          toggle: () => {},
+          data: widget.data,
+          group: widget.group),
     );
   }
 }

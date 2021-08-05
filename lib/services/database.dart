@@ -296,7 +296,7 @@ class DatabaseMethods {
     });
   }
 
-  addPreorderitems(String preorderId, var items, String uname) {
+  addPreorderitems(String preorderId, var items, String uname, String owner) {
     FirebaseFirestore.instance
         .collection("preorders")
         .doc(preorderId)
@@ -304,13 +304,17 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection("preorders").doc(preorderId).update({
       'users': FieldValue.arrayUnion([uname])
     });
-    addTransaction(uname, preorderId);
+    addTransaction(uname, preorderId, owner);
   }
 
-  addTransaction(String username, String preorderId) {
+  addTransaction(String username, String preorderId, String owner) {
     print("asdsd");
-    FirebaseFirestore.instance.collection("transactions").add(
-        {"username": username, "preOrderId": preorderId, "status": "Unpaid"});
+    FirebaseFirestore.instance.collection("transactions").add({
+      "username": username,
+      "preOrderId": preorderId,
+      "status": "Unpaid",
+      "owner": owner
+    });
   }
 
   setTransaction(String username, String preorderId, String status) async {

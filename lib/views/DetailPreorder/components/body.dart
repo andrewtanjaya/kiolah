@@ -34,6 +34,7 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
+  final Future<dynamic> func;
   // Body({Key? key}) : super(key: key);
   final Function toggle;
   final double height;
@@ -43,6 +44,7 @@ class Body extends StatefulWidget {
   const Body(
       {Key? key,
       this.height: 0,
+      required this.func,
       required this.toggle,
       required this.data,
       required this.group})
@@ -412,12 +414,10 @@ class _BodyState extends State<Body> {
                                       checkNoMoreItem(element));
 
                                   Navigator.pop(context);
-                                  Navigator.pushReplacement<void, void>(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) => Home(),
-                                    ),
-                                  );
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
                                   //   DatabaseMethods()
                                   //       .getPreorder(widget.data.preOrderId)
                                   //       .then(
@@ -488,6 +488,7 @@ class _BodyState extends State<Body> {
                                   //     },
                                   //   ),
                                   // );
+                                  widget.func;
                                 },
                               );
                             },

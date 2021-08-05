@@ -47,7 +47,15 @@ class _BodyState extends State<Body> {
           DatabaseMethods().getUnpaidTransaction(uname).then((value) {
             print("#################");
             print(value.docs.length);
-            if (value.docs.length != 0) {
+            var unpaid = false;
+            for (var i = 0; i < value.docs.length; i++) {
+              print(value.docs[i]["owner"]);
+              if (value.docs[i]["owner"] != uname) {
+                unpaid = true;
+                break;
+              }
+            }
+            if (unpaid) {
               showDialog(
                 context: context,
                 builder: (BuildContext dialogContext) {
@@ -291,6 +299,7 @@ class _BodyState extends State<Body> {
                         Navigator.of(context)
                             .push(new MaterialPageRoute(
                                 builder: (context) => DetailPreOrder(
+                                    func: getUserName(),
                                     data: data[index],
                                     group: groupName[index])))
                             .whenComplete(getUserName);

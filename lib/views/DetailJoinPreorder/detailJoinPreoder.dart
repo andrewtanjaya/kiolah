@@ -72,7 +72,8 @@ class _DetailJoinPreOrderState extends State<DetailJoinPreOrder> {
 
     // print("############################");
     // print(widget.data.preOrderId);
-    DatabaseMethods().addPreorderitems(widget.data.preOrderId, itemsArr, uname);
+    DatabaseMethods().addPreorderitems(
+        widget.data.preOrderId, itemsArr, uname, widget.data.owner);
   }
 
   final formKey = GlobalKey<FormState>();
