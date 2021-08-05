@@ -47,13 +47,21 @@ class _PreorderCardState extends State<PreorderCard> {
   var groupName;
 
   getGroupName() {
+    print("^^^^^^^^^^^^^^^^^");
+    print("bangggg");
+    print(widget.data.group);
+    print("^^^^^^^^^^^^^^^^^");
     databaseMethods
         .getGroupById(widget.data.group)
         .then((DocumentSnapshot val) {
       // print('!!!!!!!!!!!!!!!!!!!!!');
       // print(widget.data.group);
       setState(() {
-        groupName = val.get('groupName');
+        groupName = val.get('groupName').toString();
+        print("bambangggg");
+        print(widget.data.group);
+        print(groupName);
+        print("bambangggg");
       });
 
       // print('!!!!!!!!!!!!!!!!!!!!!');

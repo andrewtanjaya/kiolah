@@ -126,10 +126,7 @@ class _BodyState extends State<Body> {
                 element.status != 'Completed' && element.status != 'Canceled')
             .toList();
         totalPreorder = data.length;
-        // print('!****************************');
-        // print(data.length);
-        // print('!****************************');
-
+        groupName = [];
         data.forEach((element) {
           DatabaseMethods()
               .getGroupById(element.group)
@@ -138,11 +135,18 @@ class _BodyState extends State<Body> {
             // print(widget.data.group);
             setState(() {
               groupName.add(val.get('groupName').toString());
+              print("^^^^^^^^^^^^^^^^^");
+              print(data);
+              print(groupName);
+              print("^^^^^^^^^^^^^^^^^");
             });
 
             // print('!!!!!!!!!!!!!!!!!!!!!');
           });
         });
+        // print('!****************************');
+        // print(data.length);
+        // print('!****************************');
       });
     });
   }
@@ -201,16 +205,40 @@ class _BodyState extends State<Body> {
   void _onButtonBarTapped(int index) {
     setState(() {
       _currentButtonBarIndex = index;
-      if (index == 0)
+      print("oioioioioioioio");
+      if (index == 0) {
+        print("0 nihh");
         data = mainData!
             .where((element) =>
                 element.status != 'Completed' && element.status != 'Canceled')
             .toList();
-      if (index == 1)
+      }
+      if (index == 1) {
+        print("1 nihh");
         data = mainData!
             .where((element) =>
                 element.status == 'Completed' || element.status == 'Canceled')
             .toList();
+      }
+      print("mamakk");
+      groupName = [];
+      data.forEach((element) {
+        DatabaseMethods()
+            .getGroupById(element.group)
+            .then((DocumentSnapshot val) {
+          // print('!!!!!!!!!!!!!!!!!!!!!');
+          // print(widget.data.group);
+          setState(() {
+            groupName.add(val.get('groupName').toString());
+            print("^^^^^^^^^^^^^^^^^");
+            print(element.group);
+            print(groupName);
+            print("^^^^^^^^^^^^^^^^^");
+          });
+
+          // print('!!!!!!!!!!!!!!!!!!!!!');
+        });
+      });
     });
   }
 
@@ -296,6 +324,9 @@ class _BodyState extends State<Body> {
                     return PreorderCard(
                       data: data[index],
                       onPressed: () {
+                        print("--------------");
+                        print(data[index].title + groupName[index]);
+                        print("--------------");
                         Navigator.of(context)
                             .push(new MaterialPageRoute(
                                 builder: (context) => DetailPreOrder(

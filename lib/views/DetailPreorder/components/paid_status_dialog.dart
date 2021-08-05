@@ -226,7 +226,9 @@ class _PaidStatusDialogState extends State<PaidStatusDialog> {
                   child: ListView.separated(
                     itemCount: listMembersWidgets.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return listMembersWidgets[index];
+                      return listMembersWidgets.length == 0
+                          ? Text("loading..")
+                          : listMembersWidgets[index];
                     },
                     // physics: NeverScrollableScrollPhysics(),
                     separatorBuilder: (BuildContext context, int index) =>

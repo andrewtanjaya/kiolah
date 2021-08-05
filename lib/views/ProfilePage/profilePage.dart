@@ -33,6 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await HelperFunction.getUsernameSP().then((username) {
       uname = username.toString();
       DatabaseMethods().getUserByUsername(uname).then((val) {
+        print("inininininiiniin");
         setState(() {
           user = new Account(
             val.docs[0]["userId"],
@@ -88,6 +89,9 @@ class _ProfilePageState extends State<ProfilePage> {
     UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
     uploadTask.then((res) => res.ref.getDownloadURL().then((value) {
           DatabaseMethods().updateUserPhoto(value, uname);
+          setState(() {
+            user?.photoUrl = value;
+          });
         }));
   }
 
