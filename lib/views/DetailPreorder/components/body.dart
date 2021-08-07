@@ -172,12 +172,6 @@ class _BodyState extends State<Body> {
         );
 
         tokens = tokens + (val.docs[0]["token"].toList());
-
-        // users.add(val);
-        // if (searchSnapshot!.docs[0]["username"] == Constant.myName) {
-        //   searchSnapshot = null;
-        // }
-        // print(users[0].photoUrl);
       });
 
       DatabaseMethods().getPreorder(widget.data.preOrderId).then(
