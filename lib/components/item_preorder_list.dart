@@ -123,7 +123,6 @@ class _ItemsPreorderListState extends State<ItemsPreorderList> {
                 icon: Icon(Icons.clear_rounded),
                 color: colorError,
                 onPressed: widget.onPressedDelete,
-                // print('delete');
                 // :)
                 // delete preoder
               ),
